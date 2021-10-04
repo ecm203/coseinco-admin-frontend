@@ -1,5 +1,5 @@
 import React from 'react'
-import { Breadcrumb } from 'app/components';
+import { Breadcrumb, SimpleCard } from 'app/components';
 const ListProduct = () => {
   return (
     <div className="m-sm-30">
@@ -10,6 +10,10 @@ const ListProduct = () => {
           ]}
         />
       </div>
+
+      <SimpleCard title="Simple Table">
+        Hola mundo 2
+      </SimpleCard> 
     </div>
   )
 }
