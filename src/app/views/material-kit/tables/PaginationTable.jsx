@@ -89,6 +89,10 @@ const PaginationTable = () => {
         setPage(0)
     }
 
+    const handleClickButton = () => {
+        console.log('object')
+    }
+
     return (
         <div className="w-full overflow-auto">
             <Table className="whitespace-pre">
@@ -135,8 +139,8 @@ const PaginationTable = () => {
                                     ${subscriber.amount}
                                 </TableCell>
                                 <TableCell className="px-0">
-                                    <IconButton>
-                                        <Icon color="error">close</Icon>
+                                    <IconButton onClick={handleClickButton}>
+                                        <Icon color="primary">edit</Icon>
                                     </IconButton>
                                 </TableCell>
                             </TableRow>
