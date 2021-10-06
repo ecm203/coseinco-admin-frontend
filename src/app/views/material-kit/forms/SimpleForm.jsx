@@ -36,6 +36,7 @@ const SimpleForm = () => {
     const handleSubmit = (event) => {
         // console.log("submitted");
         // console.log(event);
+        console.log(state);
     }
 
     const handleChange = (event) => {
