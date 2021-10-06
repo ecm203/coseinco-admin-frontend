@@ -12,6 +12,7 @@ import {
   TablePagination,
 } from '@material-ui/core'
 import OrderDetail from './OrderDetail'
+import ReferralGuide from './ReferralGuide'
 
 const ordersList = [
   {
@@ -71,8 +72,9 @@ const ordersList = [
 ]
 
 const BookOrder = () => {
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
-  const [orderDialogOpen, setOrderDialogOpen] = React.useState(false)
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [orderDialogOpen, setOrderDialogOpen] = React.useState(false);
+  const [referralGuideOpen, setReferralGuideOpen] = React.useState(false);
   const [page, setPage] = React.useState(0)
 
   const handleChangePage = (event, newPage) => {
@@ -84,12 +86,20 @@ const BookOrder = () => {
     setPage(0)
   }
 
-  const handleClickButton = () => {
+  const handleOrderDetailOpen = () => {
     setOrderDialogOpen(true);
   }
 
-  const handleCloseModal = () => {
+  const handleOrderDetailClose = () => {
     setOrderDialogOpen(false);
+  }
+
+  const handleReferralGuideOpen = () => {
+    setReferralGuideOpen(true);
+  }
+
+  const handleReferralGuideClose = () => {
+    setReferralGuideOpen(false);
   }
 
   return (
@@ -127,13 +137,13 @@ const BookOrder = () => {
                   </TableCell>
                   <TableCell className="px-0">
                     <Tooltip title="Visualizar pedido">
-                      <IconButton onClick={handleClickButton}>
+                      <IconButton onClick={handleOrderDetailOpen}>
                         <Icon color="primary">visibility</Icon>
                       </IconButton>
                     </Tooltip>
                     {subscriber.status === 'reservado' && (
                       <Tooltip title="Generar guia de remision">
-                        <IconButton onClick={handleClickButton}>
+                        <IconButton onClick={handleReferralGuideOpen}>
                           <Icon color="primary">assignment</Icon>
                         </IconButton>
                       </Tooltip>
@@ -142,7 +152,7 @@ const BookOrder = () => {
                       subscriber.status === 'enviado' ||
                       subscriber.status === 'finalizado') && (
                       <Tooltip title="Descargar guia de remision">
-                        <IconButton onClick={handleClickButton}>
+                        <IconButton>
                           <Icon color="primary">download</Icon>
                         </IconButton>
                       </Tooltip>
@@ -168,7 +178,8 @@ const BookOrder = () => {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-        <OrderDetail open={orderDialogOpen} handleClose={handleCloseModal}/>
+        <OrderDetail open={orderDialogOpen} handleClose={handleOrderDetailClose}/>
+        <ReferralGuide open={referralGuideOpen} handleClose={handleReferralGuideClose}/>
       </SimpleCard>
     </div>
   )
