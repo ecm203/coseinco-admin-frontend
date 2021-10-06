@@ -12,6 +12,7 @@ const AddProduct = () => {
       </div>
       <SimpleCard title="Simple Table">
         Hola mundo
+        asdasdasd
       </SimpleCard>
     </div>
   )
