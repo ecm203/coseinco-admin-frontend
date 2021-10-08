@@ -1,15 +1,10 @@
 import AddPurchaseOrder from "./AddPurchaseOrder";
-import ExitMovement from "./ExitMovement";
-import IncomeMovement from "./IncomeMovement";
+import ListPurchaseOrder from "./ListPurchaseOrder";
 
 const purchaseOrderRoutes = [
   {
-    path: '/orden-de-compra/movimiento/ingreso',
-    component: IncomeMovement,
-  },
-  {
-    path: '/orden-de-compra/movimiento/salida',
-    component: ExitMovement,
+    path: '/orden-de-compra/listar',
+    component: ListPurchaseOrder,
   },
   {
     path: '/orden-de-compra/agregar',

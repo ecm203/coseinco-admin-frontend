@@ -90,14 +90,9 @@ export const navigations = [
 			icon: 'attach_money',
 			children: [
 				{
-					name: 'Movimiento ingreso',
+					name: 'Listar OC',
 					iconText: 'SI',
-					path: '/orden-de-compra/movimiento/ingreso'
-				},
-				{
-					name: 'Movimiento salida',
-					iconText: 'SI',
-					path: '/orden-de-compra/movimiento/salida'
+					path: '/orden-de-compra/listar'
 				},
 				{
 					name: 'Agregrar OC',
@@ -106,6 +101,22 @@ export const navigations = [
 				}
 			]
 		},
+    {
+      name: 'Movimiento',
+      icon: 'timeline',
+      children: [
+        {
+          name: 'Movimiento ingreso',
+					iconText: 'SI',
+					path: '/movimiento/ingreso'
+        },
+        {
+          name: 'Movimiento salida',
+					iconText: 'SI',
+					path: '/movimiento/salida'
+        },
+      ]
+    }
     // {
     //     name: 'Session/Auth',
     //     icon: 'security',
