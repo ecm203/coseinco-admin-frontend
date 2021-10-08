@@ -16,6 +16,7 @@ import inventoryRoutes from './views/inventory/InventoryRouters'
 import ordersRoutes from './views/orders/ordersRoutes'
 import suppliersRoutes from './views/suppliers/SuppliersRouters'
 import purchaseOrderRoutes from './views/purchase-order/PurchaseOrderRoutes'
+import movementRoutes from './views/movement/MovementRoutes'
 
 
 const redirectRoute = [
@@ -44,6 +45,7 @@ const routes = [
     ...ordersRoutes,
     ...suppliersRoutes,
     ...purchaseOrderRoutes,
+    ...movementRoutes,
     ...formsRoutes,
     ...mapRoutes,
     ...redirectRoute,
