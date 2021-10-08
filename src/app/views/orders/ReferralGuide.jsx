@@ -66,8 +66,8 @@ const ReferralGuide = ({ open, handleClose }) => {
         <Table className="whitespace-pre">
           <TableHead>
             <TableRow>
-              <TableCell className="px-0">Producto</TableCell>
-              <TableCell className="px-0">SKU</TableCell>
+              <TableCell className="px-0">Codigo</TableCell>
+              <TableCell className="px-0">Nombre</TableCell>
               <TableCell className="px-0">Cantidad</TableCell>
               <TableCell className="px-0">Nro. Serie</TableCell>
             </TableRow>
@@ -94,10 +94,10 @@ const ReferralGuide = ({ open, handleClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="secondary">
-          Disagree
+          Cancelar
         </Button>
         <Button onClick={handleClose} color="primary">
-          Agree
+          Generar
         </Button>
       </DialogActions>
     </Dialog>
