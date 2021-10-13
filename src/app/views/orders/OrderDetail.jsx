@@ -88,7 +88,7 @@ const OrderDetail = ({ open, handleClose }) => {
 						<Grid item lg={6} md={6} sm={12} xs={12}>
 							<TextValidator
 								className="mb-4 w-full"
-								label="name"
+								label="Nombre"
 								type="text"
 								name="username"
 								value={username || 'Edwin'}
@@ -96,7 +96,7 @@ const OrderDetail = ({ open, handleClose }) => {
 							/>
 							<TextValidator
 								className="mb-4 w-full"
-								label="email"
+								label="Correo"
 								type="text"
 								name="email"
 								value={username || 'edwincajan@urp.edu.pe'}
@@ -107,7 +107,7 @@ const OrderDetail = ({ open, handleClose }) => {
 						<Grid item lg={6} md={6} sm={12} xs={12}>
 							<TextValidator
 								className="mb-4 w-full"
-								label="phone"
+								label="Telefono"
 								type="text"
 								name="phone"
 								value={username || '987654321'}
@@ -115,7 +115,7 @@ const OrderDetail = ({ open, handleClose }) => {
 							/>
 							<TextValidator
 								className="mb-4 w-full"
-								label="adress"
+								label="Direccion"
 								type="text"
 								name="adress"
 								value={username || 'Av. Alfredo Benavides 5440, Santiago de Surco 15039'}

@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import OrderDetail from './OrderDetail';
 import ReferralGuide from './ReferralGuide';
+import AddSerialNumb from './AddSerialNumb';
 
 const ordersList = [
 	{
@@ -75,6 +76,7 @@ const BookOrder = () => {
 	const [ rowsPerPage, setRowsPerPage ] = React.useState(5);
 	const [ orderDialogOpen, setOrderDialogOpen ] = React.useState(false);
 	const [ referralGuideOpen, setReferralGuideOpen ] = React.useState(false);
+	const [ addSerialNumbOpen, setSerialNumbOpen ] = React.useState(false);
 	const [ page, setPage ] = React.useState(0);
 
 	const handleChangePage = (event, newPage) => {
@@ -101,6 +103,14 @@ const BookOrder = () => {
 	const handleReferralGuideClose = () => {
 		setReferralGuideOpen(false);
 	};
+
+	const handleAddSerialNumbOpen = () => {
+		setSerialNumbOpen(true);
+	};
+
+	const handleAddSerialNumbClose = () => {
+		setSerialNumbOpen(false);
+	}
 
 	return (
 		<div className="m-sm-30">
@@ -136,17 +146,20 @@ const BookOrder = () => {
 										{subscriber.status}
 									</TableCell>
 									<TableCell className="px-0">
-										<Tooltip title="Visualizar pedido">
-											<IconButton onClick={handleOrderDetailOpen}>
-												<Icon color="primary">visibility</Icon>
-											</IconButton>
-										</Tooltip>
+										
 										{subscriber.status === 'reservado' && (
-											<Tooltip title="Generar guia de remision">
-												<IconButton onClick={handleReferralGuideOpen}>
-													<Icon color="primary">assignment</Icon>
-												</IconButton>
-											</Tooltip>
+											<>
+												<Tooltip title="Descargar guia de remision">
+													<IconButton>
+														<Icon color="primary">download</Icon>
+													</IconButton>
+												</Tooltip>
+												<Tooltip title="Generar guia de remision">
+													<IconButton onClick={handleReferralGuideOpen}>
+														<Icon color="primary">assignment</Icon>
+													</IconButton>
+												</Tooltip>
+											</>
 										)}
 										{(subscriber.status === 'empaquetado' ||
 											subscriber.status === 'enviado' ||
@@ -156,6 +169,21 @@ const BookOrder = () => {
 													<Icon color="primary">download</Icon>
 												</IconButton>
 											</Tooltip>
+											
+										)}
+										{subscriber.status === 'generado' && (
+											<>
+												<Tooltip title="Visualizar pedido">
+													<IconButton onClick={handleOrderDetailOpen}>
+														<Icon color="primary">visibility</Icon>
+													</IconButton>
+												</Tooltip>
+												<Tooltip title="Asignar numero de serie">
+													<IconButton onClick={handleAddSerialNumbOpen}>
+														<Icon color="primary">add</Icon>
+													</IconButton>
+												</Tooltip>
+											</>
 										)}
 									</TableCell>
 								</TableRow>
@@ -180,6 +208,7 @@ const BookOrder = () => {
 				/>
 				<OrderDetail open={orderDialogOpen} handleClose={handleOrderDetailClose} />
 				<ReferralGuide open={referralGuideOpen} handleClose={handleReferralGuideClose} />
+				<AddSerialNumb open={addSerialNumbOpen} handleClose={handleAddSerialNumbClose}/>
 			</SimpleCard>
 		</div>
 	);
