@@ -14,16 +14,17 @@ import {
 import OrderDetail from './OrderDetail';
 import ReferralGuide from './ReferralGuide';
 import AddSerialNumb from './AddSerialNumb';
+import { useHistory } from 'react-router';
 
 const ordersList = [
 	{
-		idOrder: '1231231',
+		idOrder: '1e231231',
 		names: 'Edwin Ricardo Cajan Morales',
 		total: 54.6,
 		status: 'generado'
 	},
 	{
-		idOrder: '1231231',
+		idOrder: '12312',
 		names: 'Edwin Ricardo Cajan Morales',
 		total: 54.6,
 		status: 'reservado'
@@ -41,7 +42,7 @@ const ordersList = [
 		status: 'enviado'
 	},
 	{
-		idOrder: '1231231',
+		idOrder: '123r1231',
 		names: 'Edwin Ricardo Cajan Morales',
 		total: 54.6,
 		status: 'finalizado'
@@ -50,7 +51,7 @@ const ordersList = [
 		idOrder: '1231231',
 		names: 'Edwin Ricardo Cajan Morales',
 		total: 54.6,
-		status: 'geenerado'
+		status: 'generado'
 	},
 	{
 		idOrder: '1231231',
@@ -73,7 +74,8 @@ const ordersList = [
 ];
 
 const BookOrder = () => {
-	const [ rowsPerPage, setRowsPerPage ] = React.useState(5);
+	const history = useHistory();
+	const [ rowsPerPage, setRowsPerPage ] = React.useState(10);
 	const [ orderDialogOpen, setOrderDialogOpen ] = React.useState(false);
 	const [ referralGuideOpen, setReferralGuideOpen ] = React.useState(false);
 	const [ addSerialNumbOpen, setSerialNumbOpen ] = React.useState(false);
@@ -104,8 +106,8 @@ const BookOrder = () => {
 		setReferralGuideOpen(false);
 	};
 
-	const handleAddSerialNumbOpen = () => {
-		setSerialNumbOpen(true);
+	const handleAddSerialNumbOpen = (id) => {
+		history.push(`/pedidos/id/${id}`);
 	};
 
 	const handleAddSerialNumbClose = () => {
@@ -179,8 +181,8 @@ const BookOrder = () => {
 													</IconButton>
 												</Tooltip>
 												<Tooltip title="Asignar numero de serie">
-													<IconButton onClick={handleAddSerialNumbOpen}>
-														<Icon color="primary">add</Icon>
+													<IconButton onClick={() => handleAddSerialNumbOpen(subscriber.idOrder)}>
+														<Icon color="primary">add_circle</Icon>
 													</IconButton>
 												</Tooltip>
 											</>
