@@ -1,6 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Breadcrumb, SimpleCard } from 'app/components'
-import { Button, Grid, InputAdornment, TextField } from '@material-ui/core'
+import {
+  Button,
+  Grid,
+  InputAdornment,
+  TextField,
+  Divider,
+  Table,
+  TableBody,
+  TableHead,
+  TableCell,
+  TableRow,
+} from '@material-ui/core'
 import DateFnsUtils from '@date-io/date-fns'
 import { useForm, Controller } from 'react-hook-form'
 import {
@@ -14,9 +25,18 @@ const AddPurchaseOrder = () => {
     formState: { errors },
     handleSubmit,
   } = useForm()
+  const [ordenLista, setOrdenLista] = useState([{
+    "product": "Lapop Lenovo iCore5",
+    "cost": "3",
+    "disccount": "4",
+    "supplier": "Ecma",
+    "quantity": 1,
+    "date": "2021-10-02T05:00:00.000Z"
+}])
 
   const onSubmit = (data) => {
     console.log(data)
+    setOrdenLista([...ordenLista, {...data, date: data.date.toString()}])
   }
 
   return (
@@ -208,6 +228,48 @@ const AddPurchaseOrder = () => {
             </Grid>
           </Grid>
         </form>
+        <span> ‎ </span>
+        <Divider variant="middle" />
+        <span> ‎ </span>
+        <SimpleCard>
+          <Table className="whitespace-pre">
+            <TableHead>
+              <TableRow>
+                <TableCell className="px-0">Producto</TableCell>
+                <TableCell className="px-0">Costo</TableCell>
+                <TableCell className="px-0">Cantidad</TableCell>
+                <TableCell className="px-0">Descuento</TableCell>
+                <TableCell className="px-0">Proveedor</TableCell>
+                <TableCell className="px-0">Fecha de llegada</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {console.log(ordenLista)}
+              {ordenLista.map((data, index) => (
+                <TableRow key={index}>
+                  <TableCell className="px-0 capitalize" align="left">
+                    {data.product}
+                  </TableCell>
+                  <TableCell className="px-0 capitalize" align="left">
+                    {data.cost}
+                  </TableCell>
+                  <TableCell className="px-0 capitalize" align="left">
+                    {data.quantity}
+                  </TableCell>
+                  <TableCell className="px-0 capitalize" align="left">
+                    {data.disccount}
+                  </TableCell>
+                  <TableCell className="px-0 capitalize" align="left">
+                    {data.supplier}
+                  </TableCell>
+                  <TableCell className="px-0 capitalize" align="left">
+                    {data.date}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </SimpleCard>
       </SimpleCard>
     </div>
   )
