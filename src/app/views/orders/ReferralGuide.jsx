@@ -104,4 +104,4 @@ const ReferralGuide = ({ open, handleClose }) => {
   )
 }
 
-export default ReferralGuide
+export default ReferralGuide;
