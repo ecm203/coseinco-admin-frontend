@@ -45,11 +45,6 @@ export const navigations = [
 					name: 'Reservar pedido',
 					iconText: 'SI',
 					path: '/pedidos/reservar'
-				},
-				{
-					name: 'Listar pedidos',
-					iconText: 'SI',
-					path: '/pedidos/listar'
 				}
 			]
 		},

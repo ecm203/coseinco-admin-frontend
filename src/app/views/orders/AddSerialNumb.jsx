@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Breadcrumb, SimpleCard, MaxtBackdrop } from 'app/components'
+import {
+  Breadcrumb,
+  SimpleCard,
+  MaxtBackdrop,
+  MatxSnackbar,
+} from 'app/components'
 import {
   Button,
   TextField,
@@ -15,54 +20,73 @@ import {
   Grid,
 } from '@material-ui/core'
 import SerialNumber from './SerialNumber'
-import { useParams } from 'react-router'
-
+import { useHistory, useLocation } from 'react-router'
 
 const apiUrl = 'http://localhost:5000/api'
 
 const AddSerialNumb = () => {
   const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
   const [serialNumber, setSerialNumberOpen] = useState(false)
-  const { orderNum } = useParams()
   const [order, setOrder] = useState(null)
   const [productSelected, setProductSelected] = useState(null)
+  const history = useHistory()
+  const { search } = useLocation()
+  const searchParams = new URLSearchParams(search)
+  const orderCode = searchParams.get('codigo')
+  const isAddSerialNumber = searchParams.get('serialNumber')
 
-  const handlerSerialNumberOpen = (producto) => {
+  const handleSerialNumberOpen = (producto) => {
     setProductSelected(producto)
     setSerialNumberOpen(true)
   }
 
-  const handlerSerialNumberClose = () => {
+  const handleSerialNumberClose = () => {
     setSerialNumberOpen(false)
   }
 
   useEffect(() => {
-    console.log(orderNum)
+    console.log(orderCode)
     axios
       .post(`${apiUrl}/pedidos/getPedidoReservabyID`, {
-        id: orderNum,
+        id: orderCode,
       })
       .then(
         (response) => {
           setOrder(response.data)
+          console.log(response.data)
           setIsLoading(false)
         },
         (error) => {
           setIsLoading(false)
+          setIsError(true)
         }
       )
-  }, [orderNum])
+  }, [orderCode])
+
+  const handleBackTo = () => {
+    history.push('/pedidos/reservar')
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    history.push('/')
+    setIsError(false)
+  }
+
   return (
     <>
       <MaxtBackdrop isOpen={isLoading} />
-      {!isLoading && (
+      {!isLoading && !isError && (
         <>
           <div className="m-sm-30">
             <div className="mb-sm-30">
               <Breadcrumb
                 routeSegments={[
                   { name: 'Reservar pedido', path: '/pedidos/reservar' },
-                  { name: 'Pedido: ' + orderNum },
+                  { name: 'Pedido: ' + orderCode },
                 ]}
               />
             </div>
@@ -127,8 +151,11 @@ const AddSerialNumb = () => {
                   <TableRow>
                     <TableCell className="px-0">Producto</TableCell>
                     <TableCell className="px-0">Cantidad</TableCell>
-                    <TableCell className="px-0">Observacion</TableCell>
-                    <TableCell className="px-0">Acciones</TableCell>
+                    <TableCell className="px-0">Precio/U</TableCell>
+                    <TableCell className="px-0">Subtotal</TableCell>
+                    {isAddSerialNumber === 'true' && (
+                      <TableCell className="px-0">Acciones</TableCell>
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -140,24 +167,30 @@ const AddSerialNumb = () => {
                       <TableCell className="px-0 capitalize" align="left">
                         {subscriber.cantidad}
                       </TableCell>
-                      <TableCell className="px-0">
-                        <Tooltip title="Completar campos vacios">
-                          <IconButton color="secondary">
-                            <Icon className="">cancel</Icon>
-                          </IconButton>
-                        </Tooltip>
+                      <TableCell className="px-0 capitalize" align="left">
+                        {subscriber.preciounitario}
                       </TableCell>
-                      <TableCell className="px-0">
-                        <Tooltip title="Asignar numero de serie">
-                          <IconButton
-                            onClick={() => {
-                              handlerSerialNumberOpen(subscriber)
-                            }}
-                          >
-                            <Icon color="primary">assignment</Icon>
-                          </IconButton>
-                        </Tooltip>
+                      <TableCell className="px-0 capitalize" align="left">
+                        {subscriber.subtotal}
                       </TableCell>
+                      {isAddSerialNumber === 'true' && (
+                        <TableCell className="px-0">
+                          <Tooltip title="Completar campos vacios">
+                            <IconButton color="secondary">
+                              <Icon className="">cancel</Icon>
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Asignar numero de serie">
+                            <IconButton
+                              onClick={() => {
+                                handleSerialNumberOpen(subscriber)
+                              }}
+                            >
+                              <Icon color="primary">assignment</Icon>
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -169,24 +202,43 @@ const AddSerialNumb = () => {
                 justify="flex-end"
               >
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <Button fullWidth color="secondary" variant="outlined">
+                  <Button
+                    fullWidth
+                    color="secondary"
+                    variant="outlined"
+                    onClick={handleBackTo}
+                  >
                     <span className="capitalize">Volver</span>
                   </Button>
                 </Grid>
-                <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <Button fullWidth color="primary" variant="contained">
-                    <span className="capitalize">Guardar</span>
-                  </Button>
-                </Grid>
+                {isAddSerialNumber === 'true' && (
+                  <Grid item lg={3} md={3} sm={12} xs={12}>
+                    <Button fullWidth color="primary" variant="contained">
+                      <span className="capitalize">Guardar</span>
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
             </SimpleCard>
           </div>
           <SerialNumber
             product={productSelected}
             open={serialNumber}
-            handleClose={handlerSerialNumberClose}
+            handleClose={handleSerialNumberClose}
           />
         </>
+      )}
+      {!isLoading && isError && (
+        <MatxSnackbar
+          open={isError}
+          title={'Error'}
+          message={
+            <>
+              Sucedió algo inesperado
+            </>
+          }
+          handleClose={handleClose}
+        />
       )}
     </>
   )

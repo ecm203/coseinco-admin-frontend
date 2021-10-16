@@ -1,6 +1,5 @@
 import AddSerialNumb from "./AddSerialNumb";
 import BookOrder from "./BookOrder";
-import ListOrder from "./ListOrder";
 
 const ordersRoutes = [
   {
@@ -8,11 +7,7 @@ const ordersRoutes = [
     component: BookOrder,
   },
   {
-    path: '/pedidos/listar',
-    component: ListOrder,
-  },
-  {
-    path: '/pedidos/id/:orderNum',
+    path: '/pedidos/',
     component: AddSerialNumb,
   }
 ]

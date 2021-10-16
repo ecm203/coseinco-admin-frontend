@@ -89,10 +89,10 @@ const SerialNumber = ({ open, handleClose, product }) => {
             )}
           </DialogContent>
           <DialogActions>
-            <Button color="secondary" variant="outlined" type="button" onClick={handleClose}>
+            <Button color="secondary" variant="text" type="button" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button color="primary" variant="outlined" type="submit">
+            <Button color="primary" variant="text" type="submit">
               Guardar
             </Button>
           </DialogActions>

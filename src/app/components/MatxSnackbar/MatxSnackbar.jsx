@@ -1,40 +1,27 @@
 import React from 'react'
-import { IconButton, Icon, Snackbar } from '@material-ui/core'
+import { Snackbar, Alert, AlertTitle } from '@mui/material'
 
 const MatxSnackbar = ({
-    open,
-    message,
-    duration = 6000,
-    horizontal = 'center',
-    vertical = 'bottom',
-    handleClose,
+  open,
+  title,
+  message,
+  horizontal = 'center',
+  vertical = 'bottom',
+  handleClose,
 }) => {
-    return (
-        <Snackbar
-            anchorOrigin={{
-                vertical: { vertical },
-                horizontal: { horizontal },
-            }}
-            open={open}
-            autoHideDuration={duration}
-            onClose={handleClose}
-            ContentProps={{
-                'aria-describedby': 'message-id',
-            }}
-            message={<span id="message-id">{message}</span>}
-            action={[
-                <IconButton
-                    key="close"
-                    aria-label="close"
-                    color="inherit"
-                    // className="check"
-                    onClick={handleClose}
-                >
-                    <Icon>close</Icon>
-                </IconButton>,
-            ]}
-        />
-    )
+  return (
+    <Snackbar
+      anchorOrigin={{ vertical, horizontal }}
+      key={{ vertical, horizontal }}
+      open={open}
+      onClose={handleClose}
+    >
+      <Alert onClose={handleClose} variant="standard" severity="error">
+        <AlertTitle>{title}</AlertTitle>
+        {message}
+      </Alert>
+    </Snackbar>
+  )
 }
 
 export default MatxSnackbar
