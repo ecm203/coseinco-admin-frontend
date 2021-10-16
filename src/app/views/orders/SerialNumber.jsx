@@ -17,8 +17,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const apiUrl = 'http://localhost:5000/api-admin'
 
 const SerialNumber = ({ open, handleClose, product }) => {
-  const [serialNumbers, setSerialNumbers] = useState()
+  const [serialNumbers, setSerialNumbers] = useState(null)
   const [value, setValue] = useState([])
+  const [errorInput, setErrorInput] = useState(null)
 
   useEffect(() => {
     if (product) {
@@ -28,27 +29,25 @@ const SerialNumber = ({ open, handleClose, product }) => {
           const data = response.data.nSeries.map((el) => ({
             label: el,
           }))
-          setSerialNumbers(data);
-          setValue([...Array(product.cantidad)].map((e) => ''))
+          setSerialNumbers(data)
         })
     }
   }, [product])
 
-  const handleInputChange = (event, newValue, index) => {
-    console.log(index, newValue, value)
-    if (newValue) {
-      value[index] = newValue.label
-      const listSerialNumber = serialNumbers.filter((el) => el !== newValue);
-      console.log(listSerialNumber);
-      setSerialNumbers(listSerialNumber);
-    } else {
-      value[index] = ''
-    }
+  const handleInputChange = (event, newValue) => {
+    setErrorInput(null);
+    setValue(newValue);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('hola mundo')
+    if(value.length > product.cantidad || value.length < product.cantidad) {
+      setErrorInput(`Debe seleccionar ${product.cantidad} números de serie`)
+    } else if(value.length === 0) {
+      setErrorInput(`Campo requerido`)
+    } else {
+      console.log(value);
+    }
   }
   return (
     <div>
@@ -66,30 +65,31 @@ const SerialNumber = ({ open, handleClose, product }) => {
         </DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
-            {serialNumbers &&
-              [...Array(product?.cantidad)].map((i, index) => (
-                <Autocomplete
-                  key={index}
-                  className='mb-5'
-                  value={value[i]}
-                  options={serialNumbers}
-                  getOptionLabel={(option) => option.label}
-                  fullWidth
-                  onChange={(event, newValue) => {
-                    handleInputChange(event, newValue, index)
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Número de serie"
-                      variant="outlined"
-                    />
-                  )}
-                />
-              ))}
+            {serialNumbers && (
+              <Autocomplete
+                multiple
+                value={value}
+                options={serialNumbers}
+                getOptionLabel={(option) => option.label}
+                fullWidth
+                filterSelectedOptions
+                onChange={(event, newValue) => {
+                  handleInputChange(event, newValue)
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error = {!!errorInput}
+                    helperText= {errorInput}
+                    label="Número de serie"
+                    variant="outlined"
+                  />
+                )}
+              />
+            )}
           </DialogContent>
           <DialogActions>
-            <Button color="secondary" variant="outlined" type="submit">
+            <Button color="secondary" variant="outlined" type="button" onClick={handleClose}>
               Cancelar
             </Button>
             <Button color="primary" variant="outlined" type="submit">
