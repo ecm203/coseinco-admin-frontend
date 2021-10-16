@@ -25,18 +25,20 @@ const AddPurchaseOrder = () => {
     formState: { errors },
     handleSubmit,
   } = useForm()
-  const [ordenLista, setOrdenLista] = useState([{
-    "product": "Lapop Lenovo iCore5",
-    "cost": "3",
-    "disccount": "4",
-    "supplier": "Ecma",
-    "quantity": 1,
-    "date": "2021-10-02T05:00:00.000Z"
-}])
+  const [ordenLista, setOrdenLista] = useState([
+    {
+      product: 'Lapop Lenovo iCore5',
+      cost: '3',
+      disccount: '4',
+      supplier: 'Ecma',
+      quantity: 1,
+      date: '2021-10-02T05:00:00.000Z',
+    },
+  ])
 
   const onSubmit = (data) => {
     console.log(data)
-    setOrdenLista([...ordenLista, {...data, date: data.date.toString()}])
+    setOrdenLista([...ordenLista, { ...data, date: data.date.toString() }])
   }
 
   return (
