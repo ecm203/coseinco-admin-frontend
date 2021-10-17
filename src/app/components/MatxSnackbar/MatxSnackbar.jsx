@@ -8,6 +8,7 @@ const MatxSnackbar = ({
   horizontal = 'center',
   vertical = 'bottom',
   handleClose,
+  duration
 }) => {
   return (
     <Snackbar
@@ -15,8 +16,9 @@ const MatxSnackbar = ({
       key={{ vertical, horizontal }}
       open={open}
       onClose={handleClose}
+      autoHideDuration={duration ? duration : null}
     >
-      <Alert onClose={handleClose} variant="standard" severity="error">
+      <Alert onClose={handleClose} variant="standard" severity="error" >
         <AlertTitle>{title}</AlertTitle>
         {message}
       </Alert>

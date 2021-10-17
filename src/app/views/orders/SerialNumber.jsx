@@ -16,37 +16,43 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 })
 const apiUrl = 'http://localhost:5000/api-admin'
 
-const SerialNumber = ({ open, handleClose, product }) => {
+const SerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
   const [serialNumbers, setSerialNumbers] = useState(null)
   const [value, setValue] = useState([])
   const [errorInput, setErrorInput] = useState(null)
 
   useEffect(() => {
-    if (product) {
+    if (open === false) {
+      setValue([])
+      setErrorInput(null)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (product && open) {
       axios
         .get(`${apiUrl}/inventario/getSeriesByProductId/${product.productoID}`)
         .then((response) => {
-          const data = response.data.nSeries.map((el) => ({
-            label: el,
-          }))
-          setSerialNumbers(data)
+          setSerialNumbers(response.data.nSeries)
+          setValue(product.serialNumbers)
         })
     }
-  }, [product])
+  }, [product, open])
 
   const handleInputChange = (event, newValue) => {
-    setErrorInput(null);
-    setValue(newValue);
+    setErrorInput(null)
+    setValue(newValue)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if(value.length > product.cantidad || value.length < product.cantidad) {
+    if (value.length > product.cantidad || value.length < product.cantidad) {
       setErrorInput(`Debe seleccionar ${product.cantidad} números de serie`)
-    } else if(value.length === 0) {
+    } else if (value.length === 0) {
       setErrorInput(`Campo requerido`)
     } else {
-      console.log(value);
+      handleSaveSn(product.productoID, value)
+      handleClose()
     }
   }
   return (
@@ -65,12 +71,11 @@ const SerialNumber = ({ open, handleClose, product }) => {
         </DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
-            {serialNumbers && (
+            {serialNumbers && product && (
               <Autocomplete
                 multiple
                 value={value}
                 options={serialNumbers}
-                getOptionLabel={(option) => option.label}
                 fullWidth
                 filterSelectedOptions
                 onChange={(event, newValue) => {
@@ -79,8 +84,8 @@ const SerialNumber = ({ open, handleClose, product }) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    error = {!!errorInput}
-                    helperText= {errorInput}
+                    error={!!errorInput}
+                    helperText={errorInput}
                     label="Número de serie"
                     variant="outlined"
                   />
@@ -89,7 +94,12 @@ const SerialNumber = ({ open, handleClose, product }) => {
             )}
           </DialogContent>
           <DialogActions>
-            <Button color="secondary" variant="text" type="button" onClick={handleClose}>
+            <Button
+              color="secondary"
+              variant="text"
+              type="button"
+              onClick={handleClose}
+            >
               Cancelar
             </Button>
             <Button color="primary" variant="text" type="submit">

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Breadcrumb, SimpleCard, MaxtBackdrop, MatxSnackbar } from 'app/components'
+import {
+  Breadcrumb,
+  SimpleCard,
+  MaxtBackdrop,
+  MatxSnackbar,
+} from 'app/components'
 import {
   IconButton,
   Table,
@@ -112,19 +117,21 @@ const BookOrder = () => {
                           {subscriber.estado}
                         </TableCell>
                         <TableCell className="px-0">
+                          <Tooltip title="Visualizar pedido">
+                            <IconButton
+                              onClick={() =>
+                                handleOrderDetailOpen(subscriber.codigo)
+                              }
+                            >
+                              <Icon color="primary">visibility</Icon>
+                            </IconButton>
+                          </Tooltip>
                           {subscriber.estado === 'reservado' && (
-                            <>
-                              <Tooltip title="Descargar guia de remision">
-                                <IconButton>
-                                  <Icon color="primary">download</Icon>
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="Generar guia de remision">
-                                <IconButton onClick={handleReferralGuideOpen}>
-                                  <Icon color="primary">assignment</Icon>
-                                </IconButton>
-                              </Tooltip>
-                            </>
+                            <Tooltip title="Generar guia de remision">
+                              <IconButton onClick={handleReferralGuideOpen}>
+                                <Icon color="primary">assignment</Icon>
+                              </IconButton>
+                            </Tooltip>
                           )}
                           {(subscriber.estado === 'empaquetado' ||
                             subscriber.estado === 'enviado' ||
@@ -137,15 +144,6 @@ const BookOrder = () => {
                           )}
                           {subscriber.estado === 'generado' && (
                             <>
-                              <Tooltip title="Visualizar pedido">
-                                <IconButton
-                                  onClick={() =>
-                                    handleOrderDetailOpen(subscriber.codigo)
-                                  }
-                                >
-                                  <Icon color="primary">visibility</Icon>
-                                </IconButton>
-                              </Tooltip>
                               <Tooltip title="Asignar numero de serie">
                                 <IconButton
                                   onClick={() =>
@@ -189,11 +187,7 @@ const BookOrder = () => {
         <MatxSnackbar
           open={isError}
           title={'Error'}
-          message={
-            <>
-              Sucedió algo inesperado intentelo nuevamente
-            </>
-          }
+          message={<>Sucedió algo inesperado intentelo nuevamente</>}
           handleClose={handleClose}
         />
       )}

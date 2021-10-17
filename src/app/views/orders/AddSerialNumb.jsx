@@ -18,6 +18,7 @@ import {
   IconButton,
   Icon,
   Grid,
+  Box,
 } from '@material-ui/core'
 import SerialNumber from './SerialNumber'
 import { useHistory, useLocation } from 'react-router'
@@ -27,6 +28,7 @@ const apiUrl = 'http://localhost:5000/api'
 const AddSerialNumb = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [serialNumber, setSerialNumberOpen] = useState(false)
   const [order, setOrder] = useState(null)
   const [productSelected, setProductSelected] = useState(null)
@@ -45,21 +47,28 @@ const AddSerialNumb = () => {
     setSerialNumberOpen(false)
   }
 
+  const handleSaveSerialNumber = (productId, serialNumbers) => {
+    const productIndex = order.productos.findIndex(
+      (product) => product.productoID === productId
+    )
+    order.productos[productIndex].serialNumbers = serialNumbers
+  }
+
   useEffect(() => {
-    console.log(orderCode)
     axios
       .post(`${apiUrl}/pedidos/getPedidoReservabyID`, {
         id: orderCode,
       })
       .then(
         (response) => {
+          response.data.productos.map((product) => (product.serialNumbers = []))
           setOrder(response.data)
-          console.log(response.data)
           setIsLoading(false)
         },
         (error) => {
           setIsLoading(false)
           setIsError(true)
+          setErrorMessage('Sucedió algo inesperado')
         }
       )
   }, [orderCode])
@@ -72,14 +81,42 @@ const AddSerialNumb = () => {
     if (reason === 'clickaway') {
       return
     }
-    history.push('/')
     setIsError(false)
+  }
+
+  const handleSaveGuide = () => {
+    const productFiltered = order.productos.filter(
+      (product) => product.serialNumbers.length === 0
+    )
+    if (productFiltered.length === 0) {
+      setIsLoading(true)
+      const productos = order.productos.map((product) => ({
+        productoID: product.productoID,
+        serialNumbers: product.serialNumbers,
+      }))
+      const data = {
+        codigo: order.pedido.codigoPedido,
+        productos: productos,
+      }
+      axios
+        .post('http://localhost:5000/api-admin/guia/createGuia', data)
+        .then((response) => {
+          console.log(response)
+          setIsLoading(false)
+          history.push('/pedidos/reservar')
+        }, error => {
+          setIsLoading(false)
+        })
+    } else {
+      setIsError(true)
+      setErrorMessage('Debe asignar todos los números de serie')
+    }
   }
 
   return (
     <>
       <MaxtBackdrop isOpen={isLoading} />
-      {!isLoading && !isError && (
+      {!isLoading && order && (
         <>
           <div className="m-sm-30">
             <div className="mb-sm-30">
@@ -149,12 +186,13 @@ const AddSerialNumb = () => {
               <Table className="whitespace-pre">
                 <TableHead>
                   <TableRow>
+                    <TableCell className="px-0">SKU</TableCell>
                     <TableCell className="px-0">Producto</TableCell>
                     <TableCell className="px-0">Cantidad</TableCell>
-                    <TableCell className="px-0">Precio/U</TableCell>
-                    <TableCell className="px-0">Subtotal</TableCell>
                     {isAddSerialNumber === 'true' && (
-                      <TableCell className="px-0">Acciones</TableCell>
+                      <>
+                        <TableCell className="px-0">Acciones</TableCell>
+                      </>
                     )}
                   </TableRow>
                 </TableHead>
@@ -162,34 +200,41 @@ const AddSerialNumb = () => {
                   {order?.productos.map((subscriber, index) => (
                     <TableRow key={index}>
                       <TableCell className="px-0 capitalize" align="left">
+                        {subscriber.SKU}
+                      </TableCell>
+                      <TableCell className="capitalize">
                         {subscriber.nombre}
                       </TableCell>
                       <TableCell className="px-0 capitalize" align="left">
-                        {subscriber.cantidad}
-                      </TableCell>
-                      <TableCell className="px-0 capitalize" align="left">
-                        {subscriber.preciounitario}
-                      </TableCell>
-                      <TableCell className="px-0 capitalize" align="left">
-                        {subscriber.subtotal}
+                        <Box display="flex" alignItems="center">
+                          {subscriber.cantidad}
+                          {subscriber.serialNumbers.length === 0 &&
+                            isAddSerialNumber === 'true' && (
+                              <Tooltip title="Debe asignar los S/N del producto">
+                                <Icon
+                                  style={{ marginLeft: '.5rem' }}
+                                  color="error"
+                                >
+                                  error
+                                </Icon>
+                              </Tooltip>
+                            )}
+                        </Box>
                       </TableCell>
                       {isAddSerialNumber === 'true' && (
-                        <TableCell className="px-0">
-                          <Tooltip title="Completar campos vacios">
-                            <IconButton color="secondary">
-                              <Icon className="">cancel</Icon>
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Asignar numero de serie">
-                            <IconButton
-                              onClick={() => {
-                                handleSerialNumberOpen(subscriber)
-                              }}
-                            >
-                              <Icon color="primary">assignment</Icon>
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
+                        <>
+                          <TableCell className="px-0">
+                            <Tooltip title="Asignar numero de serie">
+                              <IconButton
+                                onClick={() => {
+                                  handleSerialNumberOpen(subscriber)
+                                }}
+                              >
+                                <Icon color="primary">assignment</Icon>
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                        </>
                       )}
                     </TableRow>
                   ))}
@@ -213,7 +258,13 @@ const AddSerialNumb = () => {
                 </Grid>
                 {isAddSerialNumber === 'true' && (
                   <Grid item lg={3} md={3} sm={12} xs={12}>
-                    <Button fullWidth color="primary" variant="contained">
+                    <Button
+                      fullWidth
+                      color="primary"
+                      variant="contained"
+                      type="button"
+                      onClick={handleSaveGuide}
+                    >
                       <span className="capitalize">Guardar</span>
                     </Button>
                   </Grid>
@@ -225,6 +276,7 @@ const AddSerialNumb = () => {
             product={productSelected}
             open={serialNumber}
             handleClose={handleSerialNumberClose}
+            handleSaveSn={handleSaveSerialNumber}
           />
         </>
       )}
@@ -232,12 +284,9 @@ const AddSerialNumb = () => {
         <MatxSnackbar
           open={isError}
           title={'Error'}
-          message={
-            <>
-              Sucedió algo inesperado
-            </>
-          }
+          message={errorMessage}
           handleClose={handleClose}
+          duration={3000}
         />
       )}
     </>
