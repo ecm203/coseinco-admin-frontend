@@ -7,6 +7,7 @@ import {
   MatxSnackbar,
 } from 'app/components'
 import {
+  Avatar,
   Button,
   TextField,
   Table,
@@ -21,11 +22,21 @@ import {
   Box,
 } from '@material-ui/core'
 import SerialNumber from './SerialNumber'
+import { makeStyles } from '@material-ui/core/styles'
 import { useHistory, useLocation } from 'react-router'
+import clsx from 'clsx'
 
 const apiUrl = 'http://localhost:5000/api'
 
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  iconSucces: {
+    color: palette.success.main,
+    marginLeft: '.5rem',
+  },
+}))
+
 const AddSerialNumb = () => {
+  const classes = useStyles()
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -98,15 +109,16 @@ const AddSerialNumb = () => {
         codigo: order.pedido.codigoPedido,
         productos: productos,
       }
-      axios
-        .post('http://localhost:5000/api-admin/guia/createGuia', data)
-        .then((response) => {
+      axios.post('http://localhost:5000/api-admin/guia/createGuia', data).then(
+        (response) => {
           console.log(response)
           // setIsLoading(false)
           history.push('/pedidos/reservar')
-        }, error => {
+        },
+        (error) => {
           setIsLoading(false)
-        })
+        }
+      )
     } else {
       setIsError(true)
       setErrorMessage('Debe asignar todos los números de serie')
@@ -183,63 +195,91 @@ const AddSerialNumb = () => {
               </SimpleCard>
             </div>
             <SimpleCard title={'Productos'}>
-              <Table className="whitespace-pre">
-                <TableHead>
-                  <TableRow>
-                    <TableCell className="px-0">SKU</TableCell>
-                    <TableCell className="px-0">Producto</TableCell>
-                    <TableCell className="px-0">Cantidad</TableCell>
-                    {isAddSerialNumber === 'true' && (
-                      <>
-                        <TableCell className="px-0">Acciones</TableCell>
-                      </>
-                    )}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {order?.productos.map((subscriber, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="px-0 capitalize" align="left">
-                        {subscriber.SKU}
+              <div className="overflow-auto">
+                <Table className={'whitespace-pre min-w-600'}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="px-0" colSpan={1}>
+                        SKU
                       </TableCell>
-                      <TableCell className="capitalize">
-                        {subscriber.nombre}
+                      <TableCell className="px-0" colSpan={4}>
+                        Producto
                       </TableCell>
-                      <TableCell className="px-0 capitalize" align="left">
-                        <Box display="flex" alignItems="center">
-                          {subscriber.cantidad}
-                          {subscriber.serialNumbers.length === 0 &&
-                            isAddSerialNumber === 'true' && (
-                              <Tooltip title="Debe asignar los S/N del producto">
-                                <Icon
-                                  style={{ marginLeft: '.5rem' }}
-                                  color="error"
-                                >
-                                  error
-                                </Icon>
-                              </Tooltip>
-                            )}
-                        </Box>
+                      <TableCell className="pr-5" align="right" colSpan={1}>
+                        Cantidad
                       </TableCell>
                       {isAddSerialNumber === 'true' && (
                         <>
-                          <TableCell className="px-0">
-                            <Tooltip title="Asignar numero de serie">
-                              <IconButton
-                                onClick={() => {
-                                  handleSerialNumberOpen(subscriber)
-                                }}
-                              >
-                                <Icon color="primary">assignment</Icon>
-                              </IconButton>
-                            </Tooltip>
+                          <TableCell className="px-0" colSpan={1}>
+                            Acciones
                           </TableCell>
                         </>
                       )}
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {order?.productos.map((subscriber, index) => (
+                      <TableRow key={index}>
+                        <TableCell
+                          colSpan={1}
+                          className="px-0 capitalize"
+                          align="left"
+                        >
+                          {subscriber.SKU}
+                        </TableCell>
+                        <TableCell colSpan={4} className="px-0 pr-3">
+                          <div className="flex items-center">
+                            <Avatar src={subscriber.imagen} />
+                            <p className="m-0 ml-4">{subscriber.nombre}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell
+                          colSpan={1}
+                          className="px-0 pr-5 capitalize"
+                          align="left"
+                        >
+                          <Box display="flex" alignItems="center" justifyContent="end">
+                            {subscriber.cantidad}
+                            {subscriber.serialNumbers.length === 0 &&
+                              isAddSerialNumber === 'true' && (
+                                <Tooltip title="Debe asignar los S/N del producto">
+                                  <Icon className="ml-2" color="error">
+                                    error
+                                  </Icon>
+                                </Tooltip>
+                              )}
+                            {subscriber.serialNumbers.length > 0 &&
+                              isAddSerialNumber === 'true' && (
+                                <Tooltip title="Números de serie asignados">
+                                  <Icon
+                                    className={clsx(classes.iconSucces, 'ml-2')}
+                                  >
+                                    check_circle
+                                  </Icon>
+                                </Tooltip>
+                              )}
+                          </Box>
+                        </TableCell>
+                        {isAddSerialNumber === 'true' && (
+                          <>
+                            <TableCell colSpan={1} className="px-0">
+                              <Tooltip title="Asignar numero de serie">
+                                <IconButton
+                                  onClick={() => {
+                                    handleSerialNumberOpen(subscriber)
+                                  }}
+                                >
+                                  <Icon color="primary">assignment</Icon>
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                          </>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
               <Grid
                 container
                 spacing={3}

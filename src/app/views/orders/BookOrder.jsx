@@ -91,11 +91,21 @@ const BookOrder = () => {
             <Table className="whitespace-pre">
               <TableHead>
                 <TableRow>
-                  <TableCell className="px-0">ID Pedido</TableCell>
-                  <TableCell className="px-0">Nombres y apellidos</TableCell>
-                  <TableCell className="px-0">Cantidad</TableCell>
-                  <TableCell className="px-0">Estado</TableCell>
-                  <TableCell className="px-0">Acciones</TableCell>
+                  <TableCell colSpan={1} className="px-0">
+                    ID Pedido
+                  </TableCell>
+                  <TableCell colSpan={4} className="px-0">
+                    Nombres y apellidos
+                  </TableCell>
+                  <TableCell colSpan={1} className="pr-5" align="right">
+                    Cantidad
+                  </TableCell>
+                  <TableCell colSpan={2} className="px-0">
+                    Estado
+                  </TableCell>
+                  <TableCell colSpan={2} className="px-0">
+                    Acciones
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -104,21 +114,36 @@ const BookOrder = () => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((subscriber, index) => (
                       <TableRow key={index}>
-                        <TableCell className="px-0 capitalize" align="left">
+                        <TableCell
+                          colSpan={1}
+                          className="px-0 capitalize"
+                          align="left"
+                        >
                           {subscriber.codigo}
                         </TableCell>
-                        <TableCell className="px-0 capitalize" align="left">
+                        <TableCell
+                          colSpan={4}
+                          className="px-0 capitalize"
+                          align="left"
+                        >
                           {subscriber.cliente.name +
                             ' ' +
                             subscriber.cliente.lastName}
                         </TableCell>
-                        <TableCell className="px-0 capitalize" align="left">
+                        <TableCell
+                          colSpan={1}
+                          className="pr-5" align="right"
+                        >
                           {subscriber.cantidad}
                         </TableCell>
-                        <TableCell className="px-0 capitalize" align="left">
+                        <TableCell
+                          colSpan={2}
+                          className="px-0 capitalize"
+                          align="left"
+                        >
                           {subscriber.estado}
                         </TableCell>
-                        <TableCell className="px-0">
+                        <TableCell colSpan={2} className="px-0">
                           <Tooltip title="Visualizar pedido">
                             <IconButton
                               onClick={() =>
@@ -130,7 +155,11 @@ const BookOrder = () => {
                           </Tooltip>
                           {subscriber.estado === 'reservado' && (
                             <Tooltip title="Generar guia de remision">
-                              <IconButton onClick={() => handleReferralGuideOpen(subscriber.codigo)}>
+                              <IconButton
+                                onClick={() =>
+                                  handleReferralGuideOpen(subscriber.codigo)
+                                }
+                              >
                                 <Icon color="primary">assignment</Icon>
                               </IconButton>
                             </Tooltip>
