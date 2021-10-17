@@ -30,6 +30,7 @@ const BookOrder = () => {
   const [referralGuideOpen, setReferralGuideOpen] = useState(false)
   const [page, setPage] = useState(0)
   const [orders, setOrders] = useState(null)
+  const [codeSelected, setCodeSelected] = useState(null)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -52,8 +53,9 @@ const BookOrder = () => {
     history.push(`/pedidos/?codigo=${id}&serialNumber=false`)
   }
 
-  const handleReferralGuideOpen = () => {
+  const handleReferralGuideOpen = (code) => {
     setReferralGuideOpen(true)
+    setCodeSelected(code)
   }
 
   const handleReferralGuideClose = () => {
@@ -128,7 +130,7 @@ const BookOrder = () => {
                           </Tooltip>
                           {subscriber.estado === 'reservado' && (
                             <Tooltip title="Generar guia de remision">
-                              <IconButton onClick={handleReferralGuideOpen}>
+                              <IconButton onClick={() => handleReferralGuideOpen(subscriber.codigo)}>
                                 <Icon color="primary">assignment</Icon>
                               </IconButton>
                             </Tooltip>
@@ -178,6 +180,7 @@ const BookOrder = () => {
             />
             <ReferralGuide
               open={referralGuideOpen}
+              orderCode={codeSelected}
               handleClose={handleReferralGuideClose}
             />
           </SimpleCard>
