@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import { convertHexToRGB } from 'utils'
 
 export const variableStyles = makeStyles((theme) => ({

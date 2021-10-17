@@ -1,7 +1,11 @@
 import React from 'react'
-import { ThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 
 const SecondarySidenavTheme = ({ theme, classes, children, open }) => {
-    return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    return (
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </StyledEngineProvider>
+    );
 }
 export default SecondarySidenavTheme

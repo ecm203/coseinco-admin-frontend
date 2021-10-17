@@ -6,12 +6,13 @@ import {
     Avatar,
     useMediaQuery,
     Hidden,
-} from '@material-ui/core'
+} from '@mui/material'
 import { MatxMenu, MatxSearchBox } from 'app/components'
 import NotificationBar from '../../NotificationBar/NotificationBar'
 import { Link } from 'react-router-dom'
 import ShoppingCart from '../../ShoppingCart/ShoppingCart'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 import useAuth from 'app/hooks/useAuth'
 import useSettings from 'app/hooks/useSettings'
@@ -30,11 +31,11 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
             height: 80,
             paddingLeft: 18,
             paddingRight: 20,
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 paddingLeft: 16,
                 paddingRight: 16,
             },
-            [theme.breakpoints.down('xs')]: {
+            [theme.breakpoints.down('sm')]: {
                 paddingLeft: 14,
                 paddingRight: 16,
             },
@@ -67,7 +68,7 @@ const Layout1Topbar = () => {
     const classes = useStyles()
     const { settings, updateSettings } = useSettings()
     const { logout, user } = useAuth()
-    const isMdScreen = useMediaQuery(theme.breakpoints.down('md'))
+    const isMdScreen = useMediaQuery(theme.breakpoints.down('lg'))
     const fixed = settings?.layout1Settings?.topbar?.fixed
 
     const updateSidebarMode = (sidebarSettings) => {
@@ -102,22 +103,20 @@ const Layout1Topbar = () => {
             <div className={clsx({ 'topbar-hold': true, fixed: fixed })}>
                 <div className="flex justify-between items-center h-full">
                     <div className="flex">
-                        <IconButton
-                            onClick={handleSidebarToggle}
-                        >
+                        <IconButton onClick={handleSidebarToggle} size="large">
                             <Icon>menu</Icon>
                         </IconButton>
 
                         <div className="hide-on-mobile">
-                            <IconButton>
+                            <IconButton size="large">
                                 <Icon>mail_outline</Icon>
                             </IconButton>
 
-                            <IconButton>
+                            <IconButton size="large">
                                 <Icon>web_asset</Icon>
                             </IconButton>
 
-                            <IconButton>
+                            <IconButton size="large">
                                 <Icon>star_outline</Icon>
                             </IconButton>
                         </div>
@@ -135,7 +134,7 @@ const Layout1Topbar = () => {
                         <MatxMenu
                             menuButton={
                                 <div className={classes.userMenu}>
-                                    <Hidden xsDown>
+                                    <Hidden smDown>
                                         <span>
                                             Hi <strong>{user.name}</strong>
                                         </span>
@@ -178,7 +177,7 @@ const Layout1Topbar = () => {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default React.memo(Layout1Topbar)

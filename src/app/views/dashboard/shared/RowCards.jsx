@@ -9,14 +9,14 @@ import {
     Fab,
     Avatar,
     Hidden,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
     projectName: {
         marginLeft: 24,
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             marginLeft: 4,
         },
     },
@@ -32,7 +32,7 @@ const RowCards = () => {
                     <Grid item md={5} xs={7}>
                         <div className="flex items-center">
                             <Checkbox />
-                            <Hidden smDown>
+                            <Hidden mdDown>
                                 {id % 2 === 1 ? (
                                     <Fab
                                         className="ml-4 bg-error box-shadow-none"
@@ -66,7 +66,7 @@ const RowCards = () => {
                         </div>
                     </Grid>
 
-                    <Hidden smDown>
+                    <Hidden mdDown>
                         <Grid item xs={3}>
                             <div className="flex relative face-group">
                                 <Avatar
@@ -88,7 +88,7 @@ const RowCards = () => {
 
                     <Grid item xs={1}>
                         <div className="flex justify-end">
-                            <IconButton>
+                            <IconButton size="large">
                                 <Icon>more_vert</Icon>
                             </IconButton>
                         </div>
@@ -97,7 +97,7 @@ const RowCards = () => {
             </Card>
             <div className="py-2" />
         </Fragment>
-    ))
+    ));
 }
 
 export default RowCards

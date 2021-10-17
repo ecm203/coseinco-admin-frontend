@@ -1,7 +1,8 @@
 import React from 'react'
-import { Card, IconButton, Icon } from '@material-ui/core'
+import { Card, IconButton, Icon } from '@mui/material'
 import Chart from 'react-apexcharts'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({

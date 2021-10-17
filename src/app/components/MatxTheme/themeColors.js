@@ -17,7 +17,7 @@ const errorColor = {
 export const themeColors = {
     whitePurple: {
         palette: {
-            type: 'light',
+            mode: 'light',
             primary: {
                 main: '#ffffff',
                 contrastText: textLight.primary,
@@ -32,7 +32,7 @@ export const themeColors = {
     },
     whiteBlue: {
         palette: {
-            type: 'light',
+            mode: 'light',
             primary: {
                 main: '#ffffff',
                 contrastText: textLight.primary,
@@ -46,7 +46,7 @@ export const themeColors = {
     },
     slateDark1: {
         palette: {
-            type: 'dark',
+            mode: 'dark',
             primary: {
                 main: '#222A45',
                 contrastText: '#ffffff',
@@ -64,7 +64,7 @@ export const themeColors = {
     },
     slateDark2: {
         palette: {
-            type: 'dark',
+            mode: 'dark',
             primary: {
                 main: '#1a2038',
                 contrastText: '#ffffff',
@@ -82,7 +82,7 @@ export const themeColors = {
     },
     purple1: {
         palette: {
-            type: 'light',
+            mode: 'light',
             primary: {
                 main: '#7467ef',
                 contrastText: '#ffffff',
@@ -94,7 +94,7 @@ export const themeColors = {
     },
     purple2: {
         palette: {
-            type: 'light',
+            mode: 'light',
             primary: {
                 main: '#6a75c9',
                 contrastText: '#ffffff',
@@ -109,7 +109,7 @@ export const themeColors = {
     },
     purpleDark1: {
         palette: {
-            type: 'dark',
+            mode: 'dark',
             primary: {
                 main: '#7467ef',
                 contrastText: '#ffffff',
@@ -127,7 +127,7 @@ export const themeColors = {
     },
     purpleDark2: {
         palette: {
-            type: 'dark',
+            mode: 'dark',
             primary: {
                 main: '#6a75c9',
                 contrastText: '#ffffff',
@@ -145,7 +145,7 @@ export const themeColors = {
     },
     blue: {
         palette: {
-            type: 'light',
+            mode: 'light',
             primary: {
                 main: '#1976d2',
                 contrastText: '#ffffff',
@@ -160,7 +160,7 @@ export const themeColors = {
     },
     blueDark: {
         palette: {
-            type: 'dark',
+            mode: 'dark',
             primary: {
                 main: '#1976d2',
                 contrastText: '#ffffff',
@@ -178,7 +178,7 @@ export const themeColors = {
     },
     red: {
         palette: {
-            type: 'dark',
+            mode: 'dark',
             primary: {
                 main: '#e53935',
                 contrastText: '#ffffff',

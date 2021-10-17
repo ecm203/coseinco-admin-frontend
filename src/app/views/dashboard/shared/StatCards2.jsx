@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Card, Icon, Fab } from '@material-ui/core'
+import { Grid, Card, Icon, Fab } from '@mui/material'
 
 const StatCards2 = () => {
     return (

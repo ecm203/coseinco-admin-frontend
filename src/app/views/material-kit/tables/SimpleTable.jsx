@@ -7,7 +7,7 @@ import {
     IconButton,
     Icon,
     TableRow,
-} from '@material-ui/core'
+} from '@mui/material'
 
 const subscribarList = [
     {
@@ -87,7 +87,7 @@ const SimpleTable = () => {
                                 ${subscriber.amount}
                             </TableCell>
                             <TableCell className="px-0">
-                                <IconButton>
+                                <IconButton size="large">
                                     <Icon color="error">close</Icon>
                                 </IconButton>
                             </TableCell>
@@ -96,7 +96,7 @@ const SimpleTable = () => {
                 </TableBody>
             </Table>
         </div>
-    )
+    );
 }
 
 export default SimpleTable

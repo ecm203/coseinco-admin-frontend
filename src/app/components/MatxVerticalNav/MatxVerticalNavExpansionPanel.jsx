@@ -1,8 +1,8 @@
 import React, { useState, useRef, useCallback } from 'react'
-import { Icon } from '@material-ui/core'
-import TouchRipple from '@material-ui/core/ButtonBase'
+import { Icon } from '@mui/material'
+import TouchRipple from '@mui/material/ButtonBase'
 import { useLocation } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import { useEffect } from 'react'
 import clsx from 'clsx'
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         background: palette.primary.main,
     },
     navItem: {
-        // color: palette.type === "dark" ? palette.text.secondary : "inherit",
+        // color: palette.mode === "dark" ? palette.text.secondary : "inherit",
         '&:hover': {
             backgroundColor: palette.action.hover,
         },

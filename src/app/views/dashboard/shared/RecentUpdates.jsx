@@ -1,13 +1,13 @@
-import { Card, useMediaQuery } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
-import { Timeline } from '@material-ui/lab'
+import { Card, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Timeline } from '@mui/lab'
 import clsx from 'clsx'
 import React from 'react'
 import RecentUpdateCard from './RecentUpdateCard'
 
 const RecentUpdates = () => {
     const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
         <Card

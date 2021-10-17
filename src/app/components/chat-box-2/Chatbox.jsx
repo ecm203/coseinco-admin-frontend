@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { ChatAvatar } from 'app/components'
-import { IconButton, Icon, Divider, TextField, Avatar } from '@material-ui/core'
+import { IconButton, Icon, Divider, TextField, Avatar } from '@mui/material'
 import ScrollBar from 'react-perfect-scrollbar'
 // import { getChatRoomByContactId } from "app/views/chat-box/ChatService";
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
     lightBG: {
@@ -190,7 +190,7 @@ const Chatbox = ({ togglePopup }) => {
                         <span className="text-muted font-medium">Active</span>
                     </div>
                 </div>
-                <IconButton onClick={togglePopup}>
+                <IconButton onClick={togglePopup} size="large">
                     <Icon className="text-body" fontSize="small">
                         clear
                     </Icon>
@@ -256,7 +256,7 @@ const Chatbox = ({ togglePopup }) => {
                 <TextField
                     placeholder="Type here ..."
                     multiline
-                    rowsMax={4}
+                    maxRows={4}
                     fullWidth
                     InputProps={{
                         disableUnderline: true,
@@ -280,7 +280,7 @@ const Chatbox = ({ togglePopup }) => {
                 />
             </div>
         </div>
-    )
+    );
 }
 
 export default Chatbox

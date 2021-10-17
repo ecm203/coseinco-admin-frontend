@@ -11,9 +11,9 @@ import {
     Icon,
     Select,
     MenuItem,
-} from '@material-ui/core'
+} from '@mui/material'
 import { FieldArray } from 'formik'
-import { Autocomplete } from '@material-ui/lab'
+import { Autocomplete } from '@mui/material';
 import { getProductList, calculateAmount } from './InvoiceFormService'
 
 const InvoiceItemTable = ({ values, handleChange, setFieldValue }) => {

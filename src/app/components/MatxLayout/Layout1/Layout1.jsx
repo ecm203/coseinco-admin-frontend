@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { ThemeProvider } from '@material-ui/core/styles'
-import { useMediaQuery } from '@material-ui/core'
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material'
 import Scrollbar from 'react-perfect-scrollbar'
 import { renderRoutes } from 'react-router-config'
 import Layout1Topbar from './Layout1Topbar'
@@ -9,10 +9,10 @@ import Footer from '../../Footer/Footer'
 import SecondarySidebar from '../../SecondarySidebar/SecondarySidebar'
 import AppContext from 'app/contexts/AppContext'
 import { MatxSuspense } from 'app/components'
-import { useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles'
 import clsx from 'clsx'
 import SidenavTheme from '../../MatxTheme/SidenavTheme/SidenavTheme'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import useSettings from 'app/hooks/useSettings'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -57,12 +57,12 @@ const Layout1 = () => {
     const sidenavWidth = getSidenavWidth()
     let classes = useStyles({ width: sidenavWidth, secondarySidebar })
     const theme = useTheme()
-    const isMdScreen = useMediaQuery(theme.breakpoints.down('md'))
+    const isMdScreen = useMediaQuery(theme.breakpoints.down('lg'))
 
     const ref = useRef({ isMdScreen, settings })
 
     const topbarTheme = settings.themes[layout1Settings.topbar.theme]
-    const layoutClasses = `theme-${theme.palette.type} flex`
+    const layoutClasses = `theme-${theme.palette.mode} flex`
 
     useEffect(() => {
         let { settings } = ref.current
@@ -89,18 +89,22 @@ const Layout1 = () => {
                 )}
             >
                 {layout1Settings.topbar.show && layout1Settings.topbar.fixed && (
-                    <ThemeProvider theme={topbarTheme}>
-                        <Layout1Topbar fixed={true} className="elevation-z8" />
-                    </ThemeProvider>
+                    <StyledEngineProvider injectFirst>
+                        <ThemeProvider theme={topbarTheme}>
+                            <Layout1Topbar fixed={true} className="elevation-z8" />
+                        </ThemeProvider>
+                    </StyledEngineProvider>
                 )}
 
                 {settings.perfectScrollbar && (
                     <Scrollbar className="flex-grow flex-column relative h-full">
                         {layout1Settings.topbar.show &&
                             !layout1Settings.topbar.fixed && (
-                                <ThemeProvider theme={topbarTheme}>
-                                    <Layout1Topbar />
-                                </ThemeProvider>
+                                <StyledEngineProvider injectFirst>
+                                    <ThemeProvider theme={topbarTheme}>
+                                        <Layout1Topbar />
+                                    </ThemeProvider>
+                                </StyledEngineProvider>
                             )}
                         <div className="relative flex-grow">
                             <MatxSuspense>{renderRoutes(routes)}</MatxSuspense>
@@ -115,9 +119,11 @@ const Layout1 = () => {
                     <div className="flex-grow flex-column relative h-full scroll-y">
                         {layout1Settings.topbar.show &&
                             !layout1Settings.topbar.fixed && (
-                                <ThemeProvider theme={topbarTheme}>
-                                    <Layout1Topbar />
-                                </ThemeProvider>
+                                <StyledEngineProvider injectFirst>
+                                    <ThemeProvider theme={topbarTheme}>
+                                        <Layout1Topbar />
+                                    </ThemeProvider>
+                                </StyledEngineProvider>
                             )}
                         <div className="relative flex-grow">
                             <MatxSuspense>{renderRoutes(routes)}</MatxSuspense>
@@ -132,7 +138,7 @@ const Layout1 = () => {
             </div>
             {settings.secondarySidebar.show && <SecondarySidebar />}
         </div>
-    )
+    );
 }
 
 export default React.memo(Layout1)

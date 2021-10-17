@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Card, Grid, Button } from '@material-ui/core'
+import { Card, Grid, Button } from '@mui/material'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({

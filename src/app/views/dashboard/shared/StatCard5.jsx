@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Card, IconButton, Icon } from '@material-ui/core'
+import { Grid, Card, IconButton, Icon } from '@mui/material'
 
 const StatCard5 = () => {
     const statList = [

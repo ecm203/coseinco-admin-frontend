@@ -1,7 +1,7 @@
 import 'date-fns'
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@mui/material/Grid'
+import makeStyles from '@mui/styles/makeStyles';
 import DateFnsUtils from '@date-io/date-fns'
 import {
     MuiPickersUtilsProvider,
@@ -29,7 +29,7 @@ export default function MaterialUIDatePickers() {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container className={classes.grid} justify="space-around">
+            <Grid container className={classes.grid} justifyContent="space-around">
                 <KeyboardDatePicker
                     margin="normal"
                     id="mui-pickers-date"
@@ -52,5 +52,5 @@ export default function MaterialUIDatePickers() {
                 />
             </Grid>
         </MuiPickersUtilsProvider>
-    )
+    );
 }

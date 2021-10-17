@@ -7,7 +7,7 @@ import {
     Icon,
     Button,
     IconButton,
-} from '@material-ui/core'
+} from '@mui/material'
 import { format } from 'date-fns'
 
 const InvoiceOverview = () => {
@@ -181,7 +181,7 @@ const InvoiceOverview = () => {
                                         <h6 className="m-0">
                                             ${product.price * product.amount}
                                         </h6>
-                                        <IconButton>
+                                        <IconButton size="large">
                                             <Icon fontSize="small">clear</Icon>
                                         </IconButton>
                                     </div>
@@ -244,7 +244,7 @@ const InvoiceOverview = () => {
                 </Grid>
             </Grid>
         </Card>
-    )
+    );
 }
 
 const dummyProductList = [

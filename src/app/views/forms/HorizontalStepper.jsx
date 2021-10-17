@@ -7,7 +7,7 @@ import {
     Step,
     Stepper,
     Grid,
-} from '@material-ui/core'
+} from '@mui/material'
 
 const getSteps = () => {
     return ['First Name', 'Last Name', 'Address']

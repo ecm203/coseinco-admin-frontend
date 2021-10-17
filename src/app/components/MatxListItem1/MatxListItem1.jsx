@@ -1,7 +1,7 @@
 import React from 'react'
 import RectangleAvatar from '../RectangleAvatar/RectangleAvatar'
-import { IconButton, Icon } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { IconButton, Icon } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -47,12 +47,12 @@ const MatxListItem1 = ({
             </div>
 
             {actionIcon && (
-                <IconButton className="action-icon">
+                <IconButton className="action-icon" size="large">
                     <Icon color={iconColor}>{actionIcon}</Icon>
                 </IconButton>
             )}
         </div>
-    )
+    );
 }
 
 export default MatxListItem1

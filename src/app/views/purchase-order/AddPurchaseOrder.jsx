@@ -11,7 +11,7 @@ import {
   TableHead,
   TableCell,
   TableRow,
-} from '@material-ui/core'
+} from '@mui/material'
 import DateFnsUtils from '@date-io/date-fns'
 import { useForm, Controller } from 'react-hook-form'
 import {

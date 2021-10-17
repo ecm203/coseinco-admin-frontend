@@ -1,11 +1,11 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel'
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import Typography from '@material-ui/core/Typography'
+import withStyles from '@mui/styles/withStyles';
+import MuiExpansionPanel from '@mui/material/Accordion'
+import MuiExpansionPanelSummary from '@mui/material/AccordionSummary'
+import MuiExpansionPanelDetails from '@mui/material/AccordionDetails'
+import Typography from '@mui/material/Typography'
 
-const ExpansionPanel = withStyles({
+const Accordion = withStyles({
     root: {
         border: '1px solid rgba(0, 0, 0, .125)',
         boxShadow: 'none',
@@ -22,7 +22,7 @@ const ExpansionPanel = withStyles({
     expanded: {},
 })(MuiExpansionPanel)
 
-const ExpansionPanelSummary = withStyles({
+const AccordionSummary = withStyles({
     root: {
         backgroundColor: 'rgba(0, 0, 0, .03)',
         borderBottom: '1px solid rgba(0, 0, 0, .125)',
@@ -40,7 +40,7 @@ const ExpansionPanelSummary = withStyles({
     expanded: {},
 })(MuiExpansionPanelSummary)
 
-const ExpansionPanelDetails = withStyles((theme) => ({
+const AccordionDetails = withStyles((theme) => ({
     root: {
         padding: theme.spacing(2),
     },
@@ -55,18 +55,18 @@ export default function CustomizedExpansionPanels() {
 
     return (
         <div>
-            <ExpansionPanel
+            <Accordion
                 square
                 expanded={expanded === 'panel1'}
                 onChange={handleChange('panel1')}
             >
-                <ExpansionPanelSummary
+                <AccordionSummary
                     aria-controls="panel1d-content"
                     id="panel1d-header"
                 >
                     <Typography>Collapsible Group Item #1</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
@@ -74,20 +74,20 @@ export default function CustomizedExpansionPanels() {
                         adipiscing elit. Suspendisse malesuada lacus ex, sit
                         amet blandit leo lobortis eget.
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel
+                </AccordionDetails>
+            </Accordion>
+            <Accordion
                 square
                 expanded={expanded === 'panel2'}
                 onChange={handleChange('panel2')}
             >
-                <ExpansionPanelSummary
+                <AccordionSummary
                     aria-controls="panel2d-content"
                     id="panel2d-header"
                 >
                     <Typography>Collapsible Group Item #2</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
@@ -95,20 +95,20 @@ export default function CustomizedExpansionPanels() {
                         adipiscing elit. Suspendisse malesuada lacus ex, sit
                         amet blandit leo lobortis eget.
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel
+                </AccordionDetails>
+            </Accordion>
+            <Accordion
                 square
                 expanded={expanded === 'panel3'}
                 onChange={handleChange('panel3')}
             >
-                <ExpansionPanelSummary
+                <AccordionSummary
                     aria-controls="panel3d-content"
                     id="panel3d-header"
                 >
                     <Typography>Collapsible Group Item #3</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
@@ -116,8 +116,8 @@ export default function CustomizedExpansionPanels() {
                         adipiscing elit. Suspendisse malesuada lacus ex, sit
                         amet blandit leo lobortis eget.
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+                </AccordionDetails>
+            </Accordion>
         </div>
     )
 }

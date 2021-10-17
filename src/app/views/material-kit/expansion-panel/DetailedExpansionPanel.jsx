@@ -1,15 +1,15 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Chip from '@material-ui/core/Chip'
-import Button from '@material-ui/core/Button'
-import Divider from '@material-ui/core/Divider'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionActions from '@mui/material/AccordionActions'
+import Typography from '@mui/material/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Chip from '@mui/material/Chip'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,8 +51,8 @@ export default function DetailedExpansionPanel() {
 
     return (
         <div className={classes.root}>
-            <ExpansionPanel defaultExpanded>
-                <ExpansionPanelSummary
+            <Accordion defaultExpanded>
+                <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1c-content"
                     id="panel1c-header"
@@ -67,8 +67,8 @@ export default function DetailedExpansionPanel() {
                             Select trip destination
                         </Typography>
                     </div>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails className={classes.details}>
+                </AccordionSummary>
+                <AccordionDetails className={classes.details}>
                     <div className={classes.column} />
                     <div className={classes.column}>
                         <Chip label="Barbados" onDelete={() => {}} />
@@ -85,15 +85,15 @@ export default function DetailedExpansionPanel() {
                             </a>
                         </Typography>
                     </div>
-                </ExpansionPanelDetails>
+                </AccordionDetails>
                 <Divider />
-                <ExpansionPanelActions>
+                <AccordionActions>
                     <Button size="small">Cancel</Button>
                     <Button size="small" color="primary">
                         Save
                     </Button>
-                </ExpansionPanelActions>
-            </ExpansionPanel>
+                </AccordionActions>
+            </Accordion>
         </div>
     )
 }

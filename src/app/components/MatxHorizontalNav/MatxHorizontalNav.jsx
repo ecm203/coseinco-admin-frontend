@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Icon } from '@material-ui/core'
+import { Icon } from '@mui/material'
 import { useSelector } from 'react-redux'
 
 const MatxHorizontalNav = ({ max }) => {

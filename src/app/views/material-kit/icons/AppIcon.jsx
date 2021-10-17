@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Tooltip } from '@material-ui/core'
+import { Icon, Tooltip } from '@mui/material'
 import { Breadcrumb, SimpleCard } from 'app/components'
 
 const IconList = [

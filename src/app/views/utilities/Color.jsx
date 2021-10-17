@@ -1,6 +1,6 @@
 import React from 'react'
 import { Breadcrumb, SimpleCard } from 'app/components'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 
 const Color = () => {
     const bgClassList = [

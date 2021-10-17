@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Icon, IconButton } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Icon, IconButton } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -39,7 +39,7 @@ const MatxSearchBox = () => {
     return (
         <React.Fragment>
             {!open && (
-                <IconButton onClick={toggle}>
+                <IconButton onClick={toggle} size="large">
                     <Icon>search</Icon>
                 </IconButton>
             )}
@@ -62,13 +62,13 @@ const MatxSearchBox = () => {
                         placeholder="Search here..."
                         autoFocus
                     />
-                    <IconButton onClick={toggle} className="align-middle mx-4">
+                    <IconButton onClick={toggle} className="align-middle mx-4" size="large">
                         <Icon>close</Icon>
                     </IconButton>
                 </div>
             )}
         </React.Fragment>
-    )
+    );
 }
 
 export default MatxSearchBox

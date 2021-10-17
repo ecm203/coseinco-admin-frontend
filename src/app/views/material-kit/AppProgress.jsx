@@ -1,6 +1,6 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { LinearProgress, CircularProgress } from '@material-ui/core'
+import makeStyles from '@mui/styles/makeStyles';
+import { LinearProgress, CircularProgress } from '@mui/material'
 import { Breadcrumb, SimpleCard } from 'app/components'
 
 const useStyles = makeStyles((theme) => ({
@@ -53,18 +53,18 @@ const AppProgress = () => {
             <div className="py-3" />
             <SimpleCard title="Circuar Progress (static)">
                 <CircularProgress
-                    variant="static"
+                    variant="determinate"
                     value={25}
                     className={classes.progress}
                 />
                 <CircularProgress
-                    variant="static"
+                    variant="determinate"
                     value={50}
                     className={classes.progress}
                     color="secondary"
                 />
                 <CircularProgress
-                    variant="static"
+                    variant="determinate"
                     value={75}
                     className={classes.progress}
                     color="secondary"
@@ -87,6 +87,6 @@ const AppProgress = () => {
                 />
             </SimpleCard>
         </div>
-    )
+    );
 }
 export default AppProgress

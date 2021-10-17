@@ -11,7 +11,7 @@ import {
     FormControl,
     FormLabel,
     Paper,
-} from '@material-ui/core'
+} from '@mui/material'
 import { get } from 'lodash'
 import { themeColors } from '../MatxTheme/themeColors'
 import BadgeSelected from './BadgeSelected'
@@ -29,7 +29,7 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
                 <div className="text-muted mb-4">Sidebar theme</div>
                 <div className="flex flex-wrap m--2">
                     {mainSidebarThemes
-                        // .filter(c => themeColors[c].palette.type === "dark")
+                        // .filter(c => themeColors[c].palette.mode === "dark")
                         .map((color, i) => (
                             <Tooltip key={i} title={color} placement="top">
                                 <div
@@ -50,7 +50,7 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
                                         .theme === color && <Icon>done</Icon>}
                                     <div
                                         className={
-                                            settings.themes[color].palette.type
+                                            settings.themes[color].palette.mode
                                         }
                                     ></div>
                                 </div>
@@ -81,7 +81,7 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
                                     color && <Icon>done</Icon>}
                                 <div
                                     className={
-                                        settings.themes[color].palette.type
+                                        settings.themes[color].palette.mode
                                     }
                                 ></div>
                             </div>

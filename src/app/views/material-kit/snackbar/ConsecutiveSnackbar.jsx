@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
-import Snackbar from '@material-ui/core/Snackbar'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
+import withStyles from '@mui/styles/withStyles';
+import Button from '@mui/material/Button'
+import Snackbar from '@mui/material/Snackbar'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
 
 const styles = (theme) => ({
     close: {
@@ -75,7 +75,6 @@ class ConsecutiveSnackbars extends React.Component {
                     open={this.state.open}
                     autoHideDuration={6000}
                     onClose={this.handleClose}
-                    onExited={this.handleExited}
                     ContentProps={{
                         'aria-describedby': 'message-id',
                     }}
@@ -95,13 +94,15 @@ class ConsecutiveSnackbars extends React.Component {
                             color="inherit"
                             className={classes.close}
                             onClick={this.handleClose}
-                        >
+                            size="large">
                             <CloseIcon />
                         </IconButton>,
                     ]}
-                />
+                    TransitionProps={{
+                        onExited: this.handleExited
+                    }} />
             </div>
-        )
+        );
     }
 }
 

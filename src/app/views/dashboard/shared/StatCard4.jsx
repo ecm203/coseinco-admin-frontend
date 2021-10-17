@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Card, IconButton, Icon } from '@material-ui/core'
+import { Grid, Card, IconButton, Icon } from '@mui/material'
 
 const StatCard4 = () => {
     const statList = [
@@ -35,7 +35,7 @@ const StatCard4 = () => {
                             className="p-5 flex-column justify-center items-center"
                         >
                             <div className="mb-6px">
-                                <IconButton className="p-3 bg-light-gray">
+                                <IconButton className="p-3 bg-light-gray" size="large">
                                     <Icon className="text-muted">
                                         {item.icon}
                                     </Icon>
@@ -51,7 +51,7 @@ const StatCard4 = () => {
                 ))}
             </Grid>
         </div>
-    )
+    );
 }
 
 export default StatCard4

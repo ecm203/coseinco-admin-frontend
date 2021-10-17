@@ -1,6 +1,6 @@
 import React from 'react'
-import { ThemeProvider } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline'
 import MatxCssVars from './MatxCssVars'
 import useSettings from 'app/hooks/useSettings'
 
@@ -13,11 +13,13 @@ const MatxTheme = ({ children }) => {
     // cssVars();
     // activeTheme.direction = settings.direction;
     return (
-        <ThemeProvider theme={activeTheme}>
-            <CssBaseline />
-            <MatxCssVars> {children} </MatxCssVars>
-        </ThemeProvider>
-    )
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={activeTheme}>
+                <CssBaseline />
+                <MatxCssVars> {children} </MatxCssVars>
+            </ThemeProvider>
+        </StyledEngineProvider>
+    );
 }
 
 export default MatxTheme

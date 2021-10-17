@@ -8,7 +8,7 @@ import {
 } from 'react-google-maps'
 
 import { InfoBox } from 'react-google-maps/lib/components/addons/InfoBox'
-import { Card } from '@material-ui/core'
+import { Card } from '@mui/material'
 
 const MyMapComponent = compose(
     withProps({

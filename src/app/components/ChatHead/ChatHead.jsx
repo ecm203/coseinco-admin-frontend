@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 import { cloneElement } from 'react'
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
     },
     popupOpen: {
         top: 'calc(var(--topbar-height) + 16px)',
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             bottom: 0,
         },
     },

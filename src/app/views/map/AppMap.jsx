@@ -1,6 +1,6 @@
 import React from 'react'
 import { Breadcrumb } from 'app/components'
-import { Card } from '@material-ui/core'
+import { Card } from '@mui/material'
 import BasicMap from './BasicMap'
 import MarkerMap from './MarkerMap'
 

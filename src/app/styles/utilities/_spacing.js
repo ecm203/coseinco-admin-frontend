@@ -1,42 +1,42 @@
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 
 export const spacingStyles = makeStyles(({ palette, ...theme }) => ({
     '@global': {
         '.px-80': {
             paddingRight: '80px',
             paddingLeft: '80px',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 paddingRight: '16px',
                 paddingLeft: '16px',
             },
         },
         '.px-sm-30': {
             padding: '0px 30px',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 padding: '0px 16px',
             },
         },
         '.p-sm-24': {
             padding: '24px !important',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 padding: '16px !important',
             },
         },
         '.px-sm-24': {
             padding: '0px 24px !important',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 padding: '0px 12px !important',
             },
         },
         '.pt-sm-24': {
             paddingTop: '24px !important',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 paddingTop: '16px !important',
             },
         },
         '.pl-sm-24': {
             paddingLeft: '24px !important',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 paddingLeft: '16px !important',
             },
         },
@@ -51,13 +51,13 @@ export const spacingStyles = makeStyles(({ palette, ...theme }) => ({
         },
         '.m-sm-30': {
             margin: '30px',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 margin: '16px',
             },
         },
         '.mb-sm-30': {
             marginBottom: '30px',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 marginBottom: '16px',
             },
         },

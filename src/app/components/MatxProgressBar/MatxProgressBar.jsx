@@ -1,6 +1,6 @@
 import React from 'react'
-import { Grid, LinearProgress, Typography } from '@material-ui/core'
-import { withStyles } from '@material-ui/styles'
+import { Grid, LinearProgress, Typography } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 const CustomLinearProgress = withStyles((theme) => ({
     root: {

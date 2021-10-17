@@ -7,7 +7,7 @@ import {
     FormControlLabel,
     FormControl,
     FormLabel,
-} from '@material-ui/core'
+} from '@mui/material'
 import { themeColors } from '../MatxTheme/themeColors'
 
 const Layout2Customizer = ({ settings, handleChange, handleControlChange }) => {
@@ -35,7 +35,7 @@ const Layout2Customizer = ({ settings, handleChange, handleControlChange }) => {
                                     color && <Icon>done</Icon>}
                                 <div
                                     className={
-                                        settings.themes[color].palette.type
+                                        settings.themes[color].palette.mode
                                     }
                                 ></div>
                             </div>
@@ -66,7 +66,7 @@ const Layout2Customizer = ({ settings, handleChange, handleControlChange }) => {
                                     color && <Icon>done</Icon>}
                                 <div
                                     className={
-                                        settings.themes[color].palette.type
+                                        settings.themes[color].palette.mode
                                     }
                                 ></div>
                             </div>

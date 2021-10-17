@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Breadcrumb, SimpleCard, MatxProgressBar } from 'app/components'
-import { Fab, Icon, Card, Grid, Divider, Button } from '@material-ui/core'
+import { Fab, Icon, Card, Grid, Divider, Button } from '@mui/material'
 import clsx from 'clsx'
 
 const UploadForm = () => {
@@ -197,7 +197,7 @@ const UploadForm = () => {
                         <Grid
                             container
                             spacing={2}
-                            justify="center"
+                            justifyContent="center"
                             alignItems="center"
                             direction="row"
                         >
@@ -229,7 +229,7 @@ const UploadForm = () => {
                                 <Grid
                                     container
                                     spacing={2}
-                                    justify="center"
+                                    justifyContent="center"
                                     alignItems="center"
                                     direction="row"
                                 >
@@ -290,7 +290,7 @@ const UploadForm = () => {
                                     </Grid>
                                 </Grid>
                             </div>
-                        )
+                        );
                     })}
                 </Card>
 
@@ -330,7 +330,7 @@ const UploadForm = () => {
                 </div>
             </SimpleCard>
         </div>
-    )
+    );
 }
 
 export default UploadForm

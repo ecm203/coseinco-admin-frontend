@@ -1,6 +1,7 @@
 import React from 'react'
-import { useMediaQuery } from '@material-ui/core'
-import { useTheme, makeStyles } from '@material-ui/core/styles'
+import { useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -11,7 +12,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         overflow: 'hidden',
         zIndex: 91,
 
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             position: 'absolute',
             top: 0,
             left: 0,
@@ -35,7 +36,7 @@ const MatxSidenav = ({
     bgClass,
 }) => {
     const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'))
     const classes = useStyles({ width: open || !isMobile ? width : '0px' })
 
     return (

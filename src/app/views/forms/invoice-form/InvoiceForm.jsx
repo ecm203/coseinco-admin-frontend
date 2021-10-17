@@ -8,7 +8,7 @@ import {
     MenuItem,
     Button,
     Icon,
-} from '@material-ui/core'
+} from '@mui/material'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -252,7 +252,7 @@ const InvoiceForm = () => {
                                             <Grid
                                                 container
                                                 spacing={3}
-                                                justify="space-between"
+                                                justifyContent="space-between"
                                                 alignItems="center"
                                             >
                                                 <Grid item xs={6}>
@@ -421,7 +421,7 @@ const InvoiceForm = () => {
                 </Formik>
             </Card>
         </div>
-    )
+    );
 }
 
 const paymentTermList = [

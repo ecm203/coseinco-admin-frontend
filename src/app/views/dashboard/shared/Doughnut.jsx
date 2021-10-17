@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { useTheme } from '@material-ui/styles'
+import { useTheme } from '@mui/styles'
 
 const DoughnutChart = ({ height, color = [] }) => {
     const theme = useTheme()

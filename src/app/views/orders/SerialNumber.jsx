@@ -6,9 +6,9 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
-} from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import { Autocomplete } from '@material-ui/lab'
+} from '@mui/material'
+import Button from '@mui/material/Button'
+import { Autocomplete } from '@mui/material';
 import axios from 'axios'
 
 const Transition = React.forwardRef(function Transition(props, ref) {

@@ -12,14 +12,15 @@ import {
     Tooltip,
     Drawer,
     Link,
-} from '@material-ui/core'
+} from '@mui/material'
 import Scrollbar from 'react-perfect-scrollbar'
 // import Layout1Customizer from "./Layout1Customizer";
 // import Layout2Customizer from "./Layout2Customizer";
 // import { themeColors } from "../../MatxTheme/themeColors";
 import BadgeSelected from './BadgeSelected'
 // import { mainThemes, topbarThemes } from "./customizerOptions";
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 import useSettings from 'app/hooks/useSettings'
@@ -113,124 +114,126 @@ const MatxCustomizer = (props) => {
             </Tooltip>
 
             {/* {open && ( */}
-            <ThemeProvider theme={activeTheme}>
-                <Drawer
-                    anchor={'right'}
-                    open={open}
-                    variant="temporary"
-                    onClose={tooglePanel}
-                    ModalProps={{
-                        keepMounted: true,
-                    }}
-                >
-                    <div
-                        className={clsx(
-                            'flex-column w-320 pb-8 elevation-z12 h-full-screen bg-default',
-                            classes.maxCustomizer
-                        )}
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={activeTheme}>
+                    <Drawer
+                        anchor={'right'}
+                        open={open}
+                        variant="temporary"
+                        onClose={tooglePanel}
+                        ModalProps={{
+                            keepMounted: true,
+                        }}
                     >
-                        <div className="flex items-center px-5 py-4 mb-4 min-h-64 elevation-z6">
-                            <Icon color="primary">settings</Icon>
-                            <h5 className="mb-0 ml-2">Theme Settings</h5>
-                            <IconButton
-                                onClick={tooglePanel}
-                                className={classes.customizerCloseButton}
-                            >
-                                <Icon>close</Icon>
-                            </IconButton>
-                        </div>
-                        <div className="px-6 mb-4 flex">
-                            <Button
-                                variant="outlined"
-                                color={tabIndex === 0 ? 'secondary' : 'primary'}
-                                onClick={() => handleTabChange(0)}
-                                className="mr-4"
-                            >
-                                Demos
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                color={tabIndex === 1 ? 'secondary' : 'primary'}
-                                onClick={() => handleTabChange(1)}
-                            >
-                                Settings
-                            </Button>
-                        </div>
-
-                        <Scrollbar
-                            options={{ suppressScrollX: true }}
-                            className="px-4"
+                        <div
+                            className={clsx(
+                                'flex-column w-320 pb-8 elevation-z12 h-full-screen bg-default',
+                                classes.maxCustomizer
+                            )}
                         >
-                            {tabIndex === 0 && (
-                                <div className="mb-8 mx-2">
-                                    <div className="text-muted">Layouts</div>
+                            <div className="flex items-center px-5 py-4 mb-4 min-h-64 elevation-z6">
+                                <Icon color="primary">settings</Icon>
+                                <h5 className="mb-0 ml-2">Theme Settings</h5>
+                                <IconButton
+                                    onClick={tooglePanel}
+                                    className={classes.customizerCloseButton}
+                                    size="large">
+                                    <Icon>close</Icon>
+                                </IconButton>
+                            </div>
+                            <div className="px-6 mb-4 flex">
+                                <Button
+                                    variant="outlined"
+                                    color={tabIndex === 0 ? 'secondary' : 'primary'}
+                                    onClick={() => handleTabChange(0)}
+                                    className="mr-4"
+                                >
+                                    Demos
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    color={tabIndex === 1 ? 'secondary' : 'primary'}
+                                    onClick={() => handleTabChange(1)}
+                                >
+                                    Settings
+                                </Button>
+                            </div>
 
-                                    <div className="flex-column">
-                                        {demoLayouts.map((layout) => (
-                                            <BadgeSelected
-                                                color="secondary"
-                                                className={clsx(
-                                                    'w-full my-3 max-h-152 cursor-pointer',
-                                                    classes.layoutBox
-                                                )}
-                                                badgeContent={'Pro'}
-                                                invisible={!layout.isPro}
-                                                key={layout.name}
-                                            >
-                                                <Card
-                                                    className="relative"
-                                                    onClick={() =>
-                                                        updateSettings(
-                                                            layout.options
-                                                        )
-                                                    }
-                                                    elevation={4}
+                            <Scrollbar
+                                options={{ suppressScrollX: true }}
+                                className="px-4"
+                            >
+                                {tabIndex === 0 && (
+                                    <div className="mb-8 mx-2">
+                                        <div className="text-muted">Layouts</div>
+
+                                        <div className="flex-column">
+                                            {demoLayouts.map((layout) => (
+                                                <BadgeSelected
+                                                    color="secondary"
+                                                    className={clsx(
+                                                        'w-full my-3 max-h-152 cursor-pointer',
+                                                        classes.layoutBox
+                                                    )}
+                                                    badgeContent={'Pro'}
+                                                    invisible={!layout.isPro}
+                                                    key={layout.name}
                                                 >
-                                                    <div className="layout-name hidden">
-                                                        <Button
-                                                            variant="contained"
-                                                            color="secondary"
-                                                        >
-                                                            {layout.name}
-                                                        </Button>
-                                                    </div>
+                                                    <Card
+                                                        className="relative"
+                                                        onClick={() =>
+                                                            updateSettings(
+                                                                layout.options
+                                                            )
+                                                        }
+                                                        elevation={4}
+                                                    >
+                                                        <div className="layout-name hidden">
+                                                            <Button
+                                                                variant="contained"
+                                                                color="secondary"
+                                                            >
+                                                                {layout.name}
+                                                            </Button>
+                                                        </div>
 
-                                                    <img
-                                                        className="w-full"
-                                                        src={layout.thumbnail}
-                                                        alt={layout.name}
-                                                    />
-                                                </Card>
-                                            </BadgeSelected>
-                                        ))}
+                                                        <img
+                                                            className="w-full"
+                                                            src={layout.thumbnail}
+                                                            alt={layout.name}
+                                                        />
+                                                    </Card>
+                                                </BadgeSelected>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
 
-                            {/* END LAYOUT */}
+                                {/* END LAYOUT */}
 
-                            {tabIndex === 1 && (
-                                <div>
-                                    <div className={classes.helpText}>
-                                        We used React context API to control
-                                        layout. Check out the{' '}
-                                        <Link
-                                            href="http://demos.ui-lib.com/matx-react-doc/layout.html"
-                                            target="_blank"
-                                        >
-                                            Documentation
-                                        </Link>
+                                {tabIndex === 1 && (
+                                    <div>
+                                        <div className={classes.helpText}>
+                                            We used React context API to control
+                                            layout. Check out the{' '}
+                                            <Link
+                                                href="http://demos.ui-lib.com/matx-react-doc/layout.html"
+                                                target="_blank"
+                                            >
+                                                Documentation
+                                            </Link>
+                                        </div>
+                                        
                                     </div>
-                                    
-                                </div>
-                            )}
-                        </Scrollbar>
-                    </div>
-                </Drawer>
-            </ThemeProvider>
+                                )}
+                            </Scrollbar>
+                        </div>
+                    </Drawer>
+                </ThemeProvider>
+            </StyledEngineProvider>
             {/* )} */}
         </Fragment>
-    )
+    );
 }
 
 const demoLayouts = [
