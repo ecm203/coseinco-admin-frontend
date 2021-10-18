@@ -30,7 +30,7 @@ const apiUrl = 'http://localhost:5000/api'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   iconSucces: {
-    color: palette.success.main,
+    color: palette.success.light,
     marginLeft: '.5rem',
   },
 }))

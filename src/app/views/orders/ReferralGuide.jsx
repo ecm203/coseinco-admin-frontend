@@ -14,24 +14,31 @@ import {
   Chip,
 } from '@mui/material'
 import { MaxtBackdrop } from 'app/components'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import axios from 'axios'
+import clsx from 'clsx'
 
 const apiUrl = 'http://localhost:5000/api-admin'
 
 const useStyles = makeStyles({
   dialog: {
     '& .MuiDialog-paper': {
-      minHeight: '200px',
+      transition: 'all .2s',
     },
   },
+  dialogLoading: {
+    '& .MuiDialog-paper': {
+      height: '200px',
+      maxHeight: '200px'
+    },
+  }
 })
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />
 })
 
-const ReferralGuide = ({ open, handleClose, orderCode }) => {
+const ReferralGuide = ({ open, handleClose, orderCode, generateRG }) => {
   const classes = useStyles()
   const [isLoading, setisLoading] = useState(true)
   const [order, setOrder] = useState(null)
@@ -54,13 +61,18 @@ const ReferralGuide = ({ open, handleClose, orderCode }) => {
         })
   }, [orderCode, open])
 
+  const handleGenerateRG =  (orderCode) => {
+    handleClose()
+    generateRG(orderCode)
+  }
+
   return (
     <>
       <Dialog
         open={open}
         TransitionComponent={Transition}
         fullWidth
-        className={classes.dialog}
+        className={clsx(classes.dialog, isLoading && classes.dialogLoading )}
         maxWidth="sm"
         onClose={handleClose}
         aria-labelledby="alert-dialog-slide-title"
@@ -72,7 +84,7 @@ const ReferralGuide = ({ open, handleClose, orderCode }) => {
             <DialogTitle id="alert-dialog-slide-title">
               {`Pedido Nro. ${order?.codigo}`}
             </DialogTitle>
-            <DialogContent>
+            <DialogContent sx={{ overflowY: 'hidden'}}>
               <Table className="whitespace-pre">
                 <TableHead>
                   <TableRow>
@@ -129,7 +141,7 @@ const ReferralGuide = ({ open, handleClose, orderCode }) => {
               <Button onClick={handleClose} color="secondary">
                 Cancelar
               </Button>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={() => handleGenerateRG(orderCode)} color="primary">
                 Generar
               </Button>
             </DialogActions>

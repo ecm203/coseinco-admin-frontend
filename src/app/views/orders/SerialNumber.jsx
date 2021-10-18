@@ -24,6 +24,7 @@ const SerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
   useEffect(() => {
     if (open === false) {
       setValue([])
+      setSerialNumbers(null)
       setErrorInput(null)
     }
   }, [open])
