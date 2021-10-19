@@ -26,7 +26,7 @@ import { useForm, Controller } from 'react-hook-form'
 import EmptyData from 'app/components/icons/EmptyData'
 import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />
 })
@@ -84,7 +84,7 @@ const AddPurchaseOrder = () => {
         proveedorID: data.supplier._id,
       },
     }
-    setConfirmDialog(false);
+    setConfirmDialog(false)
     axios.post('http://localhost:5000/api-admin/oCompra/create', body).then(
       (response) => {
         history.push('/orden-de-compra/listar')
@@ -330,7 +330,7 @@ const AddPurchaseOrder = () => {
               <DialogTitle>Confirmar fecha de entrega</DialogTitle>
               <DialogContent>
                 <DialogContentText sx={{ pb: 2 }}>
-                  Ingrese la maldita fecha de entrega insecto
+                  Seleccione la fecha de ingreso y el proveedor correspondiente
                 </DialogContentText>
 
                 <Controller
