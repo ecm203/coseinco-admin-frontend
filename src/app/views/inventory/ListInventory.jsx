@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useState}from 'react'
 import { Breadcrumb, SimpleCard } from 'app/components'
 import {
   IconButton,
@@ -13,14 +13,23 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  DialogActions,
+  Button,
 } from '@mui/material'
 
 const ListInventory = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
   const [page, setPage] = React.useState(0)
-
+  const [modal, setModal] = useState(false)
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
+  }
+
+  const handleOpenModal=()=>{
+    setModal(true);
+  }
+  const handleCloseModal=()=>{
+    setModal(false);
   }
 
   const handleChangeRowsPerPage = (event) => {
@@ -88,8 +97,8 @@ const ListInventory = () => {
                   </TableCell>
                   <TableCell className="px-0">
                     <Tooltip title="Visualizar pedido">
-                      <IconButton size="large">
-                        <Icon color="primary">visibility</Icon>
+                      <IconButton size="large"onClick={handleOpenModal}>
+                        <Icon color="primary" >visibility</Icon>
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -100,6 +109,8 @@ const ListInventory = () => {
         <Dialog
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
+          open={modal}
+          onClose={handleCloseModal}
         >
           <SimpleCard>
             <DialogTitle>Lapop Lenovo iCore5</DialogTitle>
@@ -128,6 +139,11 @@ const ListInventory = () => {
                 </TableBody>
               </Table>
             </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseModal}>
+                Cerrar
+              </Button>
+            </DialogActions>
           </SimpleCard>
         </Dialog>
         <TablePagination
