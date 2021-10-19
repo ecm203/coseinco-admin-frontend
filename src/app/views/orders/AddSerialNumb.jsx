@@ -111,8 +111,6 @@ const AddSerialNumb = () => {
       }
       axios.post('http://localhost:5000/api-admin/guia/createGuia', data).then(
         (response) => {
-          console.log(response)
-          // setIsLoading(false)
           history.push('/pedidos/reservar')
         },
         (error) => {
