@@ -11,8 +11,8 @@ import {
     Avatar,
     MenuItem,
     Select,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -117,7 +117,7 @@ const TopSellingTable = () => {
                                     )}
                                 </TableCell>
                                 <TableCell className="px-0" colSpan={1}>
-                                    <IconButton>
+                                    <IconButton size="large">
                                         <Icon color="primary">edit</Icon>
                                     </IconButton>
                                 </TableCell>
@@ -127,7 +127,7 @@ const TopSellingTable = () => {
                 </Table>
             </div>
         </Card>
-    )
+    );
 }
 
 const productList = [

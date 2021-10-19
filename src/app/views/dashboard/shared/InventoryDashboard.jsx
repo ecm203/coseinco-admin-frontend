@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import StatCard5 from './StatCard5'
 import TopSellingTable from './TopSellingTable'
 import InventoryLineChart from './InventoryLineChart'
-import { Card, Divider, Grid, MenuItem, Select } from '@material-ui/core'
+import { Card, Divider, Grid, MenuItem, Select } from '@mui/material'
 import InventoryDoughnutChart from './InventoryDoughnutChart'
 
 const InventoryDashboard = () => {

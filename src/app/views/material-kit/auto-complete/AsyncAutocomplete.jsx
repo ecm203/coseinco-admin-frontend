@@ -1,8 +1,8 @@
 // *https://www.registers.service.gov.uk/registers/country/use-the-api*
 import fetch from 'cross-fetch'
 import React from 'react'
-import { TextField, CircularProgress } from '@material-ui/core'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import { TextField, CircularProgress } from '@mui/material'
+import Autocomplete from '@mui/material/Autocomplete'
 
 function sleep(delay = 0) {
     return new Promise((resolve) => {
@@ -58,7 +58,7 @@ export default function AsyncAutocomplete() {
             onClose={() => {
                 setOpen(false)
             }}
-            getOptionSelected={(option, value) => option.name === value.name}
+            isOptionEqualToValue={(option, value) => option.name === value.name}
             getOptionLabel={(option) => option.name}
             options={options}
             loading={loading}
@@ -85,5 +85,5 @@ export default function AsyncAutocomplete() {
                 />
             )}
         />
-    )
+    );
 }

@@ -4,7 +4,7 @@ import LineChart from './LineChart'
 import AreaChart from './AreaChart'
 import ComparisonChart from './ComparisonChart'
 import { Breadcrumb, SimpleCard } from 'app/components'
-import { useTheme } from '@material-ui/styles'
+import { useTheme } from '@mui/styles'
 
 const AppEchart = () => {
     const theme = useTheme()

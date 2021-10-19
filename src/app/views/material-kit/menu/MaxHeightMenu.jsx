@@ -1,8 +1,8 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import { Icon } from '@material-ui/core'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import { Icon } from '@mui/material'
 
 const options = [
     'None',
@@ -42,7 +42,7 @@ function MaxHeightMenu() {
                 aria-owns={open ? 'long-menu' : undefined}
                 aria-haspopup="true"
                 onClick={handleClick}
-            >
+                size="large">
                 <Icon>more_vert</Icon>
             </IconButton>
             <Menu
@@ -68,7 +68,7 @@ function MaxHeightMenu() {
                 ))}
             </Menu>
         </div>
-    )
+    );
 }
 
 export default MaxHeightMenu

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dialog, Button } from '@material-ui/core'
+import { Dialog, Button } from '@mui/material'
 
 const ConfirmationDialog = ({
     open,

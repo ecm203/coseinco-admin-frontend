@@ -1,6 +1,6 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { Icon, Button, IconButton, Fab } from '@material-ui/core'
+import makeStyles from '@mui/styles/makeStyles';
+import { Icon, Button, IconButton, Fab } from '@mui/material'
 import { Breadcrumb, SimpleCard } from 'app/components'
 
 const useStyles = makeStyles((theme) => ({
@@ -158,7 +158,7 @@ export default function AppButton() {
             </SimpleCard>
             <div className="py-3" />
             <SimpleCard title="icon buttons">
-                <IconButton className={classes.button} aria-label="Delete">
+                <IconButton className={classes.button} aria-label="Delete" size="large">
                     <Icon>delete</Icon>
                 </IconButton>
                 <IconButton
@@ -166,21 +166,21 @@ export default function AppButton() {
                     aria-label="Delete"
                     disabled
                     color="primary"
-                >
+                    size="large">
                     <Icon>delete</Icon>
                 </IconButton>
                 <IconButton
                     color="secondary"
                     className={classes.button}
                     aria-label="Add an alarm"
-                >
+                    size="large">
                     <Icon>alarm</Icon>
                 </IconButton>
                 <IconButton
                     color="primary"
                     className={classes.button}
                     aria-label="Add to shopping cart"
-                >
+                    size="large">
                     <Icon>add_shopping_cart</Icon>
                 </IconButton>
                 <input
@@ -195,7 +195,7 @@ export default function AppButton() {
                         className={classes.button}
                         aria-label="Upload picture"
                         component="span"
-                    >
+                        size="large">
                         <Icon>photo_camera</Icon>
                     </IconButton>
                 </label>
@@ -255,5 +255,5 @@ export default function AppButton() {
                 </Fab>
             </SimpleCard>
         </div>
-    )
+    );
 }

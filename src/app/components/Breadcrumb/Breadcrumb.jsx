@@ -1,12 +1,12 @@
 import React from 'react'
-import { Icon, Breadcrumbs, Hidden } from '@material-ui/core'
+import { Icon, Breadcrumbs, Hidden } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 
 const Breadcrumb = ({ routeSegments }) => {
     return (
         <div className="flex flex-wrap items-center">
             {routeSegments ? (
-                <Hidden xsDown>
+                <Hidden smDown>
                     <h4 className="m-0 pb-1px text-16 capitalize align-middle">
                         {routeSegments[routeSegments.length - 1]['name']}
                     </h4>
@@ -42,7 +42,7 @@ const Breadcrumb = ({ routeSegments }) => {
                     : null}
             </Breadcrumbs>
         </div>
-    )
+    );
 }
 
 export default Breadcrumb

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
-import Menu from '@material-ui/core/Menu'
-import { ThemeProvider, makeStyles } from '@material-ui/styles'
+import Menu from '@mui/material/Menu'
+import { ThemeProvider, makeStyles } from '@mui/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
 import useSettings from 'app/hooks/useSettings'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -33,36 +34,38 @@ const MatxMenu = (props) => {
             <div className={classes.menuButton} onClick={handleClick}>
                 {props.menuButton}
             </div>
-            <ThemeProvider theme={settings.themes[settings.activeTheme]}>
-                <Menu
-                    elevation={8}
-                    getContentAnchorEl={null}
-                    anchorEl={anchorEl}
-                    open={!!anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: horizontalPosition,
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: horizontalPosition,
-                    }}
-                >
-                    {children.map((child, index) => (
-                        <div
-                            onClick={
-                                shouldCloseOnItemClick ? handleClose : () => {}
-                            }
-                            key={index}
-                        >
-                            {child}
-                        </div>
-                    ))}
-                </Menu>
-            </ThemeProvider>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={settings.themes[settings.activeTheme]}>
+                    <Menu
+                        elevation={8}
+                        getContentAnchorEl={null}
+                        anchorEl={anchorEl}
+                        open={!!anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: horizontalPosition,
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: horizontalPosition,
+                        }}
+                    >
+                        {children.map((child, index) => (
+                            <div
+                                onClick={
+                                    shouldCloseOnItemClick ? handleClose : () => {}
+                                }
+                                key={index}
+                            >
+                                {child}
+                            </div>
+                        ))}
+                    </Menu>
+                </ThemeProvider>
+            </StyledEngineProvider>
         </Fragment>
-    )
+    );
 }
 
 export default MatxMenu

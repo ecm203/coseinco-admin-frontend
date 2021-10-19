@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
-import { Fab, IconButton, Icon } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Fab, IconButton, Icon } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 import useSettings from 'app/hooks/useSettings'
 

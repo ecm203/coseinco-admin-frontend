@@ -8,7 +8,7 @@ import {
     TableCell,
     Icon,
     TablePagination,
-} from '@material-ui/core'
+} from '@mui/material'
 
 const subscribarList = [
     {
@@ -139,7 +139,7 @@ const PaginationTable = () => {
                                     ${subscriber.amount}
                                 </TableCell>
                                 <TableCell className="px-0">
-                                    <IconButton onClick={handleClickButton}>
+                                    <IconButton onClick={handleClickButton} size="large">
                                         <Icon color="primary">edit</Icon>
                                     </IconButton>
                                 </TableCell>
@@ -161,11 +161,11 @@ const PaginationTable = () => {
                 nextIconButtonProps={{
                     'aria-label': 'Next Page',
                 }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </div>
-    )
+    );
 }
 
 export default PaginationTable

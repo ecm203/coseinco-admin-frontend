@@ -8,7 +8,7 @@ import {
     RadioGroup,
     FormControlLabel,
     Checkbox,
-} from '@material-ui/core'
+} from '@mui/material'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,

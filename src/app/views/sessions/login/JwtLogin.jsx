@@ -6,10 +6,10 @@ import {
     Grid,
     Button,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import history from 'history.js'
 import clsx from 'clsx'
 import useAuth from 'app/hooks/useAuth'

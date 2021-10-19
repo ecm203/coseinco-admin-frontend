@@ -6,7 +6,7 @@ import {
     TableCell,
     TableBody,
     TableRow,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Breadcrumb, SimpleCard } from 'app/components'
 import Highlight from 'react-highlight'
 

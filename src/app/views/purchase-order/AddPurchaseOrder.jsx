@@ -11,7 +11,7 @@ import {
   TableHead,
   TableCell,
   TableRow,
-} from '@material-ui/core'
+} from '@mui/material'
 import DateFnsUtils from '@date-io/date-fns'
 import { useForm, Controller } from 'react-hook-form'
 import {
@@ -43,6 +43,12 @@ const AddPurchaseOrder = () => {
 
   return (
     <div className="m-sm-30">
+      <TextField
+        label="Size"
+        id="outlined-size-small"
+        defaultValue="Small"
+        size="small"
+      />
       <div className="mb-sm-30">
         <Breadcrumb routeSegments={[{ name: 'Agregar OC' }]} />
       </div>

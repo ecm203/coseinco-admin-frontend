@@ -6,7 +6,7 @@ import {
     IconButton,
     Icon,
     Grid,
-} from '@material-ui/core'
+} from '@mui/material'
 import StatCard3 from './shared/StatCard3'
 import ComparisonChart2 from './shared/ComparisonChart2'
 import StatCard4 from './shared/StatCard4'

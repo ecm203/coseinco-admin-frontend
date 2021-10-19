@@ -1,4 +1,6 @@
-import { makeStyles, lighten } from '@material-ui/core/styles'
+import { lighten } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 export const colorStyles = makeStyles(({ palette, ...theme }) => ({
     '@global': {

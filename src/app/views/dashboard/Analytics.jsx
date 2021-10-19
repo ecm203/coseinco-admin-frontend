@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Grid, Card } from '@material-ui/core'
+import { Grid, Card } from '@mui/material'
 import DoughnutChart from './shared/Doughnut'
 import StatCards from './shared/StatCards'
 import TopSellingTable from './shared/TopSellingTable'
@@ -7,7 +7,7 @@ import RowCards from './shared/RowCards'
 import StatCards2 from './shared/StatCards2'
 import UpgradeCard from './shared/UpgradeCard'
 import Campaigns from './shared/Campaigns'
-import { useTheme } from '@material-ui/styles'
+import { useTheme } from '@mui/styles'
 
 const Analytics = () => {
     const theme = useTheme()

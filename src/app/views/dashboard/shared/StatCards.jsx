@@ -1,6 +1,6 @@
 import React from 'react'
-import { Grid, Card, Icon, IconButton, Tooltip } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Card, Icon, IconButton, Tooltip } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
     icon: {
@@ -30,7 +30,7 @@ const StatCards = () => {
                         </div>
                     </div>
                     <Tooltip title="View Details" placement="top">
-                        <IconButton>
+                        <IconButton size="large">
                             <Icon>arrow_right_alt</Icon>
                         </IconButton>
                     </Tooltip>
@@ -53,7 +53,7 @@ const StatCards = () => {
                         </div>
                     </div>
                     <Tooltip title="View Details" placement="top">
-                        <IconButton>
+                        <IconButton size="large">
                             <Icon>arrow_right_alt</Icon>
                         </IconButton>
                     </Tooltip>
@@ -76,7 +76,7 @@ const StatCards = () => {
                         </div>
                     </div>
                     <Tooltip title="View Details" placement="top">
-                        <IconButton>
+                        <IconButton size="large">
                             <Icon>arrow_right_alt</Icon>
                         </IconButton>
                     </Tooltip>
@@ -99,14 +99,14 @@ const StatCards = () => {
                         </div>
                     </div>
                     <Tooltip title="View Details" placement="top">
-                        <IconButton>
+                        <IconButton size="large">
                             <Icon>arrow_right_alt</Icon>
                         </IconButton>
                     </Tooltip>
                 </Card>
             </Grid>
         </Grid>
-    )
+    );
 }
 
 export default StatCards

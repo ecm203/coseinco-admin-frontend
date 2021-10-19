@@ -7,9 +7,9 @@ import {
     TimelineDot,
     TimelineItem,
     TimelineSeparator,
-} from '@material-ui/lab'
+} from '@mui/lab'
 
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
     root: {

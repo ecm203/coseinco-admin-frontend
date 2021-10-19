@@ -1,9 +1,9 @@
 import React from 'react'
 import { getTimeDifference } from 'utils'
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
-import { Divider } from '@material-ui/core'
+import { Divider } from '@mui/material'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
     circle: {

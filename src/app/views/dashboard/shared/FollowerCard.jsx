@@ -1,7 +1,7 @@
 import React from 'react'
 import ModifiedAreaChart from './ModifiedAreaChart'
-import { Card, Icon } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
+import { Card, Icon } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 const FollowerCard = () => {
     const { palette } = useTheme()

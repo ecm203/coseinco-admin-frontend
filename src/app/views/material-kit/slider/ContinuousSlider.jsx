@@ -1,10 +1,10 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import VolumeDown from '@material-ui/icons/VolumeDown'
-import VolumeUp from '@material-ui/icons/VolumeUp'
-import Slider from '@material-ui/core/Slider'
+import makeStyles from '@mui/styles/makeStyles';
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import VolumeDown from '@mui/icons-material/VolumeDown'
+import VolumeUp from '@mui/icons-material/VolumeUp'
+import Slider from '@mui/material/Slider'
 
 const useStyles = makeStyles({
     root: {

@@ -10,7 +10,7 @@ import {
   Icon,
   Tooltip,
   TablePagination,
-} from '@material-ui/core'
+} from '@mui/material'
 
 const ListOrder = [
   {
@@ -118,19 +118,19 @@ const ListPurchaseOrder = () => {
                 </TableCell>
                 <TableCell className="px-0">
                   <Tooltip title="Visualizar pedido">
-                    <IconButton>
+                    <IconButton size="large">
                       <Icon color="primary">visibility</Icon>
                     </IconButton>
                   </Tooltip>
                   {order.estado === 'Generado' && (
                     <>
                       <Tooltip title="Notificacion a proveedor">
-                        <IconButton>
+                        <IconButton size="large">
                           <Icon color="primary">email</Icon>
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Anular orden de compra">
-                        <IconButton>
+                        <IconButton size="large">
                           <Icon color="primary">delete</Icon>
                         </IconButton>
                       </Tooltip>
@@ -154,12 +154,12 @@ const ListPurchaseOrder = () => {
           nextIconButtonProps={{
             'aria-label': 'Next Page',
           }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </SimpleCard>
     </div>
-  )
+  );
 }
 
 export default ListPurchaseOrder

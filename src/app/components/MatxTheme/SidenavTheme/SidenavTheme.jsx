@@ -1,6 +1,6 @@
 import React from 'react'
-import { ThemeProvider } from '@material-ui/core/styles'
-import { useTheme } from '@material-ui/core/styles'
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles'
 import useSettings from 'app/hooks/useSettings'
 
 const SidenavTheme = ({ children }) => {
@@ -9,7 +9,11 @@ const SidenavTheme = ({ children }) => {
     const sidenavTheme =
         settings.themes[settings.layout1Settings.leftSidebar.theme] || theme
 
-    return <ThemeProvider theme={sidenavTheme}>{children}</ThemeProvider>
+    return (
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={sidenavTheme}>{children}</ThemeProvider>
+        </StyledEngineProvider>
+    );
 }
 
 export default SidenavTheme

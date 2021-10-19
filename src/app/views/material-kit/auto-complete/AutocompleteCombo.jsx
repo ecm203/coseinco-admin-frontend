@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
-import { TextField } from '@material-ui/core'
-import { Autocomplete, createFilterOptions } from '@material-ui/lab'
+import { TextField } from '@mui/material'
+import { Autocomplete } from '@mui/material';
+import { createFilterOptions } from '@mui/material/useAutocomplete';
 
 const suggestions = [
     { label: 'Afghanistan' },

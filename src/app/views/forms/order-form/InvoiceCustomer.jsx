@@ -1,8 +1,8 @@
 import React from 'react'
-import { Divider, Card, Avatar } from '@material-ui/core'
+import { Divider, Card, Avatar } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { Rating } from '@material-ui/lab'
-import { makeStyles } from '@material-ui/core/styles'
+import { Rating } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({

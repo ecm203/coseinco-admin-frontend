@@ -15,7 +15,7 @@ import {
   Icon,
   Tooltip,
   TablePagination,
-} from '@material-ui/core'
+} from '@mui/material'
 import ReferralGuide from './ReferralGuide'
 import axios from 'axios'
 import { useHistory } from 'react-router'
@@ -67,6 +67,12 @@ const BookOrder = () => {
   }
 
   useEffect(() => {
+    loadTableData()
+  }, [])
+
+  const loadTableData = () => {
+    setOrders(null)
+    setIsLoading(true)
     axios.get(`${apiUrl}/pedidos/admin/reservas`).then(
       (response) => {
         setOrders(response.data.pedidosres)
@@ -77,7 +83,26 @@ const BookOrder = () => {
         setIsError(true)
       }
     )
-  }, [])
+  }
+
+  const generateRG = async (orderCode) => {
+    setIsLoading(true)
+    await axios
+      .post('http://localhost:5000/api-admin/guia/createGuiaPDF', {
+        codigo: orderCode,
+      })
+      .then(
+        (response) => {
+          console.log(response)
+          loadTableData()
+        },
+        (error) => {
+          setIsLoading(false)
+          setIsError(true)
+        }
+      )
+    loadTableData()
+  }
 
   return (
     <>
@@ -130,10 +155,7 @@ const BookOrder = () => {
                             ' ' +
                             subscriber.cliente.lastName}
                         </TableCell>
-                        <TableCell
-                          colSpan={1}
-                          className="pr-5" align="right"
-                        >
+                        <TableCell colSpan={1} className="pr-5" align="right">
                           {subscriber.cantidad}
                         </TableCell>
                         <TableCell
@@ -149,6 +171,7 @@ const BookOrder = () => {
                               onClick={() =>
                                 handleOrderDetailOpen(subscriber.codigo)
                               }
+                              size="large"
                             >
                               <Icon color="primary">visibility</Icon>
                             </IconButton>
@@ -159,6 +182,7 @@ const BookOrder = () => {
                                 onClick={() =>
                                   handleReferralGuideOpen(subscriber.codigo)
                                 }
+                                size="large"
                               >
                                 <Icon color="primary">assignment</Icon>
                               </IconButton>
@@ -168,9 +192,11 @@ const BookOrder = () => {
                             subscriber.estado === 'enviado' ||
                             subscriber.estado === 'finalizado') && (
                             <Tooltip title="Descargar guia de remision">
-                              <IconButton>
-                                <Icon color="primary">download</Icon>
-                              </IconButton>
+                              <a href={subscriber.url} download rel="noreferrer" target="_blank"> 
+                                <IconButton size="large">
+                                  <Icon color="primary">download</Icon>
+                                </IconButton>
+                              </a>
                             </Tooltip>
                           )}
                           {subscriber.estado === 'generado' && (
@@ -180,6 +206,7 @@ const BookOrder = () => {
                                   onClick={() =>
                                     handleAddSerialNumbOpen(subscriber.codigo)
                                   }
+                                  size="large"
                                 >
                                   <Icon color="primary">add_circle</Icon>
                                 </IconButton>
@@ -204,12 +231,13 @@ const BookOrder = () => {
               nextIconButtonProps={{
                 'aria-label': 'Next Page',
               }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
             />
             <ReferralGuide
               open={referralGuideOpen}
               orderCode={codeSelected}
+              generateRG={generateRG}
               handleClose={handleReferralGuideClose}
             />
           </SimpleCard>

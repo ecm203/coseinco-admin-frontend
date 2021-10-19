@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Icon } from '@material-ui/core'
-import TouchRipple from '@material-ui/core/ButtonBase'
+import { Icon } from '@mui/material'
+import TouchRipple from '@mui/material/ButtonBase'
 import MatxVerticalNavExpansionPanel from './MatxVerticalNavExpansionPanel'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 import useSettings from 'app/hooks/useSettings'
 

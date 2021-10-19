@@ -2,7 +2,7 @@ import 'react-quill/dist/quill.snow.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactQuill from 'react-quill'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
     editor: {

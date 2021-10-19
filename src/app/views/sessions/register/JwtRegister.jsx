@@ -5,9 +5,9 @@ import {
     FormControlLabel,
     Grid,
     Button,
-} from '@material-ui/core'
+} from '@mui/material'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import useAuth from 'app/hooks/useAuth'

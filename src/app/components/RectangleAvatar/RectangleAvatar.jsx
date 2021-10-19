@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon } from '@material-ui/core'
+import { Icon } from '@mui/material'
 
 const RectangleAvatar = ({ color = 'primary', icon, textIcon, style }) => {
     return (

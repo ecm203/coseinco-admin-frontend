@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Icon, IconButton, Hidden } from '@material-ui/core'
+import { Icon, IconButton, Hidden } from '@mui/material'
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
     toolbarMenu: {
         '&.open $menuContainer': {
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 display: 'flex',
             },
         },
@@ -14,7 +14,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
     menuContainer: {
         display: 'flex',
         alignItems: 'center',
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             position: 'absolute',
             backgroundColor: palette.primary.dark,
             width: '100%',
@@ -39,7 +39,7 @@ const MatxToolbarMenu = ({ offsetTop, children }) => {
             })}
         >
             <Hidden mdUp>
-                <IconButton onClick={handleToggle}>
+                <IconButton onClick={handleToggle} size="large">
                     <Icon>{open ? 'close' : 'more_vert'}</Icon>
                 </IconButton>
             </Hidden>
@@ -51,7 +51,7 @@ const MatxToolbarMenu = ({ offsetTop, children }) => {
                 {children}
             </div>
         </div>
-    )
+    );
 }
 
 export default MatxToolbarMenu

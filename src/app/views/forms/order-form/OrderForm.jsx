@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconButton, Icon, Button, Grid } from '@material-ui/core'
+import { IconButton, Icon, Button, Grid } from '@mui/material'
 import InvoiceOverview from './InvoiceOverview'
 import InvoiceCustomer from './InvoiceCustomer'
 
@@ -22,7 +22,7 @@ const Invoice2 = () => {
                 </div>
 
                 <div className="">
-                    <IconButton className="mr-2">
+                    <IconButton className="mr-2" size="large">
                         <Icon>more_horiz</Icon>
                     </IconButton>
                     <Button variant="contained" color="primary">
@@ -40,7 +40,7 @@ const Invoice2 = () => {
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
 
 export default Invoice2

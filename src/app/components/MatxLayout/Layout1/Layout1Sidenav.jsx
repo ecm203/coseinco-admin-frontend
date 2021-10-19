@@ -1,9 +1,11 @@
 import React from 'react'
-import { useTheme, makeStyles } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import Sidenav from '../../Sidenav/Sidenav'
 import Brand from '../../Brand/Brand'
-import { Switch, Hidden } from '@material-ui/core'
+import { Switch, Hidden } from '@mui/material'
 import { convertHexToRGB } from 'utils'
 import useSettings from 'app/hooks/useSettings'
 
@@ -88,7 +90,7 @@ const Layout1Sidenav = () => {
         <div className={classes.sidenav}>
             <div className="flex-column relative h-full">
                 <Brand>
-                    <Hidden smDown>
+                    <Hidden mdDown>
                         <Switch
                             onChange={handleSidenavToggle}
                             checked={leftSidebar.mode !== 'full'}
@@ -100,7 +102,7 @@ const Layout1Sidenav = () => {
                 <Sidenav />
             </div>
         </div>
-    )
+    );
 }
 
 export default React.memo(Layout1Sidenav)

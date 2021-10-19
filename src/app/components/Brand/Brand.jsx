@@ -1,6 +1,6 @@
 import React from 'react'
 import { MatxLogo } from 'app/components'
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx'
 import useSettings from 'app/hooks/useSettings'
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Icon, IconButton, Hidden } from '@material-ui/core'
+import { Icon, IconButton, Hidden } from '@mui/material'
 import { classList } from 'Utils'
 
 const TopbarMenu = (props) => {
@@ -18,7 +18,7 @@ const TopbarMenu = (props) => {
             })}
         >
             <Hidden mdUp>
-                <IconButton onClick={handleToggle}>
+                <IconButton onClick={handleToggle} size="large">
                     <Icon>{open ? 'close' : 'more_vert'}</Icon>
                 </IconButton>
             </Hidden>
@@ -30,7 +30,7 @@ const TopbarMenu = (props) => {
                 {props.children}
             </div>
         </div>
-    )
+    );
 }
 
 export default TopbarMenu
