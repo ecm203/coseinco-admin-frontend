@@ -68,6 +68,9 @@ const BookOrder = () => {
 
   useEffect(() => {
     loadTableData()
+    return () => {
+      loadTableData()
+    }
   }, [])
 
   const loadTableData = () => {
