@@ -6,6 +6,7 @@ import {
   MatxSnackbar,
 } from 'app/components'
 import {
+  Avatar,
   IconButton,
   Table,
   TableHead,
@@ -165,7 +166,10 @@ const ListInventory = () => {
                             {inv.sku}
                           </TableCell>
                           <TableCell className="px-0 capitalize" colSpan={3}>
-                            {inv.nombre}
+                            <div className="flex items-center">
+                              <Avatar src={inv.imagen} />
+                              <p className="m-0 ml-4">{inv.nombre}</p>
+                            </div>
                           </TableCell>
                           <TableCell className="pr-6" align="right" colSpan={1}>
                             {inv.cantidad}
@@ -238,7 +242,7 @@ const ListInventory = () => {
                       {serie?.map((s, index) => (
                         <TableRow key={index}>
                           <TableCell className="px-0" colSpan={1}>
-                            {index}
+                            {index + 1}
                           </TableCell>
                           <TableCell className="px-0" colSpan={3}>
                             {s}

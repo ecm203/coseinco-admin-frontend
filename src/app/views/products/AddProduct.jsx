@@ -1,13 +1,11 @@
 import React from 'react'
 import { Breadcrumb, SimpleCard } from 'app/components'
-import { Box, Button, Grid, InputAdornment, TextField } from '@mui/material'
+import { Button, Grid, TextField } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
-import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
 
 const AddProduct = () => {
   const {
     control,
-    reset,
     formState: { errors },
     handleSubmit,
   } = useForm()

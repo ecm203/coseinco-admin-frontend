@@ -1,39 +1,44 @@
 import React from 'react'
-import { Dialog, Button } from '@mui/material'
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  Button,
+  Slide,
+} from '@mui/material'
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />
+})
 
 const ConfirmationDialog = ({
-    open,
-    onConfirmDialogClose,
-    text,
-    title = 'confirm',
-    onYesClick,
+  open,
+  onConfirmDialogClose,
+  text,
+  title = 'confirm',
+  onYesClick,
 }) => {
-    return (
-        <Dialog maxWidth="xs" open={open} onClose={onConfirmDialogClose}>
-            <div className="p-8 text-center w-360 mx-auto">
-                <h4 className="capitalize m-0 mb-2">{title}</h4>
-                <p>{text}</p>
-                <div className="flex justify-center pt-2 m--2">
-                    <Button
-                        className="m-2 rounded hover-bg-primary px-6"
-                        variant="outlined"
-                        color="primary"
-                        onClick={onYesClick}
-                    >
-                        Yes
-                    </Button>
-                    <Button
-                        className="m-2 rounded hover-bg-secondary px-6"
-                        variant="outlined"
-                        color="secondary"
-                        onClick={onConfirmDialogClose}
-                    >
-                        No
-                    </Button>
-                </div>
-            </div>
-        </Dialog>
-    )
+  return (
+    <Dialog
+      TransitionComponent={Transition}
+      maxWidth="xs"
+      fullWidth
+      open={open}
+      onClose={onConfirmDialogClose}
+    >
+      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      <DialogContent>{text}</DialogContent>
+      <DialogActions>
+        <Button variant="text" color="primary" onClick={onConfirmDialogClose}>
+          Cancelar
+        </Button>
+        <Button variant="text" color="error" onClick={onYesClick}>
+          Aceptar
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default ConfirmationDialog
