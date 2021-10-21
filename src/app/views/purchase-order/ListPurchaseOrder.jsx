@@ -87,7 +87,6 @@ const ListPurchaseOrder = () => {
 
   const handleDeleteOrder = () => {
     setIsLoading(true)
-    console.log(orderSelected)
     axios
       .post(`${apiUrl}/oCompra/anular`, {
         id: orderSelected,
@@ -228,21 +227,22 @@ const ListPurchaseOrder = () => {
                               </Tooltip>
                             </>
                           )}
-                          {format(
-                            new Date(order.fechaEntrega),
-                            'dd/MM/yyyy'
-                          ) === format(new Date(), 'dd/MM/yyyy') && (
-                            <Tooltip title="Asignar numero de serie">
-                              <IconButton
-                                size="large"
-                                onClick={() =>
-                                  handleAddSerialNumber(order.numeroOC)
-                                }
-                              >
-                                <Icon color="primary">add_circle</Icon>
-                              </IconButton>
-                            </Tooltip>
-                          )}
+                          {order.estado === 'procesado' &&
+                            format(
+                              new Date(order.fechaEntrega),
+                              'dd/MM/yyyy'
+                            ) === format(new Date(), 'dd/MM/yyyy') && (
+                              <Tooltip title="Asignar numero de serie">
+                                <IconButton
+                                  size="large"
+                                  onClick={() =>
+                                    handleAddSerialNumber(order.numeroOC)
+                                  }
+                                >
+                                  <Icon color="primary">add_circle</Icon>
+                                </IconButton>
+                              </Tooltip>
+                            )}
                         </TableCell>
                       </TableRow>
                     ))}

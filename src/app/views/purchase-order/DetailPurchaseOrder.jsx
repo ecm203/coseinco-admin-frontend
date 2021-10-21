@@ -86,11 +86,11 @@ const DetailPurchaseOrder = () => {
   }
 
   const handleSaveSerialNumber = (productId, serialNumbers) => {
-    console.log('Hola mundo')
-    // const productIndex = order.productos.findIndex(
-    //   (product) => product.productoID === productId
-    // )
-    // order.productos[productIndex].serialNumbers = serialNumbers
+    const productIndex = order.compra.productos.findIndex(
+      (product) => product.productoId === productId
+    )
+    order.compra.productos[productIndex].serialNumbers = serialNumbers
+    console.log(order.compra.productos, serialNumbers)
   }
 
   const handleSaveGuide = () => {
@@ -98,7 +98,24 @@ const DetailPurchaseOrder = () => {
       (product) => product.serialNumbers.length === 0
     )
     if (productFiltered.length === 0) {
-      console.log('object')
+      setIsLoading(true)
+      const productos = order.compra.productos.map((product) => ({
+        productoID: product.productoId,
+        serialNumbers: product.serialNumbers,
+      }))
+      const data = {
+        codigo: order.compra.numeroOC,
+        productos: productos,
+      }
+      axios.post(`${apiUrl}/oCompra/oCompraToInventario`, data).then(
+        (response) => {
+          console.log(response)
+          history.push('/orden-de-compra/listar')
+        },
+        (error) => {
+          setIsLoading(false)
+        }
+      )
     } else {
       setIsError(true)
       setErrorMessage('Debe asignar todos los números de serie')

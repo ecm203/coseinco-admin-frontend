@@ -17,7 +17,6 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import EmptyData from 'app/components/icons/EmptyData'
-import { parseNumber } from 'globalize'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />
@@ -45,7 +44,7 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
         .get(`${apiUrl}/inventario/getSeriesByProductId/${product.productoId}`)
         .then((response) => {
           setSerialNumbers(response.data.nSeries)
-          console.log(response.data.nSeries)
+          setValues(product.serialNumbers)
         })
     }
   }, [product, open])
@@ -61,11 +60,21 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
   const handleChange = (e) => {
     setErrorValue(null)
     const indexSN = serialNumbers.findIndex((sn) => sn === e.target.value)
+    const indexValues = values.findIndex((sn) => sn === e.target.value)
     setValue(e.target.value)
-    if (indexSN >= 0) {
+    if (indexSN >= 0 || indexValues >= 0) {
       setErrorValue('Número de serie registrado')
     } else if (values.length === parseInt(product.cantidad)) {
       setErrorValue(`Debe registrar ${product.cantidad} números de serie`)
+    }
+  }
+
+  const handleSaveSerialNumnber = () => {
+    if (values.length === parseInt(product.cantidad)) {
+      handleSaveSn(product.productoId, values)
+      handleClose()
+    } else {
+      console.log('Invalid')
     }
   }
 
@@ -92,6 +101,7 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
               fullWidth
               abel="Nro. Serie"
               variant="outlined"
+              label="Número de serie"
               error={!!errorValue}
               helperText={errorValue}
             />
@@ -106,7 +116,7 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
             <TableBody>
               {values.length > 0 ? (
                 values.map((val, index) => (
-                  <TableRow>
+                  <TableRow key={index}>
                     <TableCell colSpan={1}>{index + 1}</TableCell>
                     <TableCell colSpan={3}>{val}</TableCell>
                   </TableRow>
@@ -148,7 +158,12 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
         >
           Cancelar
         </Button>
-        <Button color="primary" variant="text" type="submit">
+        <Button
+          color="primary"
+          variant="text"
+          type="submit"
+          onClick={handleSaveSerialNumnber}
+        >
           Guardar
         </Button>
       </DialogActions>
