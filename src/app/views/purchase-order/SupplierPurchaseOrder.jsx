@@ -12,6 +12,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Typography,
 } from '@mui/material'
 import axios from 'axios'
 import { useForm, Controller } from 'react-hook-form'
@@ -263,6 +264,23 @@ const SupplierPurchaseOrder = () => {
           handleClose={handleClose}
           duration={3000}
         />
+      )}
+      {!isLoading && order && orderSave && (
+        <Box
+          sx={{
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Box sx={{ width: '70%' }}>
+            <Typography sx={{ textAlign: 'center' }} variant="h3">
+              Orden de compra actualizada
+            </Typography>
+          </Box>
+        </Box>
       )}
     </>
   )
