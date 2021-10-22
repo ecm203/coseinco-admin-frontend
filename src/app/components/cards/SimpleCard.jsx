@@ -2,9 +2,9 @@ import React from 'react'
 import { Card } from '@mui/material'
 import { classList } from 'utils'
 
-const SimpleCard = ({ children, title, subtitle, icon }) => {
+const SimpleCard = ({ children, title, subtitle, icon, hfull = true }) => {
     return (
-        <Card elevation={6} className="px-6 py-5 h-full">
+        <Card elevation={6} className={`px-6 py-5 ${hfull ? 'h-full' : ''}`}>
             <div
                 className={classList({
                     'card-title': true,

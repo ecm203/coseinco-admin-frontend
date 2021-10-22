@@ -9,12 +9,12 @@ import {
     FormControlLabel,
     Checkbox,
 } from '@mui/material'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-} from '@material-ui/pickers'
-import 'date-fns'
-import DateFnsUtils from '@date-io/date-fns'
+// import {
+//     MuiPickersUtilsProvider,
+//     KeyboardDatePicker,
+// } from '@material-ui/pickers'
+// import 'date-fns'
+// import DateFnsUtils from '@date-io/date-fns'
 
 const SimpleForm = () => {
     const [state, setState] = useState({
@@ -47,9 +47,9 @@ const SimpleForm = () => {
         })
     }
 
-    const handleDateChange = (date) => {
-        setState({ ...state, date })
-    }
+    // const handleDateChange = (date) => {
+    //     setState({ ...state, date })
+    // }
 
     const {
         username,
@@ -59,7 +59,7 @@ const SimpleForm = () => {
         password,
         confirmPassword,
         gender,
-        date,
+        // date,
         email,
     } = state
 
@@ -106,7 +106,7 @@ const SimpleForm = () => {
                             ]}
                         />
 
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardDatePicker
                                 className="mb-4 w-full"
                                 margin="none"
@@ -121,7 +121,7 @@ const SimpleForm = () => {
                                     'aria-label': 'change date',
                                 }}
                             />
-                        </MuiPickersUtilsProvider>
+                        </MuiPickersUtilsProvider> */}
                         <TextValidator
                             className="mb-8 w-full"
                             label="Credit Card"

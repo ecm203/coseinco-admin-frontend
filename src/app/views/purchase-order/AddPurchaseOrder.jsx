@@ -96,6 +96,7 @@ const AddPurchaseOrder = () => {
   }
 
   useEffect(() => {
+    setIsLoading(true)
     const requestOne = axios.get(
       'http://localhost:5000/api/productos/ProductosCompra'
     )
@@ -104,6 +105,7 @@ const AddPurchaseOrder = () => {
       axios.spread((...responses) => {
         setProducts(responses[0].data.productos)
         setSuppliers(responses[1].data.proveedores)
+        setIsLoading(false)
       })
     )
   }, [])
