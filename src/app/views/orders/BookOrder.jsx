@@ -195,7 +195,7 @@ const BookOrder = () => {
                             subscriber.estado === 'enviado' ||
                             subscriber.estado === 'finalizado') && (
                             <Tooltip title="Descargar guia de remision">
-                              <a href={subscriber.url} download rel="noreferrer" target="_blank"> 
+                              <a href={subscriber.url} download="edwin.pdf" rel="noreferrer" target="_blank"> 
                                 <IconButton size="large">
                                   <Icon color="primary">download</Icon>
                                 </IconButton>
