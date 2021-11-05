@@ -22,7 +22,7 @@ const sessionRoutes = [
         component: NotFound,
     },
     {
-        path: '/proveedor',
+        path: '/proveedor/orden-de-compra',
         component: SupplierPurchaseOrder
     }
 ]
