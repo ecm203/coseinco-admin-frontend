@@ -34,7 +34,7 @@ const ListProduct = () => {
     //home
   }
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [orderSelected, setOrderSelected] = useState(null)
+  const [ productsSelected, setProductsSelected] = useState(null)
   const [ productSelected, setProductSelected] = useState(null)
   const [orderList, setOrderList] = useState(null)
 
@@ -61,7 +61,7 @@ const ListProduct = () => {
 
   const handleOpenModal = (SKU,producSelected) => {
     setIsOpenModal(true)
-    setOrderSelected(SKU)
+    setProductsSelected(SKU)
     setProductSelected(producSelected)
   }
 
@@ -69,10 +69,10 @@ const ListProduct = () => {
     setIsOpenModal(false)
   }
 
-  const handleDeleteOrder = () => {
+  const handleDisableProduct = () => {
     setIsLoading(true)
     axios
-      .post(`${apiUrl}/oCompra/anular`, {
+      .post(`api`, {
         id: orderSelected,
       })
       .then(
@@ -217,7 +217,7 @@ const ListProduct = () => {
           <ConfirmationDialog
               open={isOpenModal}
               onConfirmDialogClose={handleCloseModal}
-              onYesClick={handleDeleteOrder}
+              onYesClick={handleDisableProduct}
               title={'Inhabilitar producto'}
               text={`Esta seguro que desea inhabilitar el producto ${productSelected}`}
           />
