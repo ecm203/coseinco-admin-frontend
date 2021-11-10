@@ -1,5 +1,6 @@
 import AddProduct from "./AddProduct"
 import ListProduct from "./ListProduct"
+import ProductDetail from "./ProductDetail";
 
 
 const productsRoutes = [
@@ -10,6 +11,10 @@ const productsRoutes = [
   {
     path: '/producto/listar',
     component: ListProduct,
+  },
+  {
+    path: '/producto/',
+    component: ProductDetail,
   }
 ]
 
