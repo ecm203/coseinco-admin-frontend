@@ -7,22 +7,15 @@ import {
   MatxSnackbar,
 } from 'app/components'
 import {
-  Avatar,
   Button,
   TextField,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Tooltip,
-  IconButton,
-  Icon,
-  Grid,
-  Box,
+  Grid
 } from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles';
 import { useHistory, useLocation } from 'react-router'
+import ImageList from '@mui/material/ImageList'
+import ImageListItem from '@mui/material/ImageListItem'
+import { useForm, Controller } from 'react-hook-form'
 
 const apiUrl = 'http://localhost:5000/api'
 
@@ -45,6 +38,12 @@ const ProductDetail = () => {
   const isEditable  = searchParams.get('isEditable')
   const productCode = searchParams.get('codigo');
   
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm()
+
   console.log('isEditable: ',isEditable);
   console.log('search: ',search);
   useEffect(() => {
@@ -165,6 +164,21 @@ const ProductDetail = () => {
                             />
                             </Grid>
                         </Grid>
+                        <div>
+                          <br/>
+                          <h5>Imagenes</h5>
+                          <ImageList sx={{ width: 700, height: 300 }} cols={3} rowHeight={160}>
+                            {product?.producto.imagenes.map((item) => (
+                              <ImageListItem key={item}>
+                                <img
+                                  src={`${item}?w=164&h=164&fit=crop&auto=format`}
+                                  srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                  loading="lazy"
+                                  />
+                              </ImageListItem>
+                            ))}
+                          </ImageList>
+                        </div>
                     <Grid
                     container
                     spacing={3}
@@ -204,48 +218,101 @@ const ProductDetail = () => {
                 <div className="mb-sm-30">
                   <SimpleCard title={'Datos del producto'}>
                         <Grid container spacing={3}>
-                            <Grid item lg={6} md={6} sm={12} xs={12}>
-                            <TextField
-                                fullWidth
-                                 className="mb-5"
-                                value={product?.producto.SKU + ' '}
-                                size="small"
-                                variant="outlined"
-                                id="standard-error"
-                                label="SKU"
-                                readOnly
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <Controller
+                              render={({ field }) => (
+                                <TextField
+                                  {...field}
+                                  error={!!errors.sku}
+                                  fullWidth
+                                  size="small"
+                                  variant="outlined"
+                                  label="SKU"
+                                  helperText={errors.sku?.message}
+                                  value={product.producto.SKU}
+                                />
+                              )}
+                              name="SKU"
+                              control={control}
+                              rules={{
+                                required: 'Campo requerido',
+                              }}
                             />
-                            <TextField
-                               
-                                fullWidth
-                                value={product?.producto.precio}
-                                size="small"
-                                variant="outlined"
-                                id="standard-error"
-                                label="Precio"
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <Controller
+                              render={({ field }) => (
+                                <TextField
+                                  {...field}
+                                  error={!!errors.name}
+                                  fullWidth
+                                  size="small"
+                                  variant="outlined"
+                                  label="Nombre"
+                                  helperText={errors.name?.message}
+                                  value={product?.producto.nombre}
+                                />
+                              )}
+                              name="Nombre"
+                              control={control}
+                              rules={{
+                                required: 'Campo requerido',
+                              }}
                             />
-                            
-                            </Grid>
-                            <Grid item lg={6} md={6} sm={12} xs={12}>
-                            <TextField
-                                className="mb-5"
-                                fullWidth
-                                value={product?.producto.nombre}
-                                size="small"
-                                variant="outlined"
-                                id="standard-error"
-                                label="Nombre"
-                                
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <Controller
+                              name="quantity"
+                              control={control}
+                              defaultValue={1}
+                              rules={{
+                                required: 'Campo requerido',
+                                min: {
+                                  value: 1,
+                                  message: 'Cantidad min. 1',
+                                },
+                              }}
+                              render={({ field }) => (
+                                <TextField
+                                  {...field}
+                                  error={!!errors.quantity}
+                                  fullWidth
+                                  type="number"
+                                  size="small"
+                                  variant="outlined"
+                                  label="Precio"
+                                  helperText={errors.quantity?.message}
+                                  value={product?.producto.precio}
+                                />
+                              )}
                             />
-                            <TextField
-                                fullWidth
-                                value={product?.producto.estado + ' '}
-                                size="small"
-                                variant="outlined"
-                                id="standard-error"
-                                label="Estado"
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <Controller
+                              name="cost"
+                              control={control}
+                              rules={{
+                                required: 'Campo requerido',
+                                min: {
+                                  value: 1,
+                                  message: 'Costo min. 1',
+                                },
+                              }}
+                              render={({ field }) => (
+                                <TextField
+                                  {...field}
+                                  error={!!errors.cost}
+                                  fullWidth
+                                  type="number"
+                                  size="small"
+                                  variant="outlined"
+                                  label="Costo"
+                                  helperText={errors.cost?.message}
+                                  value={product?.producto.estado + ' '}
+                                />
+                              )}
                             />
-                            </Grid>
+                          </Grid>
                         </Grid>
                     <Grid
                     container

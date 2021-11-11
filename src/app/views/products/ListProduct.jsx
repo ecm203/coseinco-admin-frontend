@@ -34,6 +34,7 @@ const ListProduct = () => {
     //home
   }
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [isOpenModalHabilitar, setIsOpenModalHabilitar] = useState(false)
   const [ productsSelected, setProductsSelected] = useState(null)
   const [ productSelected, setProductSelected] = useState(null)
   const [orderList, setOrderList] = useState(null)
@@ -65,15 +66,26 @@ const ListProduct = () => {
     setProductSelected(producSelected)
   }
 
+   const handleOpenModalHabilitar = (SKU,producSelected) => {
+    setIsOpenModalHabilitar(true)
+    setProductsSelected(SKU)
+    setProductSelected(producSelected)
+  }
+
   const handleCloseModal = () => {
     setIsOpenModal(false)
   }
 
+   const handleCloseModalEnable = () => {
+    setIsOpenModalHabilitar(false)
+  }
+
+
   const handleDisableProduct = () => {
     setIsLoading(true)
     axios
-      .post(`api`, {
-        id: orderSelected,
+      .post(`${apiUrl}/productos/anular`, {
+        id: productsSelected,
       })
       .then(
         (response) => {
@@ -86,12 +98,29 @@ const ListProduct = () => {
       )
   }
 
-  const loadTableData = () => {
-    setOrderList(null)
+  const handleEnableProduct = () => {
     setIsLoading(true)
-    axios.get(`${apiUrl}/oCompra`).then(
+    axios
+      .post(`${apiUrl}/productos/habilitar`, {
+        id: productsSelected,
+      })
+      .then(
+        (response) => {
+          setIsOpenModalHabilitar(false)
+          loadTableData()
+        },
+        (error) => {
+          setIsOpenModalHabilitar(false)
+        }
+      )
+  }
+
+  const loadTableData = () => {
+    setProduct(null)
+    setIsLoading(true)
+    axios.get(`${apiUrl}/productos`).then(
       (response) => {
-        setOrderList(response.data.compras)
+        setProduct(response.data.products)
         setIsLoading(false)
       },
       (error) => {
@@ -184,11 +213,29 @@ const ListProduct = () => {
                               <Icon color="primary">edit</Icon>
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Anular">
-                            <IconButton size="large" onClick={()=> handleOpenModal(subscriber.SKU,subscriber.nombre)}>
-                              <Icon color="primary">do_not_disturb_alt</Icon>
-                            </IconButton>
-                          </Tooltip>
+                          {
+                            subscriber.estado === 'habilitado' && (
+                              <>
+                                <Tooltip title="Inhabilitar">
+                                  <IconButton size="large" onClick={()=> handleOpenModal(subscriber.SKU,subscriber.nombre)}>
+                                    <Icon color="primary">do_not_disturb_alt</Icon>
+                                  </IconButton>
+                                </Tooltip>
+                              </>
+                            )
+                          }
+                          {
+                            subscriber.estado === 'inhabilitado' && (
+                              <>
+                                <Tooltip title="Habilitar">
+                                  <IconButton size="large" onClick={()=> handleOpenModalHabilitar(subscriber.SKU,subscriber.nombre)}>
+                                    <Icon color="primary">check</Icon>
+                                  </IconButton>
+                                </Tooltip>
+                              </>
+                            )
+                          }
+
                         </TableCell>
                       </TableRow>
                     ))}
@@ -220,6 +267,13 @@ const ListProduct = () => {
               onYesClick={handleDisableProduct}
               title={'Inhabilitar producto'}
               text={`Esta seguro que desea inhabilitar el producto ${productSelected}`}
+          />
+          <ConfirmationDialog
+              open={isOpenModalHabilitar}
+              onConfirmDialogClose={handleCloseModalEnable}
+              onYesClick={handleEnableProduct}
+              title={'Habilitar producto'}
+              text={`Esta seguro que desea habilitar el producto ${productSelected}`}
           />
         </>
       )}
