@@ -15,6 +15,13 @@ import {
   IconButton,
   Icon,
   TablePagination,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Grid,
 } from '@mui/material'
 
 const listaEmpleado=[
@@ -22,19 +29,25 @@ const listaEmpleado=[
     foto:"https://media-exp1.licdn.com/dms/image/C4D03AQHYRdQqVxavfg/profile-displayphoto-shrink_100_100/0/1632850629496?e=1640217600&v=beta&t=XTq2bRDZGVzgvacVNZOPJbzBChPp_k4WS2Wn7sXTIa8",
     nombre:"Juan Perez",
     rol:"Conductor",
-    estado:"Habilitado"
+    estado:"Habilitado",
+    tipoDoc:"DNI",
+    nroDoc:98765431,
   },
   {
     foto:"https://media-exp1.licdn.com/dms/image/C4D03AQHYRdQqVxavfg/profile-displayphoto-shrink_100_100/0/1632850629496?e=1640217600&v=beta&t=XTq2bRDZGVzgvacVNZOPJbzBChPp_k4WS2Wn7sXTIa8",
     nombre:"Karla Moreno",
     rol:"Tecnico",
-    estado:"Inhabilitado"
+    estado:"Inhabilitado",
+    tipoDoc:"Carnet de Extranjeria",
+    nroDoc:98765431,
   },
   {
     foto:"https://media-exp1.licdn.com/dms/image/C4D03AQHYRdQqVxavfg/profile-displayphoto-shrink_100_100/0/1632850629496?e=1640217600&v=beta&t=XTq2bRDZGVzgvacVNZOPJbzBChPp_k4WS2Wn7sXTIa8",
     nombre:"Melisa Gutierrez",
     rol:"Jefe de Compra",
-    estado:"Habilitado"
+    estado:"Habilitado",
+    tipoDoc:"DNI",
+    nroDoc:98765431,
   },
 ]
 
@@ -42,10 +55,29 @@ const ListUser = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [page, setPage] = useState(0)
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [isOpenEditModal, setIsOpenEditModal] = useState(false)
   const [name,setNameUsuario]=useState(null);
   const[estado,setEstado]=useState(0);
-  const[usu,setUsu]=useState("");
+
+  const[edit,setEdit]=useState("");
+
+  const [modal, setModal] = useState(false)
+  const [modal2, setModal2] = useState(false)
+
+  const handleOpenEditModal = (id) => {
+    setModal(true)
+    setEdit(listaEmpleado[id])
+  }
+  const handleCloseEditModal = () => {
+    setModal(false)
+  }
+  const handleOpenViewModal = (id) => {
+    setModal2(true)
+    setEdit(listaEmpleado[id])
+  }
+  const handleCloseViewModal = () => {
+    setModal2(false)
+  }
+
 
   const handleCloseModal = () => {
     setIsOpenModal(false)
@@ -68,13 +100,6 @@ const ListUser = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value)
     setPage(0)
-  }
-  const handleOpenEditModal=(emp)=>{
-    setIsOpenEditModal(true);
-    setUsu(emp);
-  }
-  const handleCloseEditModal=()=>{
-    setIsOpenEditModal(false);
   }
 
   return (
@@ -134,14 +159,18 @@ const ListUser = () => {
                         {emp.estado}
                       </TableCell>
                       <TableCell colSpan={2} className="px-5">
-                        <Tooltip title="Visualizar">
+                        <Tooltip title="Visualizar"
+                        onClick={() =>
+                          handleOpenViewModal(index)
+                        }
+                        >
                           <IconButton size="large">
                             <Icon color="primary">visibility</Icon>
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Editar"
                         onClick={() =>
-                          handleOpenEditModal(emp)
+                          handleOpenEditModal(index)
                         }
                         >
                           <IconButton size="large">
@@ -188,12 +217,121 @@ const ListUser = () => {
             title={'Inhabilitar Usuario'}
             text={`Esta seguro que desear inhabilitar a ${name}`}
           />
-          <ConfirmationDialog
-            open={isOpenEditModal}
-            onConfirmDialogClose={handleCloseEditModal}
-            onYesClick={handleCloseEditModal}
-            title={'Editar usuario'}
-          />
+          <Dialog
+          open={modal}
+          fullWidth
+          maxWidth="xs"
+          onClose={handleCloseEditModal}
+          >
+                <DialogTitle>Editar Usuario</DialogTitle>
+                <DialogContent sx={{ overflowY: 'hidden' }}>
+                <Grid container spacing={4}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Nombre y Apellido"
+                              defaultValue={edit.nombre}
+                            />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Rol"
+                              defaultValue={edit.rol}
+                            />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Tipo de Documento"
+                              defaultValue={edit.tipoDoc}
+                            />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Nro. de Documento"
+                              defaultValue={edit.nroDoc}
+                            />
+                    </Grid>
+                </Grid>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseEditModal}>Cerrar</Button>
+                  <Button onClick={handleCloseEditModal}>Guardar</Button>
+                </DialogActions>
+          </Dialog>
+          <Dialog
+          open={modal2}
+          fullWidth
+          maxWidth="xs"
+          onClose={handleCloseViewModal}
+          >
+                <DialogTitle>Ver Datos de Usuario</DialogTitle>
+                <DialogContent sx={{ overflowY: 'hidden' }}>
+                <Grid container spacing={4}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Nombre y Apellido"
+                              defaultValue={edit.nombre}
+                              disabled={true}
+                            />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Rol"
+                              defaultValue={edit.rol}
+                              disabled={true}
+                            />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Tipo de Documento"
+                              defaultValue={edit.tipoDoc}
+                              disabled={true}
+                            />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                              fullWidth
+                              type="text"
+                              size="small"
+                              variant="outlined"
+                              label="Nro. de Documento"
+                              defaultValue={edit.nroDoc}
+                              disabled={true}
+                            />
+                    </Grid>
+                </Grid>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseViewModal}>Cerrar</Button>
+                </DialogActions>
+          </Dialog>
     </>
   )
 }
