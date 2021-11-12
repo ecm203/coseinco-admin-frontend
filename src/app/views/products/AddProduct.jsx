@@ -25,7 +25,7 @@ const AddProduct = () => {
   const handleFileChange = e =>{
     let files = e.target.files;
     console.log(files);
-    handleFiles();
+    handleFiles(files);
   }
 
   const handleFiles = files =>{
@@ -180,7 +180,6 @@ const AddProduct = () => {
                 )}
               />
             </Grid>
-
             <div class="file-upload">
                 <h2>Arrastrar y soltar imagen...</h2>
                 <form class="">
@@ -202,7 +201,6 @@ const AddProduct = () => {
                           }
                         </div>
                     </div>
-                    <button type="submit" class="btn-submit">Submit</button>
                 </form>
             </div>
             <Grid item lg={6} md={6} sm={12} xs={12}>
