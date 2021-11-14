@@ -7,8 +7,6 @@ import {
   Button,
 } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 
 const listaRoles=[
   {
@@ -210,7 +208,7 @@ const AddUsser = () => {
                         />
                     </Grid>
                     {
-                      rol=="Conductor"
+                      rol==="Conductor"
                       ?
                       <>
                       <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -252,7 +250,6 @@ const AddUsser = () => {
                       {...field}
                               error={!!errors.placa}
                               helperText={errors.placa?.message}
-                              fullWidth
                               fullWidth
                               type="text"
                               size="small"
