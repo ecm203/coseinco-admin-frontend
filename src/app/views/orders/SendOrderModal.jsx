@@ -19,6 +19,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const apiUrl = 'http://localhost:5000/api'
 
 const SendOrderModal = ({ open, handleClose, order, handleAction }) => {
+  const [idCard, setIdCard] = useState('')
+  const [drivers, setDrivers] = useState(null)
   const {
     control,
     reset,
@@ -29,8 +31,6 @@ const SendOrderModal = ({ open, handleClose, order, handleAction }) => {
       driver: null,
     },
   })
-  const [idCard, setIdCard] = useState('')
-  const [drivers, setDrivers] = useState(null)
 
   const sendData = (data, e) => {
     handleClose()
@@ -64,9 +64,7 @@ const SendOrderModal = ({ open, handleClose, order, handleAction }) => {
   }
 
   return (
-    <>
-      {drivers && (
-        <Dialog
+    <Dialog
           open={open}
           fullWidth
           maxWidth="sm"
@@ -120,7 +118,7 @@ const SendOrderModal = ({ open, handleClose, order, handleAction }) => {
                       <Autocomplete
                         {...field}
                         id="controlled-demo"
-                        options={drivers}
+                        options={drivers === null ? [] : drivers}
                         fullWidth
                         getOptionLabel={(option) => option.nombres}
                         renderInput={(params) => (
@@ -176,8 +174,6 @@ const SendOrderModal = ({ open, handleClose, order, handleAction }) => {
             </DialogActions>
           </form>
         </Dialog>
-      )}
-    </>
   )
 }
 

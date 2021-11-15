@@ -187,13 +187,20 @@ const SendOrder = () => {
                         <TableCell colSpan={2} className="px-0">
                           <Tooltip title="Visualizar pedido">
                             <Link
-                              to={`/pedidos/?codigo=${subscriber.codigo}&serialNumber=false`}
+                              to={`/pedidos/?codigo=${subscriber.codigo}&serialNumber=false&breadcrum=sendOrder`}
                             >
                               <IconButton size="large">
                                 <Icon color="primary">visibility</Icon>
                               </IconButton>
                             </Link>
                           </Tooltip>
+                          {subscriber.estado === 'enviado' && (
+                            <Tooltip title="Finalizar">
+                              <IconButton size="large">
+                                <Icon color="primary">assignment_turned_in</Icon>
+                              </IconButton>
+                            </Tooltip>
+                          )}
                           {subscriber.estado === 'empaquetado' && (
                             <Tooltip
                               title="Enviar"

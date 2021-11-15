@@ -22,7 +22,7 @@ import {
   Box,
 } from '@mui/material'
 import SerialNumber from './SerialNumber'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import { useHistory, useLocation } from 'react-router'
 import clsx from 'clsx'
 
@@ -48,6 +48,7 @@ const AddSerialNumb = () => {
   const searchParams = new URLSearchParams(search)
   const orderCode = searchParams.get('codigo')
   const isAddSerialNumber = searchParams.get('serialNumber')
+  const breadcrum = searchParams.get('breadcrum')
 
   const handleSerialNumberOpen = (producto) => {
     setProductSelected(producto)
@@ -123,210 +124,226 @@ const AddSerialNumb = () => {
     }
   }
 
-  return <>
-    <MaxtBackdrop isOpen={isLoading} />
-    {!isLoading && order && (
-      <>
-        <div className="m-sm-30">
-          <div className="mb-sm-30">
-            <Breadcrumb
-              routeSegments={[
-                { name: 'Reservar pedido', path: '/pedidos/reservar' },
-                { name: 'Pedido: ' + orderCode },
-              ]}
-            />
-          </div>
-          <div className="mb-sm-30">
-            <SimpleCard title={'Datos del cliente'}>
-              <Grid container spacing={3}>
-                <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <TextField
-                    disabled
-                    className="mb-5"
-                    fullWidth
-                    value={
-                      order?.pedido.datos.name +
-                      ' ' +
-                      order?.pedido.datos.lastName
-                    }
-                    size="small"
-                    variant="outlined"
-                    id="standard-error"
-                    label="Cliente"
-                    readOnly
-                  />
-                  <TextField
-                    disabled
-                    fullWidth
-                    value={order?.pedido.datos.phoneNumber + ' '}
-                    size="small"
-                    variant="outlined"
-                    id="standard-error"
-                    label="Telefono"
-                    readOnly
-                  />
+  return (
+    <>
+      <MaxtBackdrop isOpen={isLoading} />
+      {!isLoading && order && (
+        <>
+          <div className="m-sm-30">
+            <div className="mb-sm-30">
+              <Breadcrumb
+                routeSegments={[
+                  {
+                    name:
+                      breadcrum === 'bookOrder'
+                        ? 'Reservar pedido'
+                        : 'Enviar pedido',
+                    path:
+                      breadcrum === 'bookOrder'
+                        ? '/pedidos/reservar'
+                        : '/pedidos/enviar',
+                  },
+                  { name: 'Pedido: ' + orderCode },
+                ]}
+              />
+            </div>
+            <div className="mb-sm-30">
+              <SimpleCard title={'Datos del cliente'}>
+                <Grid container spacing={3}>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      disabled
+                      className="mb-5"
+                      fullWidth
+                      value={
+                        order?.pedido.datos.name +
+                        ' ' +
+                        order?.pedido.datos.lastName
+                      }
+                      size="small"
+                      variant="outlined"
+                      id="standard-error"
+                      label="Cliente"
+                      readOnly
+                    />
+                    <TextField
+                      disabled
+                      fullWidth
+                      value={order?.pedido.datos.phoneNumber + ' '}
+                      size="small"
+                      variant="outlined"
+                      id="standard-error"
+                      label="Telefono"
+                      readOnly
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      disabled
+                      className="mb-5"
+                      fullWidth
+                      value={order?.pedido.datos.email + ' '}
+                      size="small"
+                      variant="outlined"
+                      id="standard-error"
+                      label="Correo"
+                      readOnly
+                    />
+                    <TextField
+                      disabled
+                      fullWidth
+                      value={order?.pedido.datos.address + ' '}
+                      size="small"
+                      variant="outlined"
+                      id="standard-error"
+                      label="Direccion"
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <TextField
-                    disabled
-                    className="mb-5"
-                    fullWidth
-                    value={order?.pedido.datos.email + ' '}
-                    size="small"
-                    variant="outlined"
-                    id="standard-error"
-                    label="Correo"
-                    readOnly
-                  />
-                  <TextField
-                    disabled
-                    fullWidth
-                    value={order?.pedido.datos.address + ' '}
-                    size="small"
-                    variant="outlined"
-                    id="standard-error"
-                    label="Direccion"
-                  />
-                </Grid>
-              </Grid>
-            </SimpleCard>
-          </div>
-          <SimpleCard title={'Productos'}>
-            <div className="overflow-auto">
-              <Table className={'whitespace-pre min-w-600'}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell className="px-0" colSpan={1}>
-                      SKU
-                    </TableCell>
-                    <TableCell className="px-0" colSpan={4}>
-                      Producto
-                    </TableCell>
-                    <TableCell className="pr-5" align="right" colSpan={1}>
-                      Cantidad
-                    </TableCell>
-                    {isAddSerialNumber === 'true' && (
-                      <>
-                        <TableCell className="px-0" colSpan={1}>
-                          Acciones
-                        </TableCell>
-                      </>
-                    )}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {order?.productos.map((subscriber, index) => (
-                    <TableRow key={index}>
-                      <TableCell
-                        colSpan={1}
-                        className="px-0 capitalize"
-                        align="left"
-                      >
-                        {subscriber.SKU}
+              </SimpleCard>
+            </div>
+            <SimpleCard title={'Productos'}>
+              <div className="overflow-auto">
+                <Table className={'whitespace-pre min-w-600'}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="px-0" colSpan={1}>
+                        SKU
                       </TableCell>
-                      <TableCell colSpan={4} className="px-0 pr-3">
-                        <div className="flex items-center">
-                          <Avatar src={subscriber.imagen} />
-                          <p className="m-0 ml-4">{subscriber.nombre}</p>
-                        </div>
+                      <TableCell className="px-0" colSpan={4}>
+                        Producto
                       </TableCell>
-                      <TableCell
-                        colSpan={1}
-                        className="px-0 pr-5 capitalize"
-                        align="left"
-                      >
-                        <Box display="flex" alignItems="center" justifyContent="end">
-                          {subscriber.cantidad}
-                          {subscriber.serialNumbers.length === 0 &&
-                            isAddSerialNumber === 'true' && (
-                              <Tooltip title="Debe asignar los S/N del producto">
-                                <Icon className="ml-2" color="error">
-                                  error
-                                </Icon>
-                              </Tooltip>
-                            )}
-                          {subscriber.serialNumbers.length > 0 &&
-                            isAddSerialNumber === 'true' && (
-                              <Tooltip title="Números de serie asignados">
-                                <Icon
-                                  className={clsx(classes.iconSucces, 'ml-2')}
-                                >
-                                  check_circle
-                                </Icon>
-                              </Tooltip>
-                            )}
-                        </Box>
+                      <TableCell className="pr-5" align="right" colSpan={1}>
+                        Cantidad
                       </TableCell>
                       {isAddSerialNumber === 'true' && (
                         <>
-                          <TableCell colSpan={1} className="px-0">
-                            <Tooltip title="Asignar numero de serie">
-                              <IconButton
-                                onClick={() => {
-                                  handleSerialNumberOpen(subscriber)
-                                }}
-                                size="large">
-                                <Icon color="primary">assignment</Icon>
-                              </IconButton>
-                            </Tooltip>
+                          <TableCell className="px-0" colSpan={1}>
+                            Acciones
                           </TableCell>
                         </>
                       )}
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-            <Grid
-              container
-              spacing={3}
-              className="pt-sm-24"
-              justifyContent="flex-end"
-            >
-              <Grid item lg={3} md={3} sm={12} xs={12}>
-                <Button
-                  fullWidth
-                  color="secondary"
-                  variant="outlined"
-                  onClick={handleBackTo}
-                >
-                  <span className="capitalize">Volver</span>
-                </Button>
-              </Grid>
-              {isAddSerialNumber === 'true' && (
+                  </TableHead>
+                  <TableBody>
+                    {order?.productos.map((subscriber, index) => (
+                      <TableRow key={index}>
+                        <TableCell
+                          colSpan={1}
+                          className="px-0 capitalize"
+                          align="left"
+                        >
+                          {subscriber.SKU}
+                        </TableCell>
+                        <TableCell colSpan={4} className="px-0 pr-3">
+                          <div className="flex items-center">
+                            <Avatar src={subscriber.imagen} />
+                            <p className="m-0 ml-4">{subscriber.nombre}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell
+                          colSpan={1}
+                          className="px-0 pr-5 capitalize"
+                          align="left"
+                        >
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="end"
+                          >
+                            {subscriber.cantidad}
+                            {subscriber.serialNumbers.length === 0 &&
+                              isAddSerialNumber === 'true' && (
+                                <Tooltip title="Debe asignar los S/N del producto">
+                                  <Icon className="ml-2" color="error">
+                                    error
+                                  </Icon>
+                                </Tooltip>
+                              )}
+                            {subscriber.serialNumbers.length > 0 &&
+                              isAddSerialNumber === 'true' && (
+                                <Tooltip title="Números de serie asignados">
+                                  <Icon
+                                    className={clsx(classes.iconSucces, 'ml-2')}
+                                  >
+                                    check_circle
+                                  </Icon>
+                                </Tooltip>
+                              )}
+                          </Box>
+                        </TableCell>
+                        {isAddSerialNumber === 'true' && (
+                          <>
+                            <TableCell colSpan={1} className="px-0">
+                              <Tooltip title="Asignar numero de serie">
+                                <IconButton
+                                  onClick={() => {
+                                    handleSerialNumberOpen(subscriber)
+                                  }}
+                                  size="large"
+                                >
+                                  <Icon color="primary">assignment</Icon>
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                          </>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <Grid
+                container
+                spacing={3}
+                className="pt-sm-24"
+                justifyContent="flex-end"
+              >
                 <Grid item lg={3} md={3} sm={12} xs={12}>
                   <Button
                     fullWidth
-                    color="primary"
-                    variant="contained"
-                    type="button"
-                    onClick={handleSaveGuide}
+                    color="secondary"
+                    variant="outlined"
+                    onClick={handleBackTo}
                   >
-                    <span className="capitalize">Guardar</span>
+                    <span className="capitalize">Volver</span>
                   </Button>
                 </Grid>
-              )}
-            </Grid>
-          </SimpleCard>
-        </div>
-        <SerialNumber
-          product={productSelected}
-          open={serialNumber}
-          handleClose={handleSerialNumberClose}
-          handleSaveSn={handleSaveSerialNumber}
+                {isAddSerialNumber === 'true' && (
+                  <Grid item lg={3} md={3} sm={12} xs={12}>
+                    <Button
+                      fullWidth
+                      color="primary"
+                      variant="contained"
+                      type="button"
+                      onClick={handleSaveGuide}
+                    >
+                      <span className="capitalize">Guardar</span>
+                    </Button>
+                  </Grid>
+                )}
+              </Grid>
+            </SimpleCard>
+          </div>
+          <SerialNumber
+            product={productSelected}
+            open={serialNumber}
+            handleClose={handleSerialNumberClose}
+            handleSaveSn={handleSaveSerialNumber}
+          />
+        </>
+      )}
+      {!isLoading && isError && (
+        <MatxSnackbar
+          open={isError}
+          title={'Error'}
+          message={errorMessage}
+          handleClose={handleClose}
+          duration={3000}
         />
-      </>
-    )}
-    {!isLoading && isError && (
-      <MatxSnackbar
-        open={isError}
-        title={'Error'}
-        message={errorMessage}
-        handleClose={handleClose}
-        duration={3000}
-      />
-    )}
-  </>;
+      )}
+    </>
+  )
 }
 
 export default AddSerialNumb

@@ -50,7 +50,7 @@ const BookOrder = () => {
   }
 
   const handleOrderDetailOpen = (id) => {
-    history.push(`/pedidos/?codigo=${id}&serialNumber=false`)
+    history.push(`/pedidos/?codigo=${id}&serialNumber=false&breadcrum=bookOrder`)
   }
 
   const handleReferralGuideOpen = (code) => {
@@ -63,7 +63,7 @@ const BookOrder = () => {
   }
 
   const handleAddSerialNumbOpen = (id) => {
-    history.push(`/pedidos/?codigo=${id}&serialNumber=true`)
+    history.push(`/pedidos/?codigo=${id}&serialNumber=true&breadcrum=bookOrder`)
   }
 
   useEffect(() => {
