@@ -4,6 +4,7 @@ import {
   SimpleCard,
   MaxtBackdrop,
   MatxSnackbar,
+  ConfirmationDialog,
 } from 'app/components'
 import {
   IconButton,
@@ -33,6 +34,7 @@ const SendOrder = () => {
   const [page, setPage] = useState(0)
   const [orders, setOrders] = useState(null)
   const [orderModal, setOrderModal] = useState(false)
+  const [confirmModal, setConfirmModal] = useState(false)
   const [orderSelected, setOrderSelected] = useState(null)
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -117,6 +119,19 @@ const SendOrder = () => {
     setOrderModal(false)
   }
 
+  const handleOpenConfirmModal = (order) => {
+    setConfirmModal(true)
+    setOrderSelected(order)
+  }
+
+  const handleCloseConfirmModal = (order) => {
+    setConfirmModal(false)
+  }
+
+  const handleEndOrder = () => {
+    setConfirmModal(false)
+  }
+
   return (
     <>
       <MaxtBackdrop isOpen={isLoading} />
@@ -196,17 +211,19 @@ const SendOrder = () => {
                           </Tooltip>
                           {subscriber.estado === 'enviado' && (
                             <Tooltip title="Finalizar">
-                              <IconButton size="large">
-                                <Icon color="primary">assignment_turned_in</Icon>
+                              <IconButton size="large" onClick={() => {handleOpenConfirmModal(subscriber)}}>
+                                <Icon color="primary">
+                                  assignment_turned_in
+                                </Icon>
                               </IconButton>
                             </Tooltip>
                           )}
                           {subscriber.estado === 'empaquetado' && (
-                            <Tooltip
-                              title="Enviar"
-                              onClick={() => handleOpenModal(subscriber)}
-                            >
-                              <IconButton size="large">
+                            <Tooltip title="Enviar">
+                              <IconButton
+                                size="large"
+                                onClick={() => handleOpenModal(subscriber)}
+                              >
                                 <Icon color="primary">local_shipping</Icon>
                               </IconButton>
                             </Tooltip>
@@ -296,6 +313,13 @@ const SendOrder = () => {
         handleClose={handleCloseModal}
         handleAction={sendOrder}
         order={orderSelected}
+      />
+      <ConfirmationDialog
+        open={confirmModal}
+        onConfirmDialogClose={handleCloseConfirmModal}
+        onYesClick={handleEndOrder}
+        title={'Finalizar pedido'}
+        text={'Esta seguro que desear finalizar este pedido'}
       />
     </>
   )

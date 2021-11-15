@@ -78,7 +78,12 @@ const BookOrder = () => {
     setIsLoading(true)
     axios.get(`${apiUrl}/pedidos/admin/reservas`).then(
       (response) => {
-        setOrders(response.data.pedidosres)
+        const data = response.data.pedidosres.filter(
+          (el) =>
+            el.estado === 'generado' ||
+            el.estado === 'reservado'
+        )
+        setOrders(data)
         setIsLoading(false)
       },
       (error) => {
