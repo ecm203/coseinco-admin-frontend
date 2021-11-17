@@ -20,11 +20,12 @@ import {
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import VisualizeSupplier from './VisualizeSupplier'
+import ModifySupplier from './ModifySupplier'
 const apiUrl = 'http://localhost:5000/api-admin'
 
 const ListSupplier = () => {
   const history = useHistory()
-  const [supplierList, setSupplierList] = useState(null)
+  const [supplierlist, setSupplierList] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -34,6 +35,7 @@ const ListSupplier = () => {
   const [supplierIdSelected, setSupplierIdSelected] = useState(null)
   const [supplierSelectedV, setSupplierSelectedV] = useState('')
   const [visualize, setVisualize] = useState(false)
+  const [modify, setModify] = useState(false)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -58,21 +60,6 @@ const ListSupplier = () => {
       loadTableData()
     }
   }, [])
-
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   axios.get(`${apiUrl}/proveedor`).then(
-  //     (response) => {
-  //       console.log('respose in useEffect: ', response)
-  //       setSupplierList(response.data.proveedores)
-  //       setIsLoading(false)
-  //     },
-  //     (error) => {
-  //       setIsLoading(false)
-  //       setIsError(true)
-  //     }
-  //   )
-  // }, [])
 
   const handleOpenModalDeshabilitar = (supplierIdSelected) => {
     setIsOpenModalD(true)
@@ -154,8 +141,25 @@ const ListSupplier = () => {
     setVisualize(true)
   }
 
+  const handleModify = async (id) => {
+    await axios.get(`${apiUrl}/proveedor/getProveedor/` + id).then(
+      (response) => {
+        setSupplierSelectedV(response.data.proveedor)
+        console.log(response.data.proveedor)
+      },
+      (error) => {
+        setIsError(true)
+      }
+    )
+    setModify(true)
+  }
+
   const toggleModal = () => {
     setVisualize(!visualize)
+  }
+
+  const toggleModalM = () => {
+    setModify(!modify)
   }
 
   return (
@@ -167,8 +171,7 @@ const ListSupplier = () => {
             <div className="mb-sm-30">
               <Breadcrumb routeSegments={[{ name: 'Listar proveedores' }]} />
             </div>
-            <SimpleCard title={`${supplierList.length} proveedores`}>
-              {/* <div className="overflow-auto"> */}
+            <SimpleCard title={`${supplierlist != null && supplierlist.length} proveedores`}>
               <Table className={'whitespace-pre min-w-600'}>
                 <TableHead>
                   <TableRow>
@@ -193,7 +196,7 @@ const ListSupplier = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {supplierList
+                  {supplierlist != null && supplierlist
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((supplier, index) => (
                       <TableRow key={index}>
@@ -248,7 +251,10 @@ const ListSupplier = () => {
                           ) : (
                             <>
                               <Tooltip title="Editar">
-                                <IconButton size="large">
+                                <IconButton
+                                  size="large"
+                                  onClick={() => handleModify(supplier._id)}
+                                >
                                   <Icon color="primary">edit</Icon>
                                 </IconButton>
                               </Tooltip>
@@ -276,7 +282,7 @@ const ListSupplier = () => {
                 className="px-4"
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={supplierList.length}
+                count={supplierlist != null && supplierlist.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 backIconButtonProps={{
@@ -315,6 +321,14 @@ const ListSupplier = () => {
               onToggle={toggleModal}
             />
           ) : null}
+
+          {modify ? (
+            <ModifySupplier 
+            supplierM={supplierSelectedV}
+            isOpen={modify}
+            loadTable={loadTableData}
+            onToggle={toggleModalM}/>
+          ) :  null}
         </>
       )}
 
