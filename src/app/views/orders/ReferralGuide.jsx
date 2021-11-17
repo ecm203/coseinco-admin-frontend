@@ -129,7 +129,7 @@ const ReferralGuide = ({ open, handleClose, orderCode, generateRG }) => {
                           align="left"
                         >
                           {subscriber.nseries.map((el, index) => (
-                            <Chip key={index} className="m-1" label={el} />
+                            <Chip key={index} className="m-1" label={el.numero} />
                           ))}
                         </TableCell>
                       </TableRow>

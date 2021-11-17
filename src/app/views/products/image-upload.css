@@ -19,11 +19,11 @@
 
 .custom-file-drop-area {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   border-radius: 4px;
   border: 1px dashed rgba(52, 49, 76, 0.3);
-  height: 37.13px;
+  height: 57px;
   cursor: grab;
 }
 
@@ -32,6 +32,7 @@
 }
 .custom-file-drop-area label {
   font-size: 14px;
+  padding-top: 8.5px;
   padding-left: 14px;
   color: rgba(52, 49, 76, 0.54);
 }

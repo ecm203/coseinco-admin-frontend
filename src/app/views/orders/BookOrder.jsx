@@ -81,7 +81,8 @@ const BookOrder = () => {
         const data = response.data.pedidosres.filter(
           (el) =>
             el.estado === 'generado' ||
-            el.estado === 'reservado'
+            el.estado === 'reservado' ||
+            el.estado === 'empaquetado'
         )
         setOrders(data)
         setIsLoading(false)

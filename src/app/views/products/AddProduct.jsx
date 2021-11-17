@@ -6,7 +6,6 @@ import axios from 'axios'
 import { useHistory } from 'react-router'
 import './image-upload.css'
 const apiUrl = 'http://localhost:5000/api'
-
 const AddProduct = () => {
   const history = useHistory()
   const [marcas, setMarcas] = useState(null)
@@ -100,21 +99,41 @@ const AddProduct = () => {
   }
 
   const handleSubmitForm = (data) => {
+    let imagesUrl = []
     setIsLoading(true)
-    axios
-      .post(`${apiUrl}/productos/productoCreate`, {
-        product: {
-          sku: data.sku,
-          name: data.name,
-          brand: data.marca._id,
-          salePrice: data.salePrice,
-          purchasePrice: data.purchasePrice,
-          feature: data.feature,
-        },
-      })
-      .then((response) => {
-        history.push('/producto/listar')
-      })
+    if (photos.length > 0) {
+      photos.map(
+        async (photo, index) =>
+          await axios
+            .post(`${apiUrl}/productos/productoImagen`, {
+              file: photo.src,
+              sku: data.sku,
+            })
+            .then((response) => {
+              imagesUrl.push(response.data.url)
+              if (index === photos.length - 1) {
+                console.log(imagesUrl)
+                const productData = {
+                  sku: data.sku,
+                  name: data.name,
+                  brand: data.marca._id,
+                  salePrice: parseFloat(data.salePrice),
+                  purchasePrice: parseFloat(data.purchasePrice),
+                  feature: data.feature,
+                  images: imagesUrl,
+                }
+                console.log(productData)
+                axios
+                  .post(`${apiUrl}/productos/productoCreate`, {
+                    product: productData,
+                  })
+                  .then((response) => {
+                    history.push('/producto/listar')
+                  })
+              }
+            })
+      )
+    }
   }
 
   return (

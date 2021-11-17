@@ -77,6 +77,7 @@ const SerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
                 multiple
                 value={value}
                 options={serialNumbers}
+                getOptionLabel={(option) => option.numero}
                 fullWidth
                 filterSelectedOptions
                 onChange={(event, newValue) => {
