@@ -20,7 +20,7 @@ import {
   Grid,
 } from '@mui/material'
 import axios from 'axios'
-import { useHistory,useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 
 const apiUrl = 'http://localhost:5000/api'
@@ -37,11 +37,6 @@ const ListProduct = () => {
   const [isOpenModalHabilitar, setIsOpenModalHabilitar] = useState(false)
   const [ productsSelected, setProductsSelected] = useState(null)
   const [ productSelected, setProductSelected] = useState(null)
-  const [orderList, setOrderList] = useState(null)
-
-  //loaction
-  //let location = useLocation();
-  //console.log(location);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -53,7 +48,6 @@ const ListProduct = () => {
 
   const handleProductDetailOpen = (id) =>{
     history.push(`/producto/?codigo=${id}&isEditable=false`);
-    console.log('id',id);
   }
 
   const handleProductEditOpen = (id) =>{
@@ -134,7 +128,6 @@ const ListProduct = () => {
     setIsLoading(true)
     axios.get(`${apiUrl}/productos`).then(
       (response) => {
-        console.log('respose in useEffect: ', response)
         setProduct(response.data.products)
         setIsLoading(false)
       },
