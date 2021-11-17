@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Breadcrumb,
   SimpleCard,
   MaxtBackdrop,
   MatxSnackbar,
+  ConfirmationDialog,
 } from 'app/components'
 import {
   IconButton,
@@ -15,22 +16,35 @@ import {
   Icon,
   Tooltip,
   TablePagination,
+  Menu,
+  MenuItem,
 } from '@mui/material'
-import ReferralGuide from './ReferralGuide'
 import axios from 'axios'
 import { useHistory } from 'react-router'
+import SendOrderModal from './SendOrderModal'
+import { Link } from 'react-router-dom'
 
 const apiUrl = 'http://localhost:5000/api'
 
-const BookOrder = () => {
+const SendOrder = () => {
   const history = useHistory()
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [referralGuideOpen, setReferralGuideOpen] = useState(false)
   const [page, setPage] = useState(0)
   const [orders, setOrders] = useState(null)
-  const [codeSelected, setCodeSelected] = useState(null)
+  const [orderModal, setOrderModal] = useState(false)
+  const [confirmModal, setConfirmModal] = useState(false)
+  const [orderSelected, setOrderSelected] = useState(null)
+
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const openMenu = Boolean(anchorEl)
+  const handleClickMenu = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleCloseMenu = () => {
+    setAnchorEl(null)
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -49,29 +63,31 @@ const BookOrder = () => {
     setPage(0)
   }
 
-  const handleOrderDetailOpen = (id) => {
-    history.push(`/pedidos/?codigo=${id}&serialNumber=false&breadcrum=bookOrder`)
-  }
-
-  const handleReferralGuideOpen = (code) => {
-    setReferralGuideOpen(true)
-    setCodeSelected(code)
-  }
-
-  const handleReferralGuideClose = () => {
-    setReferralGuideOpen(false)
-  }
-
-  const handleAddSerialNumbOpen = (id) => {
-    history.push(`/pedidos/?codigo=${id}&serialNumber=true&breadcrum=bookOrder`)
-  }
-
   useEffect(() => {
     loadTableData()
     return () => {
       loadTableData()
     }
   }, [])
+
+  const sendOrder = (order, data) => {
+    setIsLoading(true)
+    axios
+      .post(`http://localhost:5000/api-admin/envio/createEnvio`, {
+        pedidoID: order.id,
+        nomEncargado: data.driver.nombres + ' ' + data.driver.apellidos,
+      })
+      .then(
+        (response) => {
+          console.log(response)
+          loadTableData()
+        },
+        (error) => {
+          console.log(error)
+          loadTableData()
+        }
+      )
+  }
 
   const loadTableData = () => {
     setOrders(null)
@@ -80,8 +96,9 @@ const BookOrder = () => {
       (response) => {
         const data = response.data.pedidosres.filter(
           (el) =>
-            el.estado === 'generado' ||
-            el.estado === 'reservado'
+            el.estado === 'empaquetado' ||
+            el.estado === 'enviado' ||
+            el.estado === 'finalizado'
         )
         setOrders(data)
         setIsLoading(false)
@@ -93,23 +110,26 @@ const BookOrder = () => {
     )
   }
 
-  const generateRG = async (orderCode) => {
-    setIsLoading(true)
-    await axios
-      .post('http://localhost:5000/api-admin/guia/createGuiaPDF', {
-        codigo: orderCode,
-      })
-      .then(
-        (response) => {
-          console.log(response)
-          loadTableData()
-        },
-        (error) => {
-          setIsLoading(false)
-          setIsError(true)
-        }
-      )
-    loadTableData()
+  const handleOpenModal = (order) => {
+    setOrderModal(true)
+    setOrderSelected(order)
+  }
+
+  const handleCloseModal = () => {
+    setOrderModal(false)
+  }
+
+  const handleOpenConfirmModal = (order) => {
+    setConfirmModal(true)
+    setOrderSelected(order)
+  }
+
+  const handleCloseConfirmModal = (order) => {
+    setConfirmModal(false)
+  }
+
+  const handleEndOrder = () => {
+    setConfirmModal(false)
   }
 
   return (
@@ -118,7 +138,7 @@ const BookOrder = () => {
       {!isLoading && !isError && (
         <div className="m-sm-30">
           <div className="mb-sm-30">
-            <Breadcrumb routeSegments={[{ name: 'Reservar pedido' }]} />
+            <Breadcrumb routeSegments={[{ name: 'Enviar pedido' }]} />
           </div>
           <SimpleCard title={`${orders?.length} pedidos registrados`}>
             <Table className="whitespace-pre">
@@ -127,8 +147,11 @@ const BookOrder = () => {
                   <TableCell colSpan={1} className="px-0">
                     ID Pedido
                   </TableCell>
-                  <TableCell colSpan={4} className="px-0">
-                    Nombres y apellidos
+                  <TableCell colSpan={3} className="px-0">
+                    Cliente
+                  </TableCell>
+                  <TableCell colSpan={2} className="px-0">
+                    Distrito
                   </TableCell>
                   <TableCell colSpan={1} className="pr-5" align="right">
                     Cantidad
@@ -155,13 +178,16 @@ const BookOrder = () => {
                           {subscriber.codigo}
                         </TableCell>
                         <TableCell
-                          colSpan={4}
+                          colSpan={3}
                           className="px-0 capitalize"
                           align="left"
                         >
                           {subscriber.cliente.name +
                             ' ' +
                             subscriber.cliente.lastName}
+                        </TableCell>
+                        <TableCell colSpan={2}>
+                          {subscriber.cliente.distrito}
                         </TableCell>
                         <TableCell colSpan={1} className="pr-5" align="right">
                           {subscriber.cantidad}
@@ -175,52 +201,38 @@ const BookOrder = () => {
                         </TableCell>
                         <TableCell colSpan={2} className="px-0">
                           <Tooltip title="Visualizar pedido">
-                            <IconButton
-                              onClick={() =>
-                                handleOrderDetailOpen(subscriber.codigo)
-                              }
-                              size="large"
+                            <Link
+                              to={`/pedidos/?codigo=${subscriber.codigo}&serialNumber=false&breadcrum=sendOrder`}
                             >
-                              <Icon color="primary">visibility</Icon>
-                            </IconButton>
+                              <IconButton size="large">
+                                <Icon color="primary">visibility</Icon>
+                              </IconButton>
+                            </Link>
                           </Tooltip>
-                          {subscriber.estado === 'reservado' && (
-                            <Tooltip title="Generar guia de remision">
-                              <IconButton
-                                onClick={() =>
-                                  handleReferralGuideOpen(subscriber.codigo)
-                                }
-                                size="large"
-                              >
-                                <Icon color="primary">assignment</Icon>
+                          {subscriber.estado === 'enviado' && (
+                            <Tooltip title="Finalizar">
+                              <IconButton size="large" onClick={() => {handleOpenConfirmModal(subscriber)}}>
+                                <Icon color="primary">
+                                  assignment_turned_in
+                                </Icon>
                               </IconButton>
                             </Tooltip>
                           )}
-                          {(subscriber.estado === 'empaquetado' ||
-                            subscriber.estado === 'enviado' ||
-                            subscriber.estado === 'finalizado') && (
-                            <Tooltip title="Descargar guia de remision">
-                              <a href={subscriber.url} download="edwin.pdf" rel="noreferrer" target="_blank"> 
-                                <IconButton size="large">
-                                  <Icon color="primary">download</Icon>
-                                </IconButton>
-                              </a>
+                          {subscriber.estado === 'empaquetado' && (
+                            <Tooltip title="Enviar">
+                              <IconButton
+                                size="large"
+                                onClick={() => handleOpenModal(subscriber)}
+                              >
+                                <Icon color="primary">local_shipping</Icon>
+                              </IconButton>
                             </Tooltip>
                           )}
-                          {subscriber.estado === 'generado' && (
-                            <>
-                              <Tooltip title="Asignar numero de serie">
-                                <IconButton
-                                  onClick={() =>
-                                    handleAddSerialNumbOpen(subscriber.codigo)
-                                  }
-                                  size="large"
-                                >
-                                  <Icon color="primary">add_circle</Icon>
-                                </IconButton>
-                              </Tooltip>
-                            </>
-                          )}
+                          <Tooltip title="Documentos">
+                            <IconButton onClick={handleClickMenu} size="large">
+                              <Icon color="primary">description</Icon>
+                            </IconButton>
+                          </Tooltip>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -242,12 +254,6 @@ const BookOrder = () => {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            <ReferralGuide
-              open={referralGuideOpen}
-              orderCode={codeSelected}
-              generateRG={generateRG}
-              handleClose={handleReferralGuideClose}
-            />
           </SimpleCard>
         </div>
       )}
@@ -259,8 +265,64 @@ const BookOrder = () => {
           handleClose={handleClose}
         />
       )}
+      <Menu
+        anchorEl={anchorEl}
+        open={openMenu}
+        onClose={handleCloseMenu}
+        onClick={handleCloseMenu}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{
+          horizontal: 'right',
+          vertical: 'top',
+        }}
+        anchorOrigin={{
+          horizontal: 'right',
+          vertical: 'bottom',
+        }}
+      >
+        <MenuItem>Guia de remisión</MenuItem>
+        <MenuItem>Comprobante de pago</MenuItem>
+      </Menu>
+      <SendOrderModal
+        open={orderModal}
+        handleClose={handleCloseModal}
+        handleAction={sendOrder}
+        order={orderSelected}
+      />
+      <ConfirmationDialog
+        open={confirmModal}
+        onConfirmDialogClose={handleCloseConfirmModal}
+        onYesClick={handleEndOrder}
+        title={'Finalizar pedido'}
+        text={'Esta seguro que desear finalizar este pedido'}
+      />
     </>
   )
 }
 
-export default BookOrder
+export default SendOrder
