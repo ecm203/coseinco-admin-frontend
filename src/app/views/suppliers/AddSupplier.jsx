@@ -10,7 +10,6 @@ const AddSupplier = () => {
     control,
     formState: { errors },
     handleSubmit,
-    formState
   } = useForm()
 
   const history = useHistory()
@@ -30,9 +29,6 @@ const AddSupplier = () => {
     axios.post('http://localhost:5000/api-admin/proveedor/create', body).then(
       (response) => {
         history.push('/proveedor/listar')
-      },
-      (error) => {
-        // setIsLoading(false)
       }
     )
   }

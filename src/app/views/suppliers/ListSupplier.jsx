@@ -19,7 +19,6 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import VisualizeSupplier from './VisualizeSupplier'
 import ModifySupplier from './ModifySupplier'
 const apiUrl = 'http://localhost:5000/api-admin'
 
@@ -34,8 +33,8 @@ const ListSupplier = () => {
   const [isOpenModalH, setIsOpenModalH] = useState(false)
   const [supplierIdSelected, setSupplierIdSelected] = useState(null)
   const [supplierSelectedV, setSupplierSelectedV] = useState('')
-  const [visualize, setVisualize] = useState(false)
   const [modify, setModify] = useState(false)
+  const [isModify, setIsModify] = useState(false)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -128,22 +127,10 @@ const ListSupplier = () => {
       )
   }
 
-  const handleVisualize = async (id) => {
+  const handleModify = async (id, isModify) => {
     await axios.get(`${apiUrl}/proveedor/getProveedor/` + id).then(
       (response) => {
-        setSupplierSelectedV(response.data.proveedor)
-        console.log(response.data.proveedor)
-      },
-      (error) => {
-        setIsError(true)
-      }
-    )
-    setVisualize(true)
-  }
-
-  const handleModify = async (id) => {
-    await axios.get(`${apiUrl}/proveedor/getProveedor/` + id).then(
-      (response) => {
+        setIsModify(isModify)
         setSupplierSelectedV(response.data.proveedor)
         console.log(response.data.proveedor)
       },
@@ -152,10 +139,6 @@ const ListSupplier = () => {
       }
     )
     setModify(true)
-  }
-
-  const toggleModal = () => {
-    setVisualize(!visualize)
   }
 
   const toggleModalM = () => {
@@ -171,7 +154,11 @@ const ListSupplier = () => {
             <div className="mb-sm-30">
               <Breadcrumb routeSegments={[{ name: 'Listar proveedores' }]} />
             </div>
-            <SimpleCard title={`${supplierlist != null && supplierlist.length} proveedores`}>
+            <SimpleCard
+              title={`${
+                supplierlist != null && supplierlist.length
+              } proveedores`}
+            >
               <Table className={'whitespace-pre min-w-600'}>
                 <TableHead>
                   <TableRow>
@@ -196,86 +183,86 @@ const ListSupplier = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {supplierlist != null && supplierlist
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((supplier, index) => (
-                      <TableRow key={index}>
-                        <TableCell colSpan={1} className="pl-5" align="left">
-                          {(index += 1)}
-                        </TableCell>
-                        <TableCell
-                          colSpan={3}
-                          className="px-0 capitalize"
-                          align="left"
-                        >
-                          {supplier.razonSocial}
-                        </TableCell>
-                        <TableCell colSpan={2} className="px-0" align="left">
-                          {supplier.ruc}
-                        </TableCell>
-                        <TableCell colSpan={3} className="px-0" align="left">
-                          {supplier.contacto}
-                        </TableCell>
-                        <TableCell colSpan={2} className="px-0" align="left">
-                          {supplier.estado === 'habilitado' ? (
-                            <small className="border-radius-4 bg-primary text-white px-2 py-2px">
-                              {supplier.estado}
-                            </small>
-                          ) : (
-                            <small className="border-radius-4 bg-error text-white px-2 py-2px">
-                              {supplier.estado}
-                            </small>
-                          )}
-                        </TableCell>
-                        <TableCell colSpan={3} className="px-0" align="left">
-                          <Tooltip title="Visualizar">
-                            <IconButton
-                              size="large"
-                              onClick={() => handleVisualize(supplier._id)}
-                            >
-                              <Icon color="primary">visibility</Icon>
-                            </IconButton>
-                          </Tooltip>
-
-                          {supplier.estado === 'deshabilitado' ? (
-                            <Tooltip title="Habilitar">
+                  {supplierlist != null &&
+                    supplierlist
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((supplier, index) => (
+                        <TableRow key={index}>
+                          <TableCell colSpan={1} className="pl-5" align="left">
+                            {(index += 1)}
+                          </TableCell>
+                          <TableCell
+                            colSpan={3}
+                            className="px-0 capitalize"
+                            align="left"
+                          >
+                            {supplier.razonSocial}
+                          </TableCell>
+                          <TableCell colSpan={2} className="px-0" align="left">
+                            {supplier.ruc}
+                          </TableCell>
+                          <TableCell colSpan={3} className="px-0" align="left">
+                            {supplier.contacto}
+                          </TableCell>
+                          <TableCell
+                            colSpan={2}
+                            className="px-0 capitalize"
+                            align="left"
+                          >
+                            {supplier.estado}
+                          </TableCell>
+                          <TableCell colSpan={3} className="px-0" align="left">
+                            <Tooltip title="Visualizar">
                               <IconButton
                                 size="large"
-                                onClick={() =>
-                                  handleOpenModalHabilitar(supplier._id)
-                                }
+                                onClick={() => handleModify(supplier._id, false)}
                               >
-                                <Icon color="primary">check</Icon>
+                                <Icon color="primary">visibility</Icon>
                               </IconButton>
                             </Tooltip>
-                          ) : (
-                            <>
-                              <Tooltip title="Editar">
-                                <IconButton
-                                  size="large"
-                                  onClick={() => handleModify(supplier._id)}
-                                >
-                                  <Icon color="primary">edit</Icon>
-                                </IconButton>
-                              </Tooltip>
 
-                              <Tooltip title="Deshabilitar">
+                            {supplier.estado === 'deshabilitado' ? (
+                              <Tooltip title="Habilitar">
                                 <IconButton
                                   size="large"
                                   onClick={() =>
-                                    handleOpenModalDeshabilitar(supplier._id)
+                                    handleOpenModalHabilitar(supplier._id)
                                   }
                                 >
-                                  <Icon color="primary">
-                                    do_not_disturb_alt
-                                  </Icon>
+                                  <Icon color="primary">check</Icon>
                                 </IconButton>
                               </Tooltip>
-                            </>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                            ) : (
+                              <>
+                                <Tooltip title="Editar">
+                                  <IconButton
+                                    size="large"
+                                    onClick={() => handleModify(supplier._id, true)}
+                                  >
+                                    <Icon color="primary">edit</Icon>
+                                  </IconButton>
+                                </Tooltip>
+
+                                <Tooltip title="Deshabilitar">
+                                  <IconButton
+                                    size="large"
+                                    onClick={() =>
+                                      handleOpenModalDeshabilitar(supplier._id)
+                                    }
+                                  >
+                                    <Icon color="primary">
+                                      do_not_disturb_alt
+                                    </Icon>
+                                  </IconButton>
+                                </Tooltip>
+                              </>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                 </TableBody>
               </Table>
               <TablePagination
@@ -314,21 +301,13 @@ const ListSupplier = () => {
             text={'¿ Seguro que desea habilitar a este proveedor?'}
           />
 
-          {visualize ? (
-            <VisualizeSupplier
-              supplier={supplierSelectedV}
-              isOpen={visualize}
-              onToggle={toggleModal}
-            />
-          ) : null}
-
-          {modify ? (
-            <ModifySupplier 
+          <ModifySupplier
             supplierM={supplierSelectedV}
             isOpen={modify}
+            edit={isModify}
             loadTable={loadTableData}
-            onToggle={toggleModalM}/>
-          ) :  null}
+            onToggle={toggleModalM}
+          />
         </>
       )}
 

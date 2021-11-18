@@ -1,56 +1,25 @@
-import React  from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect } from 'react'
 import Button from '@mui/material/Button'
-import { styled } from '@mui/material/styles'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
+import Slide from '@mui/material/Slide'
 import { Grid, TextField } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import axios from 'axios'
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
-  },
-}))
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />
+})
 
-const BootstrapDialogTitle = (props) => {
-  const { children, onClose, ...other } = props
-
-  return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  )
-}
-
-BootstrapDialogTitle.propTypes = {
-  children: PropTypes.node,
-  onClose: PropTypes.func.isRequired,
-}
-
-const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
+const ModifySupplier = ({
+  supplierM,
+  isOpen,
+  loadTable,
+  onToggle,
+  edit = true,
+}) => {
   const { razonSocial, ruc, correo, contacto, telefono, descuento, _id } =
     supplierM
 
@@ -58,7 +27,17 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm()
+    reset,
+  } = useForm({
+    defaultValues: {
+      razonSocial: '',
+      ruc: '',
+      correo: '',
+      contacto: '',
+      telefono: '',
+      descuento: '',
+    },
+  })
 
   const handleSubmitForm = async (field) => {
     const proveedor = {
@@ -86,18 +65,33 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
       )
   }
 
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        razonSocial: razonSocial,
+        ruc: ruc,
+        correo: correo,
+        contacto: contacto,
+        telefono: telefono,
+        descuento: descuento,
+      })
+    } else {
+    }
+  }, [isOpen, reset, razonSocial, ruc, correo, contacto, telefono, descuento])
+
   return (
     <div>
-      <BootstrapDialog
+      <Dialog
         onClose={onToggle}
+        TransitionComponent={Transition}
         aria-labelledby="customized-dialog-title"
         open={isOpen}
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={onToggle}>
+        <DialogTitle id="customized-dialog-title" onClose={onToggle}>
           Modificar proveedor
-        </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <form onSubmit={handleSubmit(handleSubmitForm)}>
+        </DialogTitle>
+        <form onSubmit={handleSubmit(handleSubmitForm)}>
+          <DialogContent>
             <Grid container spacing={3}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Controller
@@ -109,10 +103,11 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                       size="small"
                       variant="outlined"
                       label="Razon social"
+                      disabled={!edit}
                       helperText={errors.razonSocial?.message}
                     />
                   )}
-                  defaultValue={razonSocial}
+                  defaultValue={''}
                   name="razonSocial"
                   control={control}
                   rules={{
@@ -130,10 +125,11 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                       size="small"
                       variant="outlined"
                       label="RUC"
+                      disabled={!edit}
                       helperText={errors.ruc?.message}
                     />
                   )}
-                  defaultValue={ruc}
+                  defaultValue={''}
                   name="ruc"
                   control={control}
                   rules={{
@@ -151,10 +147,11 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                       size="small"
                       variant="outlined"
                       label="Correo"
+                      disabled={!edit}
                       helperText={errors.correo?.message}
                     />
                   )}
-                  defaultValue={correo}
+                  defaultValue={''}
                   name="correo"
                   control={control}
                   rules={{
@@ -173,10 +170,11 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                       size="small"
                       variant="outlined"
                       label="Contacto"
+                      disabled={!edit}
                       helperText={errors.contacto?.message}
                     />
                   )}
-                  defaultValue={contacto}
+                  defaultValue={''}
                   name="contacto"
                   control={control}
                   rules={{
@@ -194,10 +192,11 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                       size="small"
                       variant="outlined"
                       label="Telefono"
+                      disabled={!edit}
                       helperText={errors.telefono?.message}
                     />
                   )}
-                  defaultValue={telefono}
+                  defaultValue={''}
                   name="telefono"
                   control={control}
                   rules={{
@@ -209,7 +208,7 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                 <Controller
                   name="descuento"
                   control={control}
-                  defaultValue={descuento}
+                  defaultValue={''}
                   rules={{
                     required: 'Campo requerido',
                   }}
@@ -220,6 +219,7 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                       fullWidth
                       type="number"
                       size="small"
+                      disabled={!edit}
                       variant="outlined"
                       label="Descuento %"
                       helperText={errors.descuento?.message}
@@ -227,15 +227,16 @@ const ModifySupplier = ({ supplierM, isOpen, loadTable, onToggle }) => {
                   )}
                 />
               </Grid>
-              <Grid item lg={6} md={6} sm={12} xs={12}></Grid>
             </Grid>
-            <DialogActions>
-              <Button type="submit">Guardar cambios</Button>
-              <Button onClick={onToggle}>Cerrar</Button>
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </BootstrapDialog>
+          </DialogContent>
+          <DialogActions>
+            <Button color="secondary" onClick={onToggle}>
+              Cerrar
+            </Button>
+            {edit && <Button type="submit">Guardar</Button>}
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   )
 }

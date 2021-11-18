@@ -63,8 +63,8 @@ const AddProduct = () => {
               sku: response.data.producto.SKU,
               name: response.data.producto.nombre,
               marca: brandName,
-              salePrice: response.data.producto.precioCompra,
-              purchasePrice: response.data.producto.precio,
+              salePrice: response.data.producto.precio,
+              purchasePrice: response.data.producto.precioCompra,
               feature: response.data.producto.caracteristica,
               manufacturer: response.data.producto.codigoFabricante,
             })
@@ -148,8 +148,35 @@ const AddProduct = () => {
   }
 
   const handleSubmitForm = (data) => {
-    let imagesUrl = []
     setIsLoading(true)
+    isEditable !== null && isEditable === 'true'
+      ? editProduct(data)
+      : saveProduct(data)
+  }
+
+  const editProduct = (data) => {
+    const productData = {
+      sku: data.sku,
+      name: data.name,
+      brand: data.marca._id,
+      salePrice: parseFloat(data.salePrice),
+      purchasePrice: parseFloat(data.purchasePrice),
+      feature: data.feature,
+      manufacturer: data.manufacturer,
+      id: product._id
+    }
+    console.log(productData)
+    axios
+      .post(`${apiUrl}/productos/productoUpdate`, {
+        product: productData,
+      })
+      .then((response) => {
+        history.push('/producto/listar')
+      })
+  }
+
+  const saveProduct = (data) => {
+    let imagesUrl = []
     if (photos.length > 0) {
       photos.map(
         async (photo, index) =>
@@ -178,6 +205,7 @@ const AddProduct = () => {
                     product: productData,
                   })
                   .then((response) => {
+                    console.log(response )
                     history.push('/producto/listar')
                   })
               }
@@ -199,7 +227,9 @@ const AddProduct = () => {
                   {
                     name:
                       productCode !== null
-                        ? isEditable === 'true' ?  'Editar producto' : 'Ver Producto'
+                        ? isEditable === 'true'
+                          ? 'Editar producto'
+                          : 'Ver Producto'
                         : 'Agregar producto',
                   },
                 ]}
@@ -389,7 +419,7 @@ const AddProduct = () => {
                       }}
                     />
                   </Grid>
-                  {isEditable !== null && isEditable === 'false' ? (
+                  {isEditable !== null ? (
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                       <Typography
                         variant="subtitle2"
@@ -457,30 +487,10 @@ const AddProduct = () => {
                       </div>
                     </Grid>
                   )}
-                  {productCode === null && isEditable === null && (
-                    <Grid
-                      item
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      sx={{ ml: 'auto' }}
-                    >
-                      <Button
-                        className="w-full"
-                        sx={{ height: '37px' }}
-                        color="primary"
-                        variant="outlined"
-                        type="submit"
-                      >
-                        Agregar
-                      </Button>
-                    </Grid>
-                  )}
                   {productCode !== null && (
                     <Grid
                       item
-                      lg={6}
+                      lg={3}
                       md={6}
                       sm={12}
                       xs={12}
@@ -495,6 +505,26 @@ const AddProduct = () => {
                         onClick={() => history.push('/producto/listar')}
                       >
                         Volver
+                      </Button>
+                    </Grid>
+                  )}
+                  {isEditable !== 'false' && (
+                    <Grid
+                      item
+                      lg={3}
+                      md={6}
+                      sm={12}
+                      xs={12}
+                      sx={{ ml: isEditable !== 'true' ? 'auto': ''}}
+                    >
+                      <Button
+                        className="w-full"
+                        sx={{ height: '37px' }}
+                        color="primary"
+                        variant="outlined"
+                        type="submit"
+                      >
+                        Agregar
                       </Button>
                     </Grid>
                   )}
