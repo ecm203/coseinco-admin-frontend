@@ -8,7 +8,6 @@ import {
 } from 'app/components'
 import {
   Avatar,
-  Button,
   Table,
   TableHead,
   TableBody,
@@ -17,11 +16,10 @@ import {
   Tooltip,
   IconButton,
   Icon,
-  Grid,
+  TablePagination
 } from '@mui/material'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-
 
 const apiUrl = 'http://localhost:5000/api'
 
@@ -30,13 +28,21 @@ const ListProduct = () => {
   const [product, setProduct] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
-  const handleBackTo = () => {
-    //home
-  }
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [page, setPage] = useState(0)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [isOpenModalHabilitar, setIsOpenModalHabilitar] = useState(false)
-  const [ productsSelected, setProductsSelected] = useState(null)
-  const [ productSelected, setProductSelected] = useState(null)
+  const [productsSelected, setProductsSelected] = useState(null)
+  const [productSelected, setProductSelected] = useState(null)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -46,21 +52,21 @@ const ListProduct = () => {
     setIsError(false)
   }
 
-  const handleProductDetailOpen = (id) =>{
-    history.push(`/producto/?codigo=${id}&isEditable=false`);
+  const handleProductDetailOpen = (id) => {
+    history.push(`/producto/editar?codigo=${id}&isEditable=false`)
   }
 
-  const handleProductEditOpen = (id) =>{
-    history.push(`/producto/?codigo=${id}&isEditable=true`)
+  const handleProductEditOpen = (id) => {
+    history.push(`/producto/editar?codigo=${id}&isEditable=true`)
   }
 
-  const handleOpenModal = (SKU,producSelected) => {
+  const handleOpenModal = (SKU, producSelected) => {
     setIsOpenModal(true)
     setProductsSelected(SKU)
     setProductSelected(producSelected)
   }
 
-   const handleOpenModalHabilitar = (SKU,producSelected) => {
+  const handleOpenModalHabilitar = (SKU, producSelected) => {
     setIsOpenModalHabilitar(true)
     setProductsSelected(SKU)
     setProductSelected(producSelected)
@@ -70,10 +76,9 @@ const ListProduct = () => {
     setIsOpenModal(false)
   }
 
-   const handleCloseModalEnable = () => {
+  const handleCloseModalEnable = () => {
     setIsOpenModalHabilitar(false)
   }
-
 
   const handleDisableProduct = () => {
     setIsLoading(true)
@@ -123,7 +128,7 @@ const ListProduct = () => {
       }
     )
   }
-  
+
   useEffect(() => {
     setIsLoading(true)
     axios.get(`${apiUrl}/productos`).then(
@@ -170,103 +175,140 @@ const ListProduct = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {product.map((subscriber, index) => (
-                      <TableRow key={index}>
-                        <TableCell
-                          colSpan={1}
-                          className="px-0 capitalize"
-                          align="left"
-                        >
-                          {subscriber.SKU}
-                        </TableCell>
-                        <TableCell
-                          colSpan={4}
-                          className="px-0 capitalize"
-                          align="left"
-                        >
-                          <div className="flex items-center">
-                            {<Avatar src={subscriber.imagenes[0]} />}
-                            <p className="m-0 ml-4">{subscriber.nombre}</p>
-                          </div>
-                        </TableCell>
-                        <TableCell colSpan={1} className="pr-5" align="right">
-                          {'$. ' + subscriber.precio}
-                        </TableCell>
-                        <TableCell className="pl-5" colSpan={1}>
-                          {subscriber.estado}
-                        </TableCell>
-                        <TableCell colSpan={2} className="px-5">
-                          <Tooltip title="Visualizar">
-                            <IconButton onClick={()=>{handleProductDetailOpen(subscriber._id)}} size="large" >
-                              <Icon color="primary">visibility</Icon>
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Editar">
-                            <IconButton size="large" onClick={()=>{handleProductEditOpen(subscriber._id)}}>
-                              <Icon color="primary">edit</Icon>
-                            </IconButton>
-                          </Tooltip>
-                          {
-                            subscriber.estado === 'habilitado' && (
+                    {product
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((subscriber, index) => (
+                        <TableRow key={index}>
+                          <TableCell
+                            colSpan={1}
+                            className="px-0 capitalize"
+                            align="left"
+                          >
+                            {subscriber.SKU}
+                          </TableCell>
+                          <TableCell
+                            colSpan={4}
+                            className="px-0 capitalize"
+                            align="left"
+                          >
+                            <div className="flex items-center">
+                              {<Avatar src={subscriber.imagenes[0]} />}
+                              <p className="m-0 ml-4">{subscriber.nombre}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell colSpan={1} className="pr-5" align="right">
+                            {'$. ' + subscriber.precio}
+                          </TableCell>
+                          <TableCell className="pl-5 capitalize" colSpan={1}>
+                            {subscriber.estado}
+                          </TableCell>
+                          <TableCell colSpan={2} className="px-5">
+                            <Tooltip title="Visualizar">
+                              <IconButton
+                                onClick={() => {
+                                  handleProductDetailOpen(subscriber._id)
+                                }}
+                                size="large"
+                              >
+                                <Icon color="primary">visibility</Icon>
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Editar">
+                              <IconButton
+                                size="large"
+                                onClick={() => {
+                                  handleProductEditOpen(subscriber._id)
+                                }}
+                              >
+                                <Icon color="primary">edit</Icon>
+                              </IconButton>
+                            </Tooltip>
+                            {subscriber.estado === 'habilitado' && (
                               <>
                                 <Tooltip title="Inhabilitar">
-                                  <IconButton size="large" onClick={()=> handleOpenModal(subscriber.SKU,subscriber.nombre)}>
-                                    <Icon color="primary">do_not_disturb_alt</Icon>
+                                  <IconButton
+                                    size="large"
+                                    onClick={() =>
+                                      handleOpenModal(
+                                        subscriber.SKU,
+                                        subscriber.nombre
+                                      )
+                                    }
+                                  >
+                                    <Icon color="primary">
+                                      do_not_disturb_alt
+                                    </Icon>
                                   </IconButton>
                                 </Tooltip>
                               </>
-                            )
-                          }
-                          {
-                            subscriber.estado === 'inhabilitado' && (
+                            )}
+                            {subscriber.estado === 'inhabilitado' && (
                               <>
                                 <Tooltip title="Habilitar">
-                                  <IconButton size="large" onClick={()=> handleOpenModalHabilitar(subscriber.SKU,subscriber.nombre)}>
+                                  <IconButton
+                                    size="large"
+                                    onClick={() =>
+                                      handleOpenModalHabilitar(
+                                        subscriber.SKU,
+                                        subscriber.nombre
+                                      )
+                                    }
+                                  >
                                     <Icon color="primary">check</Icon>
                                   </IconButton>
                                 </Tooltip>
                               </>
-                            )
-                          }
-
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
+                <TablePagination
+                  className="px-4"
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={product?.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  backIconButtonProps={{
+                    'aria-label': 'Previous Page',
+                  }}
+                  nextIconButtonProps={{
+                    'aria-label': 'Next Page',
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
               </div>
-              <Grid
-                container
-                spacing={3}
-                className="pt-sm-24"
-                justifyContent="flex-end"
-              >
-                <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <Button
-                    fullWidth
-                    color="secondary"
-                    variant="outlined"
-                    onClick={handleBackTo}
-                  >
-                    Volver
-                  </Button>
-                </Grid>
-              </Grid>
             </SimpleCard>
           </div>
           <ConfirmationDialog
-              open={isOpenModal}
-              onConfirmDialogClose={handleCloseModal}
-              onYesClick={handleDisableProduct}
-              title={'Inhabilitar producto'}
-              text={`Esta seguro que desea inhabilitar el producto ${productSelected}`}
+            open={isOpenModal}
+            onConfirmDialogClose={handleCloseModal}
+            onYesClick={handleDisableProduct}
+            title={'Inhabilitar producto'}
+            text={
+              <>
+                Esta seguro que desea inhabilitar el producto {''}
+                <b>{productSelected}</b>
+              </>
+            }
           />
           <ConfirmationDialog
-              open={isOpenModalHabilitar}
-              onConfirmDialogClose={handleCloseModalEnable}
-              onYesClick={handleEnableProduct}
-              title={'Habilitar producto'}
-              text={`Esta seguro que desea habilitar el producto ${productSelected}`}
+            open={isOpenModalHabilitar}
+            onConfirmDialogClose={handleCloseModalEnable}
+            onYesClick={handleEnableProduct}
+            title={'Habilitar producto'}
+            text={
+              <>
+                Esta seguro que desea habilitar el producto {''}
+                <b>{productSelected}</b>
+              </>
+            }
           />
         </>
       )}

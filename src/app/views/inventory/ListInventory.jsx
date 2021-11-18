@@ -251,15 +251,7 @@ const ListInventory = () => {
                             {s.numero}
                           </TableCell>
                           <TableCell className="px-0 capitalize" colSpan={2}>
-                            {s.estado === 'habilitado' ? (
-                              <small className="border-radius-4 bg-primary text-white px-2 py-2px">
-                                {s.estado}
-                              </small>
-                            ) : (
-                              <small className="border-radius-4 bg-error text-white px-2 py-2px">
-                                {setSerie.estado}
-                              </small>
-                            )}
+                            {s.estado}
                           </TableCell>
                         </TableRow>
                       ))}

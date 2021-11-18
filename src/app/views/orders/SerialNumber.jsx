@@ -52,7 +52,8 @@ const SerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
     } else if (value.length === 0) {
       setErrorInput(`Campo requerido`)
     } else {
-      handleSaveSn(product.productoID, value)
+      const serialNumbers = value.map((el) => el.numero)
+      handleSaveSn(product.productoID, serialNumbers)
       handleClose()
     }
   }

@@ -104,7 +104,10 @@ const AddPurchaseOrder = () => {
     axios.all([requestOne, requestTwo]).then(
       axios.spread((...responses) => {
         setProducts(responses[0].data.productos)
-        setSuppliers(responses[1].data.proveedores)
+        const enableSuppliers = responses[1].data.proveedores.filter(
+          (el) => el.estado === 'habilitado'
+        )
+        setSuppliers(enableSuppliers)
         setIsLoading(false)
       })
     )
