@@ -39,11 +39,15 @@ const TopSellingTable = () => {
     return (
         <Card elevation={3} className="pt-5 mb-6">
             <div className="flex justify-between items-center px-6 mb-3">
-                <span className="card-title">top selling products</span>
-                <Select size="small" defaultValue="this_month" disableUnderline>
+                <span className="card-title">Productos mas vendidos</span>
+                {
+                    /**
+                     * <Select size="small" defaultValue="this_month" disableUnderline>
                     <MenuItem value="this_month">This Month</MenuItem>
                     <MenuItem value="last_month">Last Month</MenuItem>
                 </Select>
+                     */
+                }
             </div>
             <div className="overflow-auto">
                 <Table
@@ -55,16 +59,16 @@ const TopSellingTable = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell className="px-6" colSpan={4}>
-                                Name
+                                Producto
                             </TableCell>
                             <TableCell className="px-0" colSpan={2}>
-                                Revenue
+                                Ganancias
                             </TableCell>
                             <TableCell className="px-0" colSpan={2}>
-                                Stock Status
+                                Estado de Stock
                             </TableCell>
                             <TableCell className="px-0" colSpan={1}>
-                                Action
+                                Acciones
                             </TableCell>
                         </TableRow>
                     </TableHead>

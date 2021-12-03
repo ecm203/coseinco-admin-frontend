@@ -45,7 +45,7 @@ const DoughnutChart = ({ height, color = [] }) => {
 
         series: [
             {
-                name: 'Traffic Rate',
+                name: 'Porcentaje de Servicios',
                 type: 'pie',
                 radius: ['45%', '72.55%'],
                 center: ['50%', '50%'],
@@ -80,14 +80,18 @@ const DoughnutChart = ({ height, color = [] }) => {
                 },
                 data: [
                     {
-                        value: 65,
-                        name: 'Google',
+                        value: 40,
+                        name: 'Accesorios de Computo',
+                    },
+                    {
+                        value: 25,
+                        name: 'Componente de PC',
                     },
                     {
                         value: 20,
-                        name: 'Facebook',
+                        name: 'Laptops/PC',
                     },
-                    { value: 15, name: 'Others' },
+                    { value: 15, name: 'Mantenimiento' },
                 ],
                 itemStyle: {
                     emphasis: {
