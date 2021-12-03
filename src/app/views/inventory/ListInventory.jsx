@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import {
   Breadcrumb,
   SimpleCard,
@@ -7,6 +8,9 @@ import {
 } from 'app/components'
 import {
   Avatar,
+  Box,
+  Tabs,
+  Tab,
   IconButton,
   Table,
   TableHead,
@@ -15,6 +19,7 @@ import {
   TableCell,
   Icon,
   Tooltip,
+  Typography,
   TablePagination,
   Dialog,
   DialogTitle,
@@ -42,12 +47,46 @@ const useStyles = makeStyles({
   },
 })
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ px: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  )
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  }
+}
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />
 })
 
 const ListInventory = () => {
   const classes = useStyles()
+  const [tabValue, seTabValue] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [page, setPage] = useState(0)
   const [modal, setModal] = useState(false)
@@ -79,6 +118,11 @@ const ListInventory = () => {
   const handleCloseModal = () => {
     setModal(false)
   }
+
+  const handleTabChange = (event, newValue) => {
+    seTabValue(newValue)
+  }
+
   useEffect(() => {
     listarInventario()
   }, [])
@@ -107,7 +151,7 @@ const ListInventory = () => {
       )
       .then(
         (response) => {
-          setSerie(response.data.nSeries)
+          setSerie(response.data)
           setIsLoadingModal(false)
         },
         (error) => {
@@ -143,7 +187,7 @@ const ListInventory = () => {
                       Nombre del Producto
                     </TableCell>
                     <TableCell className="pr-6" align="right" colSpan={1}>
-                      Cantidad
+                      Cant. disponible
                     </TableCell>
                     <TableCell className="px-0" colSpan={2}>
                       Marca
@@ -227,36 +271,109 @@ const ListInventory = () => {
               <>
                 <DialogTitle>{producto}</DialogTitle>
                 <DialogContent sx={{ overflowY: 'hidden' }}>
-                  <Table className="whitespace-pre">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell className="px-0" colSpan={1}>
-                          Indice
-                        </TableCell>
-                        <TableCell className="px-0" colSpan={3}>
-                          N° Serie
-                        </TableCell>
-                        <TableCell className="px-0" colSpan={2}>
-                          Estado
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {serie?.map((s, index) => (
-                        <TableRow key={index}>
-                          <TableCell className="px-0" colSpan={1}>
-                            {index + 1}
-                          </TableCell>
-                          <TableCell className="px-0" colSpan={3}>
-                            {s.numero}
-                          </TableCell>
-                          <TableCell className="px-0 capitalize" colSpan={2}>
-                            {s.estado}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                  <Box sx={{ width: '100%' }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                      <Tabs
+                        value={tabValue}
+                        onChange={handleTabChange}
+                        aria-label="basic tabs example"
+                      >
+                        <Tab
+                          className="capitalize"
+                          label={`Disponible (${serie.nSeriesHabilitado.length})`}
+                          {...a11yProps(0)}
+                        />
+                        <Tab
+                          className="capitalize"
+                          label={`Reservado (${serie.nSeriesReservado.length})`}
+                          {...a11yProps(1)}
+                        />
+                        <Tab
+                          className="capitalize"
+                          label={`Reservado (${serie.nSeriesAlmacenado.length})`}
+                          {...a11yProps(2)}
+                        />
+                      </Tabs>
+                    </Box>
+                    <TabPanel value={tabValue} index={0}>
+                      <Table className="whitespace-pre" sx={{ mb: 2 }}>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell className="px-0" colSpan={1}>
+                              Indice
+                            </TableCell>
+                            <TableCell className="px-0" colSpan={3}>
+                              N° Serie
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {serie?.nSeriesHabilitado.map((s, index) => (
+                            <TableRow key={index}>
+                              <TableCell className="px-0" colSpan={1}>
+                                {index + 1}
+                              </TableCell>
+                              <TableCell className="px-0" colSpan={3}>
+                                {s.numero}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={1}>
+                      <Table className="whitespace-pre" sx={{ mb: 2 }}>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell className="px-0" colSpan={1}>
+                              Indice
+                            </TableCell>
+                            <TableCell className="px-0" colSpan={3}>
+                              N° Serie
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {serie?.nSeriesReservado.map((s, index) => (
+                            <TableRow key={index}>
+                              <TableCell className="px-0" colSpan={1}>
+                                {index + 1}
+                              </TableCell>
+                              <TableCell className="px-0" colSpan={3}>
+                                {s.numero}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={2}>
+                      <Table className="whitespace-pre" sx={{ mb: 2 }}>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell className="px-0" colSpan={1}>
+                              Indice
+                            </TableCell>
+                            <TableCell className="px-0" colSpan={3}>
+                              N° Serie
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {serie?.nSeriesAlmacenado.map((s, index) => (
+                            <TableRow key={index}>
+                              <TableCell className="px-0" colSpan={1}>
+                                {index + 1}
+                              </TableCell>
+                              <TableCell className="px-0" colSpan={3}>
+                                {s.numero}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                  </Box>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleCloseModal}>Cerrar</Button>

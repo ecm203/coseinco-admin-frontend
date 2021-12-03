@@ -95,7 +95,7 @@ export const navigations = [
 					path: '/orden-de-compra/listar'
 				},
 				{
-					name: 'Agregrar OC',
+					name: 'Agregrar cotizacion',
 					iconText: 'SI',
 					path: '/orden-de-compra/agregar'
 				}

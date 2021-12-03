@@ -34,8 +34,15 @@ const SerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
       axios
         .get(`${apiUrl}/inventario/getSeriesByProductId/${product.productoID}`)
         .then((response) => {
-          setSerialNumbers(response.data.nSeries)
-          setValue(product.serialNumbers)
+          setSerialNumbers(response.data.nSeriesHabilitado)
+          const defaultValues = []
+          response.data.nSeriesHabilitado.map((el) => product.serialNumbers.find((a) => {
+            if(el.numero === a) {
+              defaultValues.push(el)
+            }
+            return el.numero === a
+          }))
+          setValue(defaultValues)
         })
     }
   }, [product, open])

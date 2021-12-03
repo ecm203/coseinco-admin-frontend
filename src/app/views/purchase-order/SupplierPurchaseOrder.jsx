@@ -52,8 +52,8 @@ const SupplierPurchaseOrder = () => {
     setIsLoading(true)
     axios
       .post('http://localhost:5000/api-admin/oCompra/oCompraAcceptByProv', {
-        codigo: orderCode,
-        fechaEntrega: new Date(data.date),
+        
+      
       })
       .then(
         (response) => {

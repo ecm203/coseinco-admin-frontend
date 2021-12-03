@@ -45,6 +45,8 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
         .then((response) => {
           setSerialNumbers(response.data.nSeries)
           setValues(product.serialNumbers)
+        }, error => {
+          setSerialNumbers([])
         })
     }
   }, [product, open])

@@ -140,7 +140,7 @@ const AddPurchaseOrder = () => {
         <>
           <div className="m-sm-30">
             <div className="mb-sm-30">
-              <Breadcrumb routeSegments={[{ name: 'Agregar OC' }]} />
+              <Breadcrumb routeSegments={[{ name: 'Agregar Cotización' }]} />
             </div>
             <div className="mb-sm-30">
               <SimpleCard title={'Agregar producto'}>
@@ -318,7 +318,7 @@ const AddPurchaseOrder = () => {
                     type="button"
                     onClick={handleOpenModal}
                   >
-                    Registrar orden de compra
+                    Registrar cotización
                   </Button>
                 </Box>
               )}
