@@ -48,6 +48,12 @@ const DetailPurchaseOrder = () => {
   const isAddSerialNumber = searchParams.get('serialNumber')
   const [productSelected, setProductSelected] = useState(null)
 
+  const [post, setPost] = useState({
+    photos: [],
+  })
+  const [highlight, setHighlight] = useState(false)
+  const { photos } = post
+
   useEffect(() => {
     axios.get(`${apiUrl}/oCompra/getById/${orderCode}`).then(
       (response) => {
@@ -97,7 +103,7 @@ const DetailPurchaseOrder = () => {
     const productFiltered = order.compra.productos.filter(
       (product) => product.serialNumbers.length === 0
     )
-    if (productFiltered.length === 0) {
+    if (productFiltered.length === 0 && photos.length > 0) {
       setIsLoading(true)
       const productos = order.compra.productos.map((product) => ({
         productoID: product.productoId,
@@ -116,10 +122,75 @@ const DetailPurchaseOrder = () => {
           setIsLoading(false)
         }
       )
-    } else {
+    } else if (productFiltered.length !== 0) {
       setIsError(true)
       setErrorMessage('Debe asignar todos los números de serie')
+    } else if (photos.length === 0) {
+      setIsError(true)
+      setErrorMessage('Debe subir la guia de remision')
     }
+  }
+
+  const handleFileChange = (e) => {
+    let files = e.target.files
+    console.log(files)
+    handleFiles(files)
+  }
+
+  const handleFiles = (files) => {
+    let photosArr = []
+    for (let file of files) {
+      let reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.addEventListener('load', () => {
+        let fileObj = {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          src: reader.result,
+        }
+        photosArr.push(fileObj)
+        setPost({
+          ...post,
+          photos: [...photos, ...photosArr],
+        })
+      })
+    }
+  }
+
+  const handleDelete = (e) => {
+    let target = e.target.parentElement
+    let targetindex = target.dataset.imgindex * 1
+    console.log(target, targetindex)
+    setPost({
+      ...post,
+      photos: [
+        ...photos.slice(0, targetindex),
+        ...photos.slice(targetindex + 1),
+      ],
+    })
+  }
+
+  const handlehighlight = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setHighlight(true)
+  }
+
+  const handleunhighlight = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setHighlight(false)
+  }
+
+  const handledrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    let dt = e.dataTransfer
+    let files = dt.files
+    setHighlight(false)
+    handleFiles(files)
+    console.log(files)
   }
 
   return (
@@ -141,7 +212,6 @@ const DetailPurchaseOrder = () => {
                 <Grid container spacing={3}>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
-                      disabled
                       className="mb-5"
                       fullWidth
                       value={order.proveedor.razonSocial}
@@ -149,22 +219,24 @@ const DetailPurchaseOrder = () => {
                       variant="outlined"
                       id="standard-error"
                       label="Cliente"
-                      readOnly
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
                     <TextField
-                      disabled
                       fullWidth
                       value={order.proveedor.telefono + ' '}
                       size="small"
                       variant="outlined"
                       id="standard-error"
                       label="Telefono"
-                      readOnly
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
                   </Grid>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
-                      disabled
                       className="mb-5"
                       fullWidth
                       value={order.proveedor.correo + ' '}
@@ -172,17 +244,56 @@ const DetailPurchaseOrder = () => {
                       variant="outlined"
                       id="standard-error"
                       label="Correo"
-                      readOnly
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
                     <TextField
-                      disabled
                       fullWidth
                       value={order.proveedor.ruc + ' '}
                       size="small"
                       variant="outlined"
                       id="standard-error"
-                      label="Direccion"
+                      label="RUC"
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="custom-form-group">
+                      <div
+                        className={
+                          highlight
+                            ? 'custom-file-drop-area highlight'
+                            : 'custom-file-drop-area'
+                        }
+                        onDragEnter={handlehighlight}
+                        onDragOver={handlehighlight}
+                        onDragLeave={handleunhighlight}
+                        onDrop={handledrop}
+                      >
+                        <input
+                          type="file"
+                          name="photos"
+                          placeholder="Enter photos"
+                          multiple={true}
+                          onChange={handleFileChange}
+                          id="filephotos"
+                        />
+                        <label htmlFor="filephotos">
+                          Inserte guia de remision
+                        </label>
+                      </div>
+                      <div className={photos.length > 0 ? 'files' : ''}>
+                        <ul>
+                          {photos.length > 0 &&
+                            photos.map((item, index) => (
+                              <li key={index}>{item.name}</li>
+                            ))}
+                        </ul>
+                      </div>
+                    </div>
                   </Grid>
                 </Grid>
               </SimpleCard>

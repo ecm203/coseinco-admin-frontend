@@ -2,7 +2,7 @@ import React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useTheme } from '@mui/styles'
 
-const DoughnutChart = ({ height, color = [] }) => {
+const DoughnutChart = ({ height, color = [], data = [] }) => {
     const theme = useTheme()
 
     const option = {
@@ -78,17 +78,7 @@ const DoughnutChart = ({ height, color = [] }) => {
                         show: false,
                     },
                 },
-                data: [
-                    {
-                        value: 65,
-                        name: 'Google',
-                    },
-                    {
-                        value: 20,
-                        name: 'Facebook',
-                    },
-                    { value: 15, name: 'Others' },
-                ],
+                data: data,
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,

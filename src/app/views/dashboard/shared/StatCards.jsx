@@ -23,7 +23,7 @@ const StatCards = () => {
                     <div className="flex items-center">
                         <Icon className={classes.icon}>group</Icon>
                         <div className="ml-3">
-                            <small className="text-muted">New Leads</small>
+                            <small className="text-muted">Nuevos clientes</small>
                             <h6 className="m-0 mt-1 text-primary font-medium">
                                 3050
                             </h6>
@@ -45,7 +45,7 @@ const StatCards = () => {
                         <Icon className={classes.icon}>attach_money</Icon>
                         <div className="ml-3">
                             <small className="text-muted line-height-1">
-                                This week Sales
+                                Ventas del dia
                             </small>
                             <h6 className="m-0 mt-1 text-primary font-medium">
                                 $80,500
@@ -65,13 +65,13 @@ const StatCards = () => {
                     elevation={6}
                 >
                     <div className="flex items-center">
-                        <Icon className={classes.icon}>store</Icon>
+                        <Icon className={classes.icon}>inventory</Icon>
                         <div className="ml-3">
                             <small className="text-muted">
-                                Inventory Status
+                                Ordenes por llegar
                             </small>
                             <h6 className="m-0 mt-1 text-primary font-medium">
-                                8.5% Stock Surplus
+                                4 Ordenes
                             </h6>
                         </div>
                     </div>
@@ -91,10 +91,10 @@ const StatCards = () => {
                         <Icon className={classes.icon}>shopping_cart</Icon>
                         <div className="ml-3">
                             <small className="text-muted">
-                                Orders to deliver
+                                Pedidos por enviar
                             </small>
                             <h6 className="m-0 mt-1 text-primary font-medium">
-                                305 Orders
+                                305 Pedidos
                             </h6>
                         </div>
                     </div>

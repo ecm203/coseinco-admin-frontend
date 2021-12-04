@@ -43,7 +43,8 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
       axios
         .get(`${apiUrl}/inventario/getSeriesByProductId/${product.productoId}`)
         .then((response) => {
-          setSerialNumbers(response.data.nSeries)
+          const data = response.data.nSeriesAlmacenado.map((nSerie) => nSerie.numero)
+          setSerialNumbers(data)
           setValues(product.serialNumbers)
         }, error => {
           setSerialNumbers([])
@@ -76,7 +77,7 @@ const AddSerialNumber = ({ open, handleClose, product, handleSaveSn }) => {
       handleSaveSn(product.productoId, values)
       handleClose()
     } else {
-      console.log('Invalid')
+      setErrorValue(`Debe registrar ${product.cantidad} números de serie`)
     }
   }
 
