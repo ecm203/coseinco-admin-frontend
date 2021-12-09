@@ -4,7 +4,6 @@ import {
   SimpleCard,
   MaxtBackdrop,
   MatxSnackbar,
-  ConfirmationDialog,
 } from 'app/components'
 import {
   IconButton,
@@ -40,7 +39,8 @@ const SendOrder = () => {
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const openMenu = Boolean(anchorEl)
-  const handleClickMenu = (event) => {
+  const handleClickMenu = (event, order) => {
+    setOrderSelected(order)
     setAnchorEl(event.currentTarget)
   }
   const handleCloseMenu = () => {
@@ -133,20 +133,27 @@ const SendOrder = () => {
     if (photo.length > 0) {
       setConfirmModal(false)
       setIsLoading(true)
-      axios.post(`${apiUrl}/pedidos/admin/constanciaConvertURL`, {
-        file: photo[0].src,
-        npedido: orderSelected.codigo
-      }).then((response) => {
-        axios.post(`${apiUrl}/pedidos/admin/pedidoEnviar`, {
-          codigo: orderSelected.codigo,
-          doc: response.data.url
-        }).then((response) => {
-           setIsLoading(false)
-          }, error => {
-            setIsLoading(false)
+      axios
+        .post(`${apiUrl}/pedidos/admin/constanciaConvertURL`, {
+          file: photo[0].src,
+          npedido: orderSelected.codigo,
         })
-      })
-    }    
+        .then((response) => {
+          axios
+            .post(`${apiUrl}/pedidos/admin/pedidoEnviar`, {
+              codigo: orderSelected.codigo,
+              doc: response.data.url,
+            })
+            .then(
+              (response) => {
+                setIsLoading(false)
+              },
+              (error) => {
+                setIsLoading(false)
+              }
+            )
+        })
+    }
   }
 
   return (
@@ -228,7 +235,12 @@ const SendOrder = () => {
                           </Tooltip>
                           {subscriber.estado === 'enviado' && (
                             <Tooltip title="Finalizar">
-                              <IconButton size="large" onClick={() => {handleOpenConfirmModal(subscriber)}}>
+                              <IconButton
+                                size="large"
+                                onClick={() => {
+                                  handleOpenConfirmModal(subscriber)
+                                }}
+                              >
                                 <Icon color="primary">
                                   assignment_turned_in
                                 </Icon>
@@ -246,7 +258,12 @@ const SendOrder = () => {
                             </Tooltip>
                           )}
                           <Tooltip title="Documentos">
-                            <IconButton onClick={handleClickMenu} size="large">
+                            <IconButton
+                              onClick={(event) =>
+                                handleClickMenu(event, subscriber)
+                              }
+                              size="large"
+                            >
                               <Icon color="primary">description</Icon>
                             </IconButton>
                           </Tooltip>
@@ -282,49 +299,71 @@ const SendOrder = () => {
           handleClose={handleClose}
         />
       )}
-      <Menu
-        anchorEl={anchorEl}
-        open={openMenu}
-        onClose={handleCloseMenu}
-        onClick={handleCloseMenu}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
+      {orderSelected && (
+        <Menu
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={handleCloseMenu}
+          onClick={handleCloseMenu}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '& .MuiAvatar-root': {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
             },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
-        }}
-        transformOrigin={{
-          horizontal: 'right',
-          vertical: 'top',
-        }}
-        anchorOrigin={{
-          horizontal: 'right',
-          vertical: 'bottom',
-        }}
-      >
-        <MenuItem>Guia de remisión</MenuItem>
-        <MenuItem>Comprobante de pago</MenuItem>
-      </Menu>
+          }}
+          transformOrigin={{
+            horizontal: 'right',
+            vertical: 'top',
+          }}
+          anchorOrigin={{
+            horizontal: 'right',
+            vertical: 'bottom',
+          }}
+        >
+          <MenuItem>
+            <a
+              href={orderSelected.url}
+              download={true}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Guia de remisión
+            </a>
+          </MenuItem>
+          {orderSelected.estado === 'finalizado' && (
+            <MenuItem>
+              <a
+                href={orderSelected.constanciaEnvio}
+                download={true}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Constancia de envío
+              </a>
+            </MenuItem>
+          )}
+        </Menu>
+      )}
       <SendOrderModal
         open={orderModal}
         handleClose={handleCloseModal}

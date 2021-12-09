@@ -14,6 +14,8 @@ import {
   TableRow,
   TableCell,
   Icon,
+  Menu,
+  MenuItem,
   Tooltip,
   TablePagination,
 } from '@mui/material'
@@ -32,6 +34,16 @@ const ListPurchaseOrder = () => {
   const [orderList, setOrderList] = useState(null)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [orderSelected, setOrderSelected] = useState(null)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const openMenu = Boolean(anchorEl)
+
+  const handleClickMenu = (event, order) => {
+    setOrderSelected(order)
+    setAnchorEl(event.currentTarget)
+  }
+  const handleCloseMenu = () => {
+    setAnchorEl(null)
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -184,9 +196,13 @@ const ListPurchaseOrder = () => {
                           {'$ ' + order.total}
                         </TableCell>
                         <TableCell colSpan={2} className="px-0 " align="left">
-                          {order.estado === 'cotizado' && !order.cotizacionAccept
+                          {order.estado === 'cotizado' &&
+                          !order.cotizacionAccept
                             ? 'Por confirmar'
-                            : format(new Date(order.fechaEntrega), 'dd/MM/yyyy')}
+                            : format(
+                                new Date(order.fechaEntrega),
+                                'dd/MM/yyyy'
+                              )}
                         </TableCell>
                         <TableCell
                           colSpan={1}
@@ -206,19 +222,20 @@ const ListPurchaseOrder = () => {
                               <Icon color="primary">visibility</Icon>
                             </IconButton>
                           </Tooltip>
-                          {order.estado === 'cotizado' && order.cotizacionAccept && (
-                            <>
-                              <Tooltip title="Generar OC">
-                                <IconButton
-                                  size="large"
-                                  onClick={() =>
-                                    handleSendEmail(order.numeroOC)
-                                  }
-                                >
-                                  <Icon color="primary">email</Icon>
-                                </IconButton>
-                              </Tooltip>
-                              {/* <Tooltip title="Anular orden de compra">
+                          {order.estado === 'cotizado' &&
+                            order.cotizacionAccept && (
+                              <>
+                                <Tooltip title="Generar OC">
+                                  <IconButton
+                                    size="large"
+                                    onClick={() =>
+                                      handleSendEmail(order.numeroOC)
+                                    }
+                                  >
+                                    <Icon color="primary">email</Icon>
+                                  </IconButton>
+                                </Tooltip>
+                                {/* <Tooltip title="Anular orden de compra">
                                 <IconButton
                                   size="large"
                                   onClick={() =>
@@ -228,8 +245,8 @@ const ListPurchaseOrder = () => {
                                   <Icon color="primary">delete</Icon>
                                 </IconButton>
                               </Tooltip> */}
-                            </>
-                          )}
+                              </>
+                            )}
                           {order.estado === 'procesado' &&
                             format(
                               new Date(order.fechaEntrega),
@@ -246,6 +263,19 @@ const ListPurchaseOrder = () => {
                                 </IconButton>
                               </Tooltip>
                             )}
+                          {(order.estado === 'procesado' ||
+                            order.estado === 'finalizado') && (
+                            <Tooltip title="Documentos">
+                              <IconButton
+                                onClick={(event) =>
+                                  handleClickMenu(event, order)
+                                }
+                                size="large"
+                              >
+                                <Icon color="primary">description</Icon>
+                              </IconButton>
+                            </Tooltip>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -276,6 +306,71 @@ const ListPurchaseOrder = () => {
             title={'Anular orden de compra'}
             text={'Esta seguro que desear eliminar esta orden de compra'}
           />
+          {orderSelected && (
+            <Menu
+              anchorEl={anchorEl}
+              open={openMenu}
+              onClose={handleCloseMenu}
+              onClick={handleCloseMenu}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.32))',
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&:before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{
+                horizontal: 'right',
+                vertical: 'top',
+              }}
+              anchorOrigin={{
+                horizontal: 'right',
+                vertical: 'bottom',
+              }}
+            >
+              <MenuItem>
+                <a
+                  href={orderSelected.url}
+                  download={true}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Orden de compra
+                </a>
+              </MenuItem>
+              {orderSelected.estado === 'finalizado' && (
+                <MenuItem>
+                  <a
+                    href={orderSelected.guiaProveedor}
+                    download={true}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Guia de remision
+                  </a>
+                </MenuItem>
+              )}
+            </Menu>
+          )}
         </>
       )}
       {!isLoading && isError && (
