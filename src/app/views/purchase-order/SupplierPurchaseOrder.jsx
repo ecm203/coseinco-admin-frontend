@@ -74,7 +74,7 @@ const SupplierPurchaseOrder = () => {
   }
 
   useEffect(() => {
-    axios.get(`${apiUrl}/oCompra/getById/${orderCode}`).then(
+    axios.get(`${apiUrl}/oCompra/getByIdConfirm/${orderCode}`).then(
       (response) => {
         response.data.compra.productos.map(
           (product) => (product.serialNumbers = [])

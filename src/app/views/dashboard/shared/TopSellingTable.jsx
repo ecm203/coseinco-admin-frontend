@@ -29,7 +29,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
   },
 }))
 
-const TopSellingTable = () => {
+const TopSellingTable = ({data}) => {
   const classes = useStyles()
 
   return (
@@ -43,7 +43,7 @@ const TopSellingTable = () => {
         >
           <TableHead>
             <TableRow>
-              <TableCell className="px-6" colSpan={4}>
+              <TableCell className="px-6" colSpan={5}>
                 Nombre
               </TableCell>
               <TableCell className="px-0" colSpan={2}>
@@ -55,26 +55,26 @@ const TopSellingTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {productList.map((product, index) => (
+            {data?.map((product, index) => (
               <TableRow key={index} hover>
-                <TableCell className="px-0 capitalize" colSpan={4} align="left">
+                <TableCell className="px-0 capitalize" colSpan={5} align="left">
                   <div className="flex items-center">
-                    <Avatar src={product.imgUrl} />
-                    <p className="m-0 ml-8">{product.name}</p>
+                    <Avatar src={product.imagen} />
+                    <p className="m-0 ml-8">{product.nombre}</p>
                   </div>
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={2}>
                   $
-                  {product.price > 999
-                    ? (product.price / 1000).toFixed(1) + 'k'
-                    : product.price}
+                  {product.venta > 999
+                    ? (product.venta / 1000).toFixed(1) + 'k'
+                    : product.venta}
                 </TableCell>
 
                 <TableCell className="px-0" align="left" colSpan={2}>
-                  {product.available ? (
-                    product.available < 20 ? (
+                  {product.stock ? (
+                    product.stock < 20 ? (
                       <small className="border-radius-4 bg-secondary text-white px-2 py-2px">
-                        {product.available} available
+                        {product.stock} available
                       </small>
                     ) : (
                       <small className="border-radius-4 bg-primary text-white px-2 py-2px">
@@ -95,38 +95,5 @@ const TopSellingTable = () => {
     </Card>
   )
 }
-
-const productList = [
-  {
-    imgUrl: '/assets/images/products/headphone-2.jpg',
-    name: 'earphone',
-    price: 100,
-    available: 15,
-  },
-  {
-    imgUrl: '/assets/images/products/headphone-3.jpg',
-    name: 'earphone',
-    price: 1500,
-    available: 30,
-  },
-  {
-    imgUrl: '/assets/images/products/iphone-2.jpg',
-    name: 'iPhone x',
-    price: 1900,
-    available: 35,
-  },
-  {
-    imgUrl: '/assets/images/products/iphone-1.jpg',
-    name: 'iPhone x',
-    price: 100,
-    available: 0,
-  },
-  {
-    imgUrl: '/assets/images/products/headphone-3.jpg',
-    name: 'Head phone',
-    price: 1190,
-    available: 5,
-  },
-]
 
 export default TopSellingTable

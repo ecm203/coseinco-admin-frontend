@@ -78,16 +78,21 @@ const AddPurchaseOrder = () => {
         productos: ordenLista.map((order) => ({
           id: order.product.id,
           cantidad: order.quantity,
-          subtotal: order.quantity * order.product.precioCompra,
+          subtotal: 0,
         })),
-        fechaEntrega: data.date,
         proveedorID: data.supplier._id,
       },
     }
     setConfirmDialog(false)
     axios.post('http://localhost:5000/api-admin/oCompra/create', body).then(
       (response) => {
-        history.push('/orden-de-compra/listar')
+        axios
+          .post('http://localhost:5000/api-admin/oCompra/enviarNotificacion', {
+            ncompra: response.data.ocomprares.numeroOC,
+          })
+          .then((response) => {
+            history.push('/orden-de-compra/listar')
+          })
       },
       (error) => {
         setIsLoading(false)
@@ -207,7 +212,7 @@ const AddPurchaseOrder = () => {
                         )}
                       />
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    {/* <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
                         value={product}
@@ -223,8 +228,8 @@ const AddPurchaseOrder = () => {
                         variant="outlined"
                         label="Costo"
                       />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    </Grid> */}
+                    <Grid item lg={6} md={6} sm={12} xs={12} sx={{ml: 'auto'}}>
                       <Button
                         className="w-full"
                         sx={{ height: '37px' }}
@@ -248,13 +253,7 @@ const AddPurchaseOrder = () => {
                       Producto
                     </TableCell>
                     <TableCell colSpan={1} align="right">
-                      Precio/U
-                    </TableCell>
-                    <TableCell colSpan={1} align="right">
                       Cantidad
-                    </TableCell>
-                    <TableCell colSpan={1} align="right" className="pr-2">
-                      Subtotal
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -273,19 +272,13 @@ const AddPurchaseOrder = () => {
                           </div>
                         </TableCell>
                         <TableCell colSpan={1} align="right">
-                          {'$ ' + data.product.precioCompra}
-                        </TableCell>
-                        <TableCell colSpan={1} align="right">
                           {data.quantity}
-                        </TableCell>
-                        <TableCell colSpan={1} align="right">
-                          {'$ ' + data.product.precioCompra * data.quantity}
                         </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell sx={{ p: 0, border: 'none' }} colSpan={6}>
+                      <TableCell sx={{ p: 0, border: 'none' }} colSpan={4}>
                         <Box
                           sx={{
                             display: 'flex',
@@ -332,13 +325,9 @@ const AddPurchaseOrder = () => {
             maxWidth="xs"
           >
             <form onSubmit={handleSubmit2(handleSaveOrder)}>
-              <DialogTitle>Confirmar fecha de entrega</DialogTitle>
+              <DialogTitle>Seleccione el proveedor</DialogTitle>
               <DialogContent>
-                <DialogContentText sx={{ pb: 2 }}>
-                  Seleccione la fecha de ingreso y el proveedor correspondiente
-                </DialogContentText>
-
-                <Controller
+                {/* <Controller
                   control={control2}
                   name="date"
                   rules={{
@@ -369,7 +358,7 @@ const AddPurchaseOrder = () => {
                       />
                     </LocalizationProvider>
                   )}
-                />
+                /> */}
                 <Controller
                   render={({ field }) => (
                     <Autocomplete
@@ -382,7 +371,7 @@ const AddPurchaseOrder = () => {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Proveedor"
+                          label="Seleccione el proveedor"
                           variant="outlined"
                           size="small"
                           error={!!errror2.supplier}

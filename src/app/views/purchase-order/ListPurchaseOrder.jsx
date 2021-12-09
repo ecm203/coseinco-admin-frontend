@@ -63,6 +63,7 @@ const ListPurchaseOrder = () => {
     axios.get(`${apiUrl}/oCompra`).then(
       (response) => {
         setOrderList(response.data.compras)
+        console.log(response.data.compras)
         setIsLoading(false)
       },
       (error) => {
@@ -109,13 +110,13 @@ const ListPurchaseOrder = () => {
   const handleSendEmail = (orderCode) => {
     setIsLoading(true)
     axios
-      .post(`${apiUrl}/oCompra/enviarNotificacion`, {
+      .post(`${apiUrl}/oCompra/oCompraGenerarDoc`, {
         ncompra: orderCode,
       })
       .then(
         (response) => {
           console.log(response)
-          setIsLoading(false)
+          loadTableData()
         },
         (error) => {
           setIsLoading(false)
@@ -183,7 +184,9 @@ const ListPurchaseOrder = () => {
                           {'$ ' + order.total}
                         </TableCell>
                         <TableCell colSpan={2} className="px-0 " align="left">
-                          {format(new Date(order.fechaEntrega), 'dd/MM/yyyy')}
+                          {order.estado === 'cotizado' && !order.cotizacionAccept
+                            ? 'Por confirmar'
+                            : format(new Date(order.fechaEntrega), 'dd/MM/yyyy')}
                         </TableCell>
                         <TableCell
                           colSpan={1}
@@ -203,9 +206,9 @@ const ListPurchaseOrder = () => {
                               <Icon color="primary">visibility</Icon>
                             </IconButton>
                           </Tooltip>
-                          {order.estado === 'generado' && (
+                          {order.estado === 'cotizado' && order.cotizacionAccept && (
                             <>
-                              <Tooltip title="Notificacion a proveedor">
+                              <Tooltip title="Generar OC">
                                 <IconButton
                                   size="large"
                                   onClick={() =>
@@ -215,7 +218,7 @@ const ListPurchaseOrder = () => {
                                   <Icon color="primary">email</Icon>
                                 </IconButton>
                               </Tooltip>
-                              <Tooltip title="Anular orden de compra">
+                              {/* <Tooltip title="Anular orden de compra">
                                 <IconButton
                                   size="large"
                                   onClick={() =>
@@ -224,7 +227,7 @@ const ListPurchaseOrder = () => {
                                 >
                                   <Icon color="primary">delete</Icon>
                                 </IconButton>
-                              </Tooltip>
+                              </Tooltip> */}
                             </>
                           )}
                           {order.estado === 'procesado' &&

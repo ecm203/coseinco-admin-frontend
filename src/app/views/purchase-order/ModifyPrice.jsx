@@ -78,7 +78,7 @@ const ModifyPrice = ({ open, close, product, handleSave }) => {
                 type="number"
                 size="small"
                 variant="outlined"
-                label="Cantidad"
+                label="Precio de compra"
                 helperText={errors.price?.message}
               />
             )}

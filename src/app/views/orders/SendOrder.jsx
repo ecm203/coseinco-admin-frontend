@@ -23,6 +23,7 @@ import axios from 'axios'
 import { useHistory } from 'react-router'
 import SendOrderModal from './SendOrderModal'
 import { Link } from 'react-router-dom'
+import FinalizeOrderModal from './FinalizeOrderModal'
 
 const apiUrl = 'http://localhost:5000/api'
 
@@ -120,16 +121,32 @@ const SendOrder = () => {
   }
 
   const handleOpenConfirmModal = (order) => {
-    setConfirmModal(true)
     setOrderSelected(order)
+    setConfirmModal(true)
   }
 
   const handleCloseConfirmModal = (order) => {
     setConfirmModal(false)
   }
 
-  const handleEndOrder = () => {
-    setConfirmModal(false)
+  const handleFinalizeOrder = (photo) => {
+    if (photo.length > 0) {
+      setConfirmModal(false)
+      setIsLoading(true)
+      axios.post(`${apiUrl}/pedidos/admin/constanciaConvertURL`, {
+        file: photo[0].src,
+        npedido: orderSelected.codigo
+      }).then((response) => {
+        axios.post(`${apiUrl}/pedidos/admin/pedidoEnviar`, {
+          codigo: orderSelected.codigo,
+          doc: response.data.url
+        }).then((response) => {
+           setIsLoading(false)
+          }, error => {
+            setIsLoading(false)
+        })
+      })
+    }    
   }
 
   return (
@@ -314,12 +331,11 @@ const SendOrder = () => {
         handleAction={sendOrder}
         order={orderSelected}
       />
-      <ConfirmationDialog
+      <FinalizeOrderModal
         open={confirmModal}
-        onConfirmDialogClose={handleCloseConfirmModal}
-        onYesClick={handleEndOrder}
-        title={'Finalizar pedido'}
-        text={'Esta seguro que desear finalizar este pedido'}
+        orderCode={orderSelected?.codigo}
+        handleClose={handleCloseConfirmModal}
+        handleSubmit={handleFinalizeOrder}
       />
     </>
   )

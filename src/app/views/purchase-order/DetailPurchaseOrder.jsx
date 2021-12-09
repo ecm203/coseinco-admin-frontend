@@ -105,23 +105,32 @@ const DetailPurchaseOrder = () => {
     )
     if (productFiltered.length === 0 && photos.length > 0) {
       setIsLoading(true)
-      const productos = order.compra.productos.map((product) => ({
-        productoID: product.productoId,
-        serialNumbers: product.serialNumbers,
-      }))
-      const data = {
-        codigo: order.compra.numeroOC,
-        productos: productos,
-      }
-      axios.post(`${apiUrl}/oCompra/oCompraToInventario`, data).then(
-        (response) => {
+      axios
+        .post(`${apiUrl}/oCompra/guiaRemisionProveedorURL`, {
+          file: photos[0].src,
+          ncompra: orderCode,
+        })
+        .then((response) => {
           console.log(response)
-          history.push('/orden-de-compra/listar')
-        },
-        (error) => {
-          setIsLoading(false)
-        }
-      )
+          const productos = order.compra.productos.map((product) => ({
+            productoID: product.productoId,
+            serialNumbers: product.serialNumbers,
+          }))
+          const data = {
+            codigo: order.compra.numeroOC,
+            productos: productos,
+            guiaProveedor: response.data.url,
+          }
+          axios.post(`${apiUrl}/oCompra/oCompraToInventario`, data).then(
+            (response) => {
+              console.log(response)
+              history.push('/orden-de-compra/listar')
+            },
+            (error) => {
+              setIsLoading(false)
+            }
+          )
+        })
     } else if (productFiltered.length !== 0) {
       setIsError(true)
       setErrorMessage('Debe asignar todos los números de serie')
@@ -260,41 +269,43 @@ const DetailPurchaseOrder = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <div className="custom-form-group">
-                      <div
-                        className={
-                          highlight
-                            ? 'custom-file-drop-area highlight'
-                            : 'custom-file-drop-area'
-                        }
-                        onDragEnter={handlehighlight}
-                        onDragOver={handlehighlight}
-                        onDragLeave={handleunhighlight}
-                        onDrop={handledrop}
-                      >
-                        <input
-                          type="file"
-                          name="photos"
-                          placeholder="Enter photos"
-                          multiple={true}
-                          onChange={handleFileChange}
-                          id="filephotos"
-                        />
-                        <label htmlFor="filephotos">
-                          Inserte guia de remision
-                        </label>
+                  {isAddSerialNumber === 'true' && (
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                      <div className="custom-form-group">
+                        <div
+                          className={
+                            highlight
+                              ? 'custom-file-drop-area highlight'
+                              : 'custom-file-drop-area'
+                          }
+                          onDragEnter={handlehighlight}
+                          onDragOver={handlehighlight}
+                          onDragLeave={handleunhighlight}
+                          onDrop={handledrop}
+                        >
+                          <input
+                            type="file"
+                            name="photos"
+                            placeholder="Enter photos"
+                            multiple={true}
+                            onChange={handleFileChange}
+                            id="filephotos"
+                          />
+                          <label htmlFor="filephotos">
+                            Inserte guia de remision
+                          </label>
+                        </div>
+                        <div className={photos.length > 0 ? 'files' : ''}>
+                          <ul>
+                            {photos.length > 0 &&
+                              photos.map((item, index) => (
+                                <li key={index}>{item.name}</li>
+                              ))}
+                          </ul>
+                        </div>
                       </div>
-                      <div className={photos.length > 0 ? 'files' : ''}>
-                        <ul>
-                          {photos.length > 0 &&
-                            photos.map((item, index) => (
-                              <li key={index}>{item.name}</li>
-                            ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </Grid>
+                    </Grid>
+                  )}
                 </Grid>
               </SimpleCard>
             </div>

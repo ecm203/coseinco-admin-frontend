@@ -290,7 +290,7 @@ const ListInventory = () => {
                         />
                         <Tab
                           className="capitalize"
-                          label={`Reservado (${serie.nSeriesAlmacenado.length})`}
+                          label={`Almacenado (${serie.nSeriesAlmacenado.length})`}
                           {...a11yProps(2)}
                         />
                       </Tabs>
