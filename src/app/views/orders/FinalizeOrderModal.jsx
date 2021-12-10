@@ -2,13 +2,10 @@ import React, { useState } from 'react'
 import {
   Dialog,
   Slide,
-  Grid,
-  TextField,
   DialogActions,
   DialogTitle,
   DialogContent,
   Button,
-  Autocomplete,
 } from '@mui/material'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -116,7 +113,7 @@ const FinalizeOrderModal = ({ open, orderCode, handleClose, handleSubmit }) => {
               onChange={handleFileChange}
               id="filephotos"
             />
-            <label htmlFor="filephotos">Inserte guia de remision</label>
+            <label htmlFor="filephotos">Inserte costancia de envio</label>
           </div>
           <div className={photos.length > 0 ? 'files' : ''}>
             <ul>

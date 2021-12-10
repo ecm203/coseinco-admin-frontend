@@ -146,7 +146,7 @@ const SendOrder = () => {
             })
             .then(
               (response) => {
-                setIsLoading(false)
+                loadTableData()
               },
               (error) => {
                 setIsLoading(false)
